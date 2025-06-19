@@ -98,5 +98,25 @@
     path = ~/dev/.gitconfig
     path = ~/prj/.gitconfig
 
-[includeIf "gitdir:~/.local/share/chezmoi"]
+[includeIf "gitdir:~/.local/share/chezmoi/"]
     path = knopki-identity
+
+
+
+
+
+; [core]
+; 	pager = "/nix/store/6yfv4cf8gdjq3qp7l7fj75j3phc1gb7v-delta-0.18.2/bin/delta"
+; 	quotepath = "off"
+; 	whitespace = "space-before-tab,-indent-with-non-tab,trailing-space"
+
+
+
+
+; [gpg]
+; 	program = "/nix/store/wnv0b32llazgq6an2c773w4xvr82crl7-gnupg-2.4.5/bin/gpg2"
+
+
+
+; [interactive]
+; 	diffFilter = "/nix/store/6yfv4cf8gdjq3qp7l7fj75j3phc1gb7v-delta-0.18.2/bin/delta --color-only"
