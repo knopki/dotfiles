@@ -8,5 +8,6 @@ Required software:
     - git
     - wget
     - hexdump
+    - gnupg
   * Additional software on the desktop environment:
     - git-lfs
