@@ -1,0 +1,7 @@
+._*
+.direnv
+.DS_Store
+.vscode
+*.pyc
+Desktop.ini
+Thumbs.db

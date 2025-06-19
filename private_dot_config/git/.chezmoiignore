@@ -1,0 +1,6 @@
+{{- if not .desktopEnv }}
+lfs-config
+{{- end }}
+{{- if .minimalUser }}
+*-identity
+{{- end }}

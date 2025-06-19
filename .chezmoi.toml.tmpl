@@ -1,0 +1,43 @@
+{{/* Hostname variables */}}
+{{- $isHostAlien := eq .chezmoi.hostname "alien" }}
+{{- $isHostRog := eq .chezmoi.hostname "rog" }}
+{{- $isTrustedHost := or $isHostAlien $isHostRog }}
+
+{{/* Username variables */}}
+{{- $isUserRoot := eq .chezmoi.username "root" }}
+{{- $isUserSk := eq .chezmoi.username "sk" }}
+{{- $isUserKnopki := eq .chezmoi.username "knopki" }}
+
+{{- $isDesktopEnv := or $isHostAlien $isHostRog }}
+{{- $isLinux := eq .chezmoi.os "linux" }}
+{{- $isNixOS := and $isLinux (eq .chezmoi.osRelease.id "nixos") }}
+
+encryption = "age"
+
+[age]
+    recipients = [
+        # root@alien
+        "age1xj5k9pnxx27uav49k62z0j8a7sq04yf4mqw47ma5erqf6acv3s0q5mvjzm",
+        # sk@alien
+        "age1e5nnjx6xxwz90f44s2m0jpe8y3vt7zxcxntxjnqqaw0yj9dp6cjq8jdhn2",
+        # root@rog
+        "age1p5vfy2rns523ct9js03tcp9cwq26qwtzyx3v74nld7rky2hy0easy77ltd",
+        # knopki@rog
+        "age1qhmqefy0e8dyjazukqw0kpz8dw3sn2dqq39n0j7xaxfe3cjn9dlse8n9cu",
+    ]
+    identities = [
+        {{ if $isNixOS }}"/run/secrets/{{ .chezmoi.username }}-chezmoi-age-key",{{- end }}
+    ]
+
+[git]
+    autoCommit = true
+
+[data]
+    # mark that only minimal stuff is needed
+    minimalUser = {{ $isUserRoot }}
+    # desktop environment mark
+    desktopEnv = {{ $isDesktopEnv }}
+    # is trusted host?
+    trustedHost = {{ $isTrustedHost }}
+    # mark that user has avatar
+    withFace = {{ and $isDesktopEnv (or $isUserSk $isUserKnopki) }}

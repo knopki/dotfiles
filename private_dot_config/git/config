@@ -1,0 +1,102 @@
+[alias]
+    a = "add -p"
+    bD = "branch -D"
+    ba = "branch -a"
+    bd = "branch -d"
+    bdm = "!git branch --merged | grep -v '*' | xargs -n 1 git branch -d"
+    c = "commit"
+    co = "checkout"
+    cob = "checkout -b"
+    d = "diff"
+    dc = "diff --cached"
+    ds = "diff --staged"
+    f = "fetch -p"
+    fpush = "push --force-with-lease"
+    h1rd = "hard HEAD~1"
+    hard = "reset --hard"
+    lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+    p = "push"
+    r = "restore"
+    rank = "shortlog -sn --no-merges"
+    rs = "restore --staged"
+    s1ft = "soft HEAD~1"
+    soft = "reset --soft"
+    st = "status -sb"
+    tlog = "log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative"
+    undo = "reset --soft HEAD^"
+
+[apply]
+    whitespace = "fix"
+
+[branch]
+    sort = "-committerdate"
+
+[color]
+    ui = "auto"
+
+[color "branch"]
+    current = "yellow reverse"
+    local = "yellow"
+    remote = "green"
+
+[color "diff"]
+    frag = "magenta bold"
+    meta = "yellow bold"
+    new = "green"
+    old = "red"
+
+[color "status"]
+    added = "yellow"
+    changed = "green"
+    untracked = "cyan"
+
+[diff]
+    renames = "copies"
+
+[diff "bin"]
+    textconv = "hexdump -v -C"
+
+[help]
+    autocorrect = "1"
+
+[include]
+    path = "local"
+
+[init]
+    defaultBranch = "master"
+
+[log]
+    abbrevCommit = "true"
+    decorate = "short"
+
+[merge]
+    conflictstyle = "diff3"
+    ff = "only"
+    log = "true"
+
+[pull]
+    rebase = true
+
+[push]
+    default = "current"
+    followTags = "true"
+
+[rebase]
+    autosquash = "true"
+
+[status]
+    showUntrackedFiles = "all"
+
+[transfer]
+    fsckobjects = "true"
+
+[include]
+    path = lfs-config
+    path = identity
+
+    # These configs will connect the desired identity.
+    path = ~/dev/.gitconfig
+    path = ~/prj/.gitconfig
+
+[includeIf "gitdir:~/.local/share/chezmoi"]
+    path = knopki-identity

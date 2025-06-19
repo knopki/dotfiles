@@ -1,0 +1,8 @@
+README.md
+
+# Avatar
+.face.user.*
+{{- if not .withFace }}
+.face
+.face.icon
+{{- end }}

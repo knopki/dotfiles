@@ -1,0 +1,10 @@
+[commit]
+	gpgSign = true
+
+[tag]
+    gpgSign = true
+
+[user]
+ 	name = "Red Buttons"
+ 	email = "knopki@duck.com"
+ 	signingKey = "58A58B6FD38C6B66"
