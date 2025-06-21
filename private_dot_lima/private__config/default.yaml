@@ -36,5 +36,5 @@ provision:
     script: |
       #!/usr/bin/env bash
       set -eux -o pipefail
-      which chezmoi || sh -c "$(curl -fsLS get.chezmoi.io)"
-      chezmoi init --apply
+      sh ~/.local/share/chezmoi/private_dot_local/bin/executable_install-chezmoi-bin \
+        -b ~/bin -- --init --apply

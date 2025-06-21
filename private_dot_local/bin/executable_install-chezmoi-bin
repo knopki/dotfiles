@@ -7,7 +7,7 @@
 
 set -e
 
-BINDIR="${BINDIR:-bin}"
+BINDIR="${BINDIR:-.local/bin}"
 TAGARG=latest
 LOG_LEVEL=2
 
@@ -103,8 +103,9 @@ parse_args() {
 	while getopts "b:dh?t:" arg; do
 		case "${arg}" in
 		b)
-			if [ "${OPTARG}" = ".local/bin" ] || [ "${OPTARG}" = "./.local/bin" ]; then
-				log_info "instead of using 'get.chezmoi.io -b .local/bin', use 'get.chezmoi.io/lb' instead"
+
+			if [ "${OPTARG}" = "bin" ] || [ "${OPTARG}" = "./bin" ]; then
+				log_info "instead of using 'get.chezmoi.io/lb -b bin', use 'get.chezmoi.io' instead"
 			fi
 			BINDIR="${OPTARG}"
 			;;
