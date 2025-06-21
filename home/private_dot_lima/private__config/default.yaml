@@ -36,5 +36,5 @@ provision:
     script: |
       #!/usr/bin/env bash
       set -eux -o pipefail
-      sh ~/.local/share/chezmoi/private_dot_local/bin/executable_install-chezmoi-bin \
-        -b ~/bin -- --init --apply
+      which || sh ~/.local/share/chezmoi/bin/install-chezmoi-bin -b ~/bin
+      ~/bin/chezmoi init --apply
