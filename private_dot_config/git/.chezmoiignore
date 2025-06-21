@@ -1,6 +1,6 @@
 {{- if not .desktopEnv }}
 lfs-config
 {{- end }}
-{{- if .minimalUser }}
+{{- if or .minimalUser (not .trustedHost) }}
 *-identity
 {{- end }}

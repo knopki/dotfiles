@@ -1,16 +1,34 @@
-{{/* Hostname variables */}}
+#
+# Hostname variables
+#
 {{- $isHostAlien := eq .chezmoi.hostname "alien" }}
 {{- $isHostRog := eq .chezmoi.hostname "rog" }}
-{{- $isTrustedHost := or $isHostAlien $isHostRog }}
 
-{{/* Username variables */}}
+#
+# Username variables
+#
 {{- $isUserRoot := eq .chezmoi.username "root" }}
 {{- $isUserSk := eq .chezmoi.username "sk" }}
 {{- $isUserKnopki := eq .chezmoi.username "knopki" }}
 
-{{- $isDesktopEnv := or $isHostAlien $isHostRog }}
+#
+# OS variables
+#
 {{- $isLinux := eq .chezmoi.os "linux" }}
 {{- $isNixOS := and $isLinux (eq .chezmoi.osRelease.id "nixos") }}
+
+#
+# Machine checks
+#
+{{- $isDevVm := eq (printf "%.5s" .chezmoi.hostname) "lima-" }}
+{{- $isTrustedHost := and (or $isHostAlien $isHostRog) (not $isDevVm) }}
+{{- $isDesktopEnv := or $isHostAlien $isHostRog }}
+
+#
+# User checks
+#
+{{- $isMinimalUser := or $isUserRoot $isDevVm (not $isTrustedHost) }}
+
 
 encryption = "age"
 
@@ -34,9 +52,11 @@ encryption = "age"
 
 [data]
     # mark that only minimal stuff is needed
-    minimalUser = {{ $isUserRoot }}
+    minimalUser = {{ $isMinimalUser }}
     # desktop environment mark
     desktopEnv = {{ $isDesktopEnv }}
+    # is a development vm?
+    devVm = {{ $isDevVm }}
     # is trusted host?
     trustedHost = {{ $isTrustedHost }}
     # mark that user has avatar
