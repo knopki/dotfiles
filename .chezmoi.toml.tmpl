@@ -20,9 +20,10 @@
 #
 # Machine checks
 #
+{{- $isDesktopEnv := or $isHostAlien $isHostRog }}
+{{- $isDevHost := or $isHostAlien $isHostRog }}
 {{- $isDevVm := eq (printf "%.5s" .chezmoi.hostname) "lima-" }}
 {{- $isTrustedHost := and (or $isHostAlien $isHostRog) (not $isDevVm) }}
-{{- $isDesktopEnv := or $isHostAlien $isHostRog }}
 
 #
 # User checks
@@ -52,12 +53,14 @@ encryption = "age"
 
 [data]
     # mark that only minimal stuff is needed
-    minimalUser = {{ $isMinimalUser }}
+    isMinimalUser = {{ $isMinimalUser }}
     # desktop environment mark
-    desktopEnv = {{ $isDesktopEnv }}
+    isDesktopEnv = {{ $isDesktopEnv }}
     # is a development vm?
-    devVm = {{ $isDevVm }}
+    isDevVm = {{ $isDevVm }}
+    # is a development host?
+    isDevHost = {{ $isDevHost }}
     # is trusted host?
-    trustedHost = {{ $isTrustedHost }}
+    isTrustedHost = {{ $isTrustedHost }}
     # mark that user has avatar
     withFace = {{ and $isDesktopEnv (or $isUserSk $isUserKnopki) }}

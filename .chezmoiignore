@@ -6,3 +6,8 @@ README.md
 .face
 .face.icon
 {{- end }}
+
+# Lima
+{{- if not .isDevHost }}
+.lima
+{{- end }}
