@@ -1,28 +1,22 @@
 Host *
-  ServerAliveCountMax 10
   HostkeyAlgorithms +ssh-rsa
   PubkeyAcceptedKeyTypes +ssh-rsa
-  TCPKeepAlive yes
+
+  ServerAliveCountMax 10
+  ServerAliveInterval 10
+
+  ForwardAgent yes
+  AddKeysToAgent yes
+
+  ControlPath ~/.ssh/connections/%r@%n:%p
+
 Host * !localhost
   ControlMaster auto
   ControlPersist 2h
+
 Host *.onion
   ProxyCommand socat - SOCKS4A:localhost:%h:%p,socksport=9050
+
 Host localhost
   Compression no
   ControlMaster no
-
-Host *
-  ForwardAgent yes
-  AddKeysToAgent no
-  Compression no
-  ServerAliveInterval 10
-  ServerAliveCountMax 3
-  HashKnownHosts no
-  UserKnownHostsFile ~/.ssh/known_hosts
-  ControlMaster auto
-  ControlPath ~/.ssh/master-%r@%n:%p
-  ControlPersist 2h
-
-  AddKeysToAgent yes
-  
