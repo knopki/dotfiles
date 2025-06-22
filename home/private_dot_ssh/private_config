@@ -10,6 +10,10 @@ Host *
 
   ControlPath ~/.ssh/connections/%r@%n:%p
 
+Host localhost
+  Compression no
+  ControlMaster no
+
 Host * !localhost
   ControlMaster auto
   ControlPersist 2h
@@ -17,6 +21,5 @@ Host * !localhost
 Host *.onion
   ProxyCommand socat - SOCKS4A:localhost:%h:%p,socksport=9050
 
-Host localhost
-  Compression no
-  ControlMaster no
+# Lima VM per-VM configurations
+Include ~/.lima/*/ssh.config
