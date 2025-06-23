@@ -5,17 +5,13 @@ mountTypesUnsupported: ["9p"]
 mountInotify: true
 mounts:
   - location: "~/.local/share/chezmoi"
-    mountPoint: "{{.Home}}/.local/share/chezmoi"
-    writable: true
 
 containerd:
   system: false
   user: false
 
 user:
-  name: lima
   home: "/home/{{.User}}"
-  shell: "/bin/bash"
 
 ssh:
   loadDotSSHPubKeys: true
@@ -32,6 +28,19 @@ hostResolver:
   #   host.name: host.lima.internal
 
 provision:
+  # fix permissions
+  - mode: system
+    script: |
+      #!/usr/bin/env bash
+      set -eux -o pipefail
+      mkdir -p {{.Home}}/bin
+      mkdir -p {{.Home}}/.local/share
+      chown {{.User}}:{{.User}} \
+        {{.Home}}/bin \
+        {{.Home}}/.local \
+        {{.Home}}/.local/share
+
+  # apply dotfiles
   - mode: user
     script: |
       #!/usr/bin/env bash
