@@ -11,7 +11,7 @@ Host *
   ControlPath ~/.ssh/connections/%r@%n:%p
 
   GSSAPIAuthentication no
-  IgnoreUnknown = "gssapiauthentication"
+  IgnoreUnknown "gssapiauthentication"
 
 Host localhost
   Compression no
