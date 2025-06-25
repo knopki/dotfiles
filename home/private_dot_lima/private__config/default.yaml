@@ -1,6 +1,5 @@
-minimumLimaVersion: 1.0.7
+minimumLimaVersion: 1.0.1
 
-# NOTE: 9p is broken in Linux v6.9, v6.10, and v6.11
 mountTypesUnsupported: ["9p"]
 mountInotify: true
 mounts:
@@ -45,5 +44,7 @@ provision:
     script: |
       #!/usr/bin/env bash
       set -eux -o pipefail
-      which || sh ~/.local/share/chezmoi/bin/install-chezmoi-bin -b ~/bin
+      WORKDIR=~/.local/share/chezmoi
+      if [ ! -d "$WORKDIR/.git" ]; then sleep 10; fi
+      which chezmoi || sh $WORKDIR/bin/install-chezmoi-bin -b ~/bin
       ~/bin/chezmoi init --apply
