@@ -10,7 +10,7 @@ Host *
 
   ControlPath ~/.ssh/connections/%r@%n:%p
 
-  IgnoreUnknown "gssapiauthentication"
+  IgnoreUnknown "gssapikexalgorithms,gssapiauthentication,gssapidelegatecredentials"
 
 Host localhost
   Compression no
