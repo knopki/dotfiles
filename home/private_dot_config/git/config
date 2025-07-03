@@ -106,3 +106,7 @@
 [includeIf "gitdir:~/.local/share/chezmoi/"]
     path = knopki-identity
     path = gpg-sign
+
+[includeIf "gitdir:~/dev/knopki/"]
+	path = knopki-identity
+	path = gpg-sign
