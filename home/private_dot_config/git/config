@@ -97,6 +97,7 @@
 [include]
     path = lfs-config
     path = identity
+    path = wrk-config
 
     # These configs will connect the desired identity.
     path = ~/dev/.gitconfig
