@@ -3,4 +3,5 @@ lfs-config
 {{- end }}
 {{- if or .isMinimalUser (not .isTrustedHost) }}
 *-identity
+wrk-config
 {{- end }}
