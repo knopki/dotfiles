@@ -99,10 +99,6 @@
     path = identity
     path = wrk-config
 
-    # These configs will connect the desired identity.
-    path = ~/dev/.gitconfig
-    path = ~/prj/.gitconfig
-
 [includeIf "gitdir:~/.local/share/chezmoi/"]
     path = knopki-identity
     path = gpg-sign
@@ -110,3 +106,8 @@
 [includeIf "gitdir:~/dev/knopki/"]
 	path = knopki-identity
 	path = gpg-sign
+
+[include]
+    # These configs will connect the desired identity.
+    path = ~/dev/.gitconfig
+    path = ~/prj/.gitconfig
