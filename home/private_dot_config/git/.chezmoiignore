@@ -2,6 +2,6 @@
 lfs-config
 {{- end }}
 {{- if or .isMinimalUser (not .isTrustedHost) }}
-*-identity
+sk*-identity
 wrk-config
 {{- end }}
