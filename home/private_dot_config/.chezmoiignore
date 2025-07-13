@@ -1,0 +1,3 @@
+{{- if or .isMinimalUser (not .isDesktopEnv) }}
+mpv
+{{- end }}
