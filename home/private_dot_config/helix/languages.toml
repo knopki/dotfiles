@@ -1,0 +1,92 @@
+[[language]]
+name = "awk"
+formatter = { command = "awk", timeout = 5, args = [
+  "--file=/dev/stdin",
+  "--pretty-print=/dev/stdout",
+] }
+
+[[language]]
+name = "bash"
+indent = { tab-width = 4, unit = "\t" }
+formatter = { command = "shfmt" }
+
+[[language]]
+name = "css"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "malva"] }
+
+[[language]]
+name = "dockerfile"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "dockerfile"] }
+
+[[language]]
+name = "docker-compose"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "yaml"] }
+
+[[language]]
+name = "html"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "markup"] }
+
+[[language]]
+name = "javascript"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "typescript"] }
+
+[[language]]
+name = "jsx"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "typescript"] }
+
+[[language]]
+name = "json"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "json"] }
+
+[[language]]
+name = "jsonc"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "json"] }
+
+[[language]]
+name = "just"
+formatter = { command = "just", args = ['--justfile', '/dev/stdin', '--dump'] }
+
+[[language]]
+name = "lua"
+formatter = { command = "stylua", args = ["-"] }
+
+[[language]]
+name = "markdown"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "md"] }
+
+[[language]]
+name = "nix"
+formatter = { command = "nixfmt" }
+
+[[language]]
+name = "python"
+formatter = { command = "ruff", args = ["format", "-"] }
+
+[[language]]
+name = "scss"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "malva"] }
+
+[[language]]
+name = "svelte"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "markup"] }
+
+[[language]]
+name = "toml"
+formatter = { command = "taplo", args = ["format", "-"] }
+
+[[language]]
+name = "typescript"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "typescript"] }
+
+[[language]]
+name = "tsx"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "typescript"] }
+
+[[language]]
+name = "vue"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "markup"] }
+
+[[language]]
+name = "yaml"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "yaml"] }
+
