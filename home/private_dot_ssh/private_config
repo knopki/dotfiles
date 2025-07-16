@@ -23,5 +23,7 @@ Host * !localhost
 Host *.onion
   ProxyCommand socat - SOCKS4A:localhost:%h:%p,socksport=9050
 
+Include conf.d/*.conf
+
 # Lima VM per-VM configurations
 Include ~/.lima/*/ssh.config
