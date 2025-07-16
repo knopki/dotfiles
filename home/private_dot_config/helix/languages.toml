@@ -1,3 +1,11 @@
+[language-server]
+fish-lsp = { command = "fish-lsp", args = [
+  "start",
+], environment = { fish_lsp_show_client_popups = "false" } }
+just-lsp = { command = "just-lsp" }
+systemd-lsp = { command = "systemd-language-server" }
+ty = { command = "ty", args = ["server"] }
+
 [[language]]
 name = "awk"
 formatter = { command = "awk", timeout = 5, args = [
@@ -13,6 +21,7 @@ formatter = { command = "shfmt" }
 [[language]]
 name = "css"
 formatter = { command = "dprint", args = ["fmt", "--stdin", "malva"] }
+language-servers = ["vscode-html-language-server", "tailwindcss-ls"]
 
 [[language]]
 name = "dockerfile"
@@ -23,8 +32,17 @@ name = "docker-compose"
 formatter = { command = "dprint", args = ["fmt", "--stdin", "yaml"] }
 
 [[language]]
+name = "fish"
+language-servers = ["fish-lsp"]
+
+[[language]]
+name = "hcl"
+formatter = { command = "terraform", args = ["fmt", "-"] }
+
+[[language]]
 name = "html"
 formatter = { command = "dprint", args = ["fmt", "--stdin", "markup"] }
+language-servers = ["vscode-html-language-server", "tailwindcss-ls"]
 
 [[language]]
 name = "javascript"
@@ -33,6 +51,7 @@ formatter = { command = "dprint", args = ["fmt", "--stdin", "typescript"] }
 [[language]]
 name = "jsx"
 formatter = { command = "dprint", args = ["fmt", "--stdin", "typescript"] }
+language-servers = ["typescript-language-server", "tailwindcss-ls"]
 
 [[language]]
 name = "json"
@@ -45,6 +64,7 @@ formatter = { command = "dprint", args = ["fmt", "--stdin", "json"] }
 [[language]]
 name = "just"
 formatter = { command = "just", args = ['--justfile', '/dev/stdin', '--dump'] }
+language-servers = ["just-lsp"]
 
 [[language]]
 name = "lua"
@@ -61,18 +81,48 @@ formatter = { command = "nixfmt" }
 [[language]]
 name = "python"
 formatter = { command = "ruff", args = ["format", "-"] }
+language-servers = ["pyright", "ruff", "ty"]
 
 [[language]]
 name = "scss"
 formatter = { command = "dprint", args = ["fmt", "--stdin", "malva"] }
 
 [[language]]
+name = "systemd"
+scope = "source.ini"
+file-types = [
+  # Systemd unit files
+  "service",
+  "automount",
+  "device",
+  "mount",
+  "nspawn",
+  "path",
+  "scope",
+  "slice",
+  "socket",
+  "swap",
+  "target",
+  "timer",
+  { glob = "systemd/**/*.conf" },
+]
+injection-regex = "systemd"
+comment-token = "#"
+grammar = "ini"
+language-servers = ["systemd-lsp"]
+
+[[language]]
 name = "svelte"
 formatter = { command = "dprint", args = ["fmt", "--stdin", "markup"] }
+language-servers = ["svelteserver", "tailwindcss-ls"]
+
+[[language]]
+name = "tfvars"
+formatter = { command = "terraform", args = ["fmt", "-"] }
 
 [[language]]
 name = "toml"
-formatter = { command = "taplo", args = ["format", "-"] }
+formatter = { command = "taplo", args = ["fmt", "-"] }
 
 [[language]]
 name = "typescript"
@@ -81,6 +131,7 @@ formatter = { command = "dprint", args = ["fmt", "--stdin", "typescript"] }
 [[language]]
 name = "tsx"
 formatter = { command = "dprint", args = ["fmt", "--stdin", "typescript"] }
+language-servers = ["typescript-language-server", "tailwindcss-ls"]
 
 [[language]]
 name = "vue"
@@ -89,4 +140,3 @@ formatter = { command = "dprint", args = ["fmt", "--stdin", "markup"] }
 [[language]]
 name = "yaml"
 formatter = { command = "dprint", args = ["fmt", "--stdin", "yaml"] }
-
