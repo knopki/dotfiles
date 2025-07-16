@@ -124,6 +124,9 @@ formatter = { command = "terraform", args = ["fmt", "-"] }
 name = "toml"
 formatter = { command = "taplo", args = ["fmt", "-"] }
 
+[language-server.taplo.config]
+config = {}
+
 [[language]]
 name = "typescript"
 formatter = { command = "dprint", args = ["fmt", "--stdin", "typescript"] }
