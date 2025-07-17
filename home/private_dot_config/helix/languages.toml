@@ -82,6 +82,7 @@ formatter = { command = "nixfmt" }
 name = "python"
 formatter = { command = "ruff", args = ["format", "-"] }
 language-servers = ["pyright", "ruff", "ty"]
+rulers = [88]
 
 [[language]]
 name = "scss"
