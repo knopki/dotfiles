@@ -43,3 +43,15 @@ nnbsp = "␣"
 tab = "→"
 newline = "⏎"
 tabpad = "·" # Tabs will look like "→···" (depending on tab width)
+
+# lazygit integration
+[keys.normal]
+C-g = [
+  ":write-all",
+  ":insert-output lazygit >/dev/tty",
+  ":redraw",
+  ":reload-all"
+]
+
+# TODO: yazi integration
+# TODO: scooter integration
