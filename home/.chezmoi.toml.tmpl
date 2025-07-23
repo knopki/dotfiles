@@ -23,7 +23,7 @@
 {{- $isDesktopEnv := or $isHostAlien $isHostRog }}
 {{- $isDevHost := or $isHostAlien $isHostRog }}
 {{- $isDevVm := eq (printf "%.5s" .chezmoi.hostname) "lima-" }}
-{{- $isTrustedHost := and (or $isHostAlien $isHostRog) (not $isDevVm) }}
+{{- $isTrustedHost := or $isHostAlien $isHostRog }}
 
 #
 # User checks
