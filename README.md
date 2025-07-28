@@ -10,4 +10,6 @@ Required software:
     - hexdump
     - gnupg
   * Additional software on the desktop environment:
+    - fusermount3
     - git-lfs
+    - rclone

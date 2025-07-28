@@ -1,0 +1,3 @@
+{{- if or .isMinimalUser (not .isDesktopEnv) }}
+home-sk-remote-sk\\x2dnc.service
+{{- end }}
