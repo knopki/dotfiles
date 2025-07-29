@@ -1,3 +1,7 @@
 {{- if or .isMinimalUser (not .isDesktopEnv) }}
 home-sk-remote-sk\\x2dnc.service
 {{- end }}
+{{- if not (and (eq .chezmoi.hostname "alien") (eq .chezmoi.username "sk")) }}
+kopia-alien-*
+timers.target.wants/kopia-alien-*
+{{- end }}

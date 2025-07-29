@@ -1,0 +1,11 @@
+[Install]
+WantedBy=timers.target
+
+[Timer]
+OnCalendar=weekly
+Persistent=true
+RandomizedDelaySec=8h
+Unit=kopia-alien-photos-unsorted.service
+
+[Unit]
+Description=Kopia periodic snapshotting - alien-photos-unsorted
