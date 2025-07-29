@@ -10,4 +10,5 @@
 # Lima
 {{- if not .isDevHost }}
 .lima
+.terraformrc
 {{- end }}
