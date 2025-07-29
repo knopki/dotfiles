@@ -8,6 +8,7 @@
 {{- end }}
 
 {{- if .isMinimalUser }}
+.gnupg/gpg.conf
 .pam-gnupg
 {{- end }}
 
