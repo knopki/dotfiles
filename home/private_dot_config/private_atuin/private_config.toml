@@ -142,6 +142,7 @@ local_timeout = 5
 [stats]
 # Set commands where we should consider the subcommand for statistics. Eg, kubectl get vs just kubectl
 common_subcommands = [
+  "atuin",
   "apt",
   "cargo",
   "composer",
