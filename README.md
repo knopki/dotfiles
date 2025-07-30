@@ -2,13 +2,15 @@
 
 Required software:
   * Mininal:
+    - atuin
     - chezmoi
     - curl
-    - grep
     - git
-    - wget
-    - hexdump
     - gnupg
+    - grep
+    - hexdump
+    - starship
+    - wget
   * Additional software on the desktop environment:
     - flock
     - fusermount3

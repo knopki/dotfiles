@@ -8,7 +8,22 @@
 #  - atuin session is not started (if session variable is set)
 if [ -n "$PS1" ] && \
 	command -v atuin 2>/dev/null 1>&2 && \
-	[ -f "$XDG_CONFIG_HOME/atuin/config.toml" ] && \
+	[[ -f "$XDG_CONFIG_HOME/atuin/config.toml" ]] && \
 	[ ! -v ATUIN_SESSION ]; then
 	eval "$(atuin init bash --disable-up-arrow)"
+fi
+
+# Starship init
+# Install starship hook if all:
+#  - shell is interactive
+#  - terminal is not dumb
+#  - starship is available
+#  - starship config exists
+#  - starship not initialized
+if [ -n "$PS1" ] && \
+	[[ $TERM != "dumb" ]] && \
+	command -v starship 2>/dev/null 1>&2 && \
+	[[ -f "$XDG_CONFIG_HOME/starship.toml" ]] && \
+	[ ! -v STARSHIP_SESSION_KEY ]; then
+	eval "$(starship init bash)"
 fi

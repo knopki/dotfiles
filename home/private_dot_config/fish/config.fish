@@ -6,4 +6,5 @@
 status is-interactive
 begin
     fish_atuin_init
+    fish_starship_init
 end
