@@ -1,0 +1,4 @@
+{{- if or .isMinimalUser (not .isDesktopEnv) }}
+Nextcloud.desktop
+org.keepassxc.KeePassXC.desktop
+{{- end }}
