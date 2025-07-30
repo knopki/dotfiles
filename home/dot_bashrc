@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Atuin init
+# Install atuin hook if all:
+#  - shell is interactive
+#  - atuin command is present
+#  - atuin is configured
+#  - atuin session is not started (if session variable is set)
+if [ -n "$PS1" ] && \
+	command -v atuin 2>/dev/null 1>&2 && \
+	[ -f "$XDG_CONFIG_HOME/atuin/config.toml" ] && \
+	[ ! -v ATUIN_SESSION ]; then
+	eval "$(atuin init bash)"
+fi
