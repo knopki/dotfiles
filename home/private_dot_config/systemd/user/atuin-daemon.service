@@ -1,0 +1,13 @@
+[Install]
+Also=atuin-daemon.socket
+WantedBy=default.target
+
+[Service]
+ExecStart=atuin daemon
+Restart=on-failure
+RestartMaxDelaySec=6
+RestartSteps=3
+
+[Unit]
+Description=Atuin daemon
+Requires=atuin-daemon.socket
