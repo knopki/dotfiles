@@ -2,8 +2,8 @@
 WantedBy=default.target
 
 [Service]
-ExecStart=rclone mount --cache-dir=%C/rclone/sk-nc --vfs-cache-mode=writes sk_at_nc: %h/remote/sk-nc
-ExecStop=fusermount3 -zu %h/remote/sk-nc
+ExecStart=/usr/bin/env rclone mount --cache-dir=%C/rclone/sk-nc --vfs-cache-mode=writes sk_at_nc: %h/remote/sk-nc
+ExecStop=/usr/bin/env fusermount3 -zu %h/remote/sk-nc
 Restart=on-failure
 RestartSec=15
 Type=simple
