@@ -1,5 +1,6 @@
 {{- if or .isMinimalUser (not .isDesktopEnv) }}
 home-sk-remote-sk\\x2dnc.service
+default.target.wants/home-sk-remote-sk*
 {{- end }}
 
 {{- if not (and (eq .chezmoi.hostname "alien") (eq .chezmoi.username "sk")) }}
