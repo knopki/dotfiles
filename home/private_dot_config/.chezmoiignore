@@ -7,6 +7,10 @@ mpv
 rclone
 {{- end }}
 
+{{- if or .isMinimalUser (not .isDevHost) }}
+zed
+{{- end}}
+
 {{- if not (and (eq .chezmoi.hostname "alien") (eq .chezmoi.username "sk")) }}
 kopia/*.config
 {{- end }}
