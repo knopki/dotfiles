@@ -3,7 +3,7 @@ Also=atuin-daemon.socket
 WantedBy=default.target
 
 [Service]
-ExecStart=atuin daemon
+ExecStart=/usr/bin/env atuin daemon
 Restart=on-failure
 RestartMaxDelaySec=6
 RestartSteps=3
