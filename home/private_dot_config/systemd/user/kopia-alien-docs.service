@@ -1,6 +1,6 @@
 [Service]
 CPUSchedulingPolicy=idle
-Environment=KOPIA_CONFIG_PATH=/run/secrets/sk-kopia-repository-config
+Environment=KOPIA_CONFIG_PATH=%E/kopia/repository.config
 Environment=KOPIA_CONTENT_LOG_DIR_MAX_AGE=168h
 Environment=KOPIA_LOG_DIR_MAX_AGE=168h
 EnvironmentFile=/run/secrets/sk-kopia-repo-password-env-file
