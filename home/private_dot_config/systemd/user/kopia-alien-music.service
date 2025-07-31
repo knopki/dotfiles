@@ -4,7 +4,7 @@ Environment=KOPIA_CONFIG_PATH=/run/secrets/sk-kopia-repository-config
 Environment=KOPIA_CONTENT_LOG_DIR_MAX_AGE=168h
 Environment=KOPIA_LOG_DIR_MAX_AGE=168h
 EnvironmentFile=/run/secrets/sk-kopia-repo-password-env-file
-ExecStart=flock kopia-service.lock kopia snapshot create '--override-source=%h/music' '%h/remote/sk-nc/Family Music'
+ExecStart=/usr/bin/env flock kopia-service.lock kopia snapshot create '--override-source=%h/music' '%h/remote/sk-nc/Family Music'
 IOSchedulingClass=idle
 Restart=on-failure
 RestartSec=1m
