@@ -3,7 +3,7 @@ khal
 khard
 mpv
 {{- end }}
-{{- if not .isMinimalUser }}
+{{- if .isMinimalUser }}
 rclone
 {{- end }}
 
