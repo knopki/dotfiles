@@ -1,17 +1,24 @@
 #!/usr/bin/env bash
 
+# Environment variables
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+export EDITOR=${EDITOR:-hx}
+
+
 # Atuin init
 # Install atuin hook if all:
 #  - shell is interactive
 #  - atuin command is present
 #  - atuin is configured
-#  - atuin session is not started (if session variable is set)
 if [ -n "$PS1" ] && \
 	command -v atuin 2>/dev/null 1>&2 && \
-	[[ -f "$XDG_CONFIG_HOME/atuin/config.toml" ]] && \
-	[ ! -v ATUIN_SESSION ]; then
+	[[ -f "$XGD_CONFIG_HOME/atuin/config.toml" ]]; then
 	eval "$(atuin init bash --disable-up-arrow)"
 fi
+
 
 # Starship init
 # Install starship hook if all:
@@ -19,11 +26,9 @@ fi
 #  - terminal is not dumb
 #  - starship is available
 #  - starship config exists
-#  - starship not initialized
 if [ -n "$PS1" ] && \
 	[[ $TERM != "dumb" ]] && \
 	command -v starship 2>/dev/null 1>&2 && \
-	[[ -f "$XDG_CONFIG_HOME/starship.toml" ]] && \
-	[ ! -v STARSHIP_SESSION_KEY ]; then
+	[[ -f "$XDG_CONFIG_HOME/starship.toml" ]]; then
 	eval "$(starship init bash)"
 fi
