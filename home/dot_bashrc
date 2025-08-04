@@ -11,11 +11,12 @@ prepend_path() {
 # Run fish shell
 # If parent shell is not shell,
 # if execution string not set (like bash -c),
-# if shell level 1
+# if shell level 1,
+# if fish command is present
 # Pass login option to fish shell
 #
-if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 ]]; then
-	echo "BASH EXEC FISH"
+if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 ]] &&
+	command -v fish 2>/dev/null 1>&2; then
 	shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
 	exec fish "$LOGIN_OPTION"
 fi
