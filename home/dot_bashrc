@@ -7,7 +7,22 @@ prepend_path() {
 	esac
 }
 
+#
+# Run fish shell
+# If parent shell is not shell,
+# if execution string not set (like bash -c),
+# if shell level 1
+# Pass login option to fish shell
+#
+if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 ]]; then
+	echo "BASH EXEC FISH"
+	shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
+	exec fish "$LOGIN_OPTION"
+fi
+
+#
 # Environment variables
+#
 prepend_path "$HOME/.local/bin"
 
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
@@ -17,6 +32,7 @@ export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 
 export EDITOR=${EDITOR:-hx}
 
+# shellcheck source=.config/user-dirs.dirs
 source "$XDG_CONFIG_HOME/user-dirs.dirs"
 
 # Atuin init
@@ -26,7 +42,7 @@ source "$XDG_CONFIG_HOME/user-dirs.dirs"
 #  - atuin is configured
 if [ -n "$PS1" ] &&
 	command -v atuin 2>/dev/null 1>&2 &&
-	[[ -f "$XGD_CONFIG_HOME/atuin/config.toml" ]]; then
+	[[ -f "$XDG_CONFIG_HOME/atuin/config.toml" ]]; then
 	eval "$(atuin init bash --disable-up-arrow)"
 fi
 
