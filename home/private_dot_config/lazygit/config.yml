@@ -30,7 +30,7 @@ update:
   method: never
 
 customCommands:
-  - key: "<c-f>"
+  - key: "<c-v>"
     context: "global"
     description: "Create a new conventional commit"
     prompts:
@@ -78,5 +78,9 @@ customCommands:
         title: "message"
         key: "Message"
         initialValue: ""
-    command: 'git commit --message "{{.Form.Type}}{{if .Form.Scope}}({{.Form.Scope}}){{end}}{{if eq .Form.Breaking \"!\"}}!{{end}}: {{.Form.Message}}"'
+      - type: "confirm"
+        key: "Confirm"
+        title: "Commit"
+        body: "Are you sure you want to commit?"
+    command: "git commit --message '{{.Form.Type}}{{if .Form.Scope}}({{.Form.Scope}}){{end}}{{if eq .Form.Breaking \"!\"}}!{{end}}: {{.Form.Message}}'"
     loadingText: "Creating a conventional commit..."
