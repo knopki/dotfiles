@@ -3,8 +3,11 @@
 Required software:
   * Mininal:
     - atuin
+    - bash
+    - bat
     - chezmoi
     - curl
+    - fzf
     - git
     - gnupg
     - grep

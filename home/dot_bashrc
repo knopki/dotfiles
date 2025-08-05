@@ -36,6 +36,15 @@ export EDITOR=${EDITOR:-hx}
 # shellcheck source=.config/user-dirs.dirs
 source "$XDG_CONFIG_HOME/user-dirs.dirs"
 
+# fzf init
+# Install fzf hoot if all:
+#  - shell is interactive
+#  - fzf command is present
+if [ -n "$PS1" ] &&
+	command -v fzf 2>/dev/null 1>&2; then
+	eval "$(fzf --bash)"
+fi
+
 # Atuin init
 # Install atuin hook if all:
 #  - shell is interactive
@@ -44,7 +53,7 @@ source "$XDG_CONFIG_HOME/user-dirs.dirs"
 if [ -n "$PS1" ] &&
 	command -v atuin 2>/dev/null 1>&2 &&
 	[[ -f "$XDG_CONFIG_HOME/atuin/config.toml" ]]; then
-	eval "$(atuin init bash --disable-up-arrow)"
+	eval "$(atuin init bash --disable-up-arrow --disable-ctrl-r)"
 fi
 
 # Starship init
