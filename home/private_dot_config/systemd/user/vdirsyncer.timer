@@ -3,7 +3,7 @@ Description=synchronize calendars and contacts
 
 [Timer]
 OnBootSec=3m
-OnUnitActiveSec=10m
+OnUnitActiveSec=300m
 
 [Install]
 WantedBy=timers.target

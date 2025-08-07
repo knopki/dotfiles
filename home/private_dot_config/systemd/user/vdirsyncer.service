@@ -3,8 +3,10 @@ After=network.target
 Description=synchronize calendars and contacts
 
 [Service]
+BindPaths=%E/vdirsyncer
 BindPaths=%D/calendars
 BindPaths=%D/contacts
+BindPaths=%t
 ExecStart=/usr/bin/env vdirsyncer sync
 LockPersonality=true
 MemoryDenyWriteExecute=true
@@ -15,7 +17,6 @@ ProtectHome=tmpfs
 ProtectKernelModules=true
 ProtectKernelTunables=true
 ProtectSystem=strict
-RestrictAddressFamilies=AF_INET AF_INET6
 RestrictNamespaces=true
 RestrictRealtime=true
 RestrictSUIDSGID=true
