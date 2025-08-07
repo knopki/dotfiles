@@ -3,7 +3,22 @@ Also=atuin-daemon.socket
 WantedBy=default.target
 
 [Service]
+BindPaths=%E/atuin
+BindPaths=%D/atuin
+BindPaths=%t
 ExecStart=/usr/bin/env atuin daemon
+LockPersonality=true
+MemoryDenyWriteExecute=true
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectControlGroups=true
+ProtectHome=tmpfs
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
 Restart=on-failure
 RestartMaxDelaySec=6
 RestartSteps=3
