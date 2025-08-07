@@ -1,7 +1,3 @@
-function _bind_test
-    echo DA
-end
-
 function fish_atuin_init
     status is-interactive || return 10
     type -q atuin || return 11
