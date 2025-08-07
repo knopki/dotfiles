@@ -1,0 +1,25 @@
+[Unit]
+After=network.target
+Description=synchronize calendars and contacts
+
+[Service]
+BindPaths=%D/calendars
+BindPaths=%D/contacts
+ExecStart=/usr/bin/env vdirsyncer sync
+LockPersonality=true
+MemoryDenyWriteExecute=true
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectControlGroups=true
+ProtectHome=tmpfs
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+RestrictAddressFamilies=AF_INET AF_INET6
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+StateDirectory=vdirsyncer
+StateDirectoryMode=0700
+Type=oneshot
+

@@ -2,6 +2,7 @@
 khal
 khard
 mpv
+vdirsyncer
 {{- end }}
 {{- if .isMinimalUser }}
 rclone

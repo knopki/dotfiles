@@ -1,0 +1,36 @@
+[general]
+status_path="~/.local/state/vdirsyncer"
+
+[pair calendars]
+a="calendars_local"
+b="posteo_caldav"
+collections=[["private","private","default"],["ann","ann","fbtubx"]]
+conflict_resolution="a wins"
+
+[pair contacts]
+a="contacts_local"
+b="posteo_carddav"
+collections=[["contacts","private","default"]]
+conflict_resolution="a wins"
+
+[storage calendars_local]
+fileext=".ics"
+path="~/.local/share/calendars"
+type="filesystem"
+
+[storage contacts_local]
+fileext=".vcf"
+path="~/.local/share/contacts"
+type="filesystem"
+
+[storage posteo_caldav]
+username.fetch=["command", "bash", "-c", "secret-tool search Uuid bf9cc8146c404a028b281808b5c3cf2c 2>&1 | grep attribute.UserName | cut -d ' ' -f3"]
+password.fetch=["command","secret-tool", "lookup", "Uuid", "bf9cc8146c404a028b281808b5c3cf2c"]
+type="caldav"
+url="https://posteo.de:8443"
+
+[storage posteo_carddav]
+username.fetch=["command", "bash", "-c", "secret-tool search Uuid bf9cc8146c404a028b281808b5c3cf2c 2>&1 | grep attribute.UserName | cut -d ' ' -f3"]
+password.fetch=["command","secret-tool", "lookup", "Uuid", "bf9cc8146c404a028b281808b5c3cf2c"]
+type="carddav"
+url="https://posteo.de:8443"
