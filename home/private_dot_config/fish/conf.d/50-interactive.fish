@@ -30,9 +30,23 @@ function _starship_init
     starship init fish | source
 end
 
+function _register_abbr
+    status is-interactive || return 10
+    abbr --add -- o xdg-open
+    abbr --add -- gst "git st"
+    abbr --add -- gco "git checkout"
+    abbr --add -- rsync-copy "rsync -avz --progress -h"
+    abbr --add -- rsync-move "rsync -avz --progress -h --remove-source-files"
+    abbr --add -- rsync-synchronize = "rsync -avzu --delete --progress -h"
+    abbr --add -- rsync-update = "rsync -avzu --progress -h"
+    abbr --add -- myip "curl ifconfig.co"
+end
+
 status is-interactive
 begin
     _fzf_init
     _atuin_init
     _starship_init
+    _register_abbr
+    set -g fish_key_bindings fish_hybrid_key_bindings
 end

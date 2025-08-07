@@ -20,3 +20,4 @@ Required software:
     - git-lfs
     - kopia
     - rclone
+    - xdg-utils
