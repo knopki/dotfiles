@@ -15,3 +15,4 @@ zed
 {{- if not (and (eq .chezmoi.hostname "alien") (eq .chezmoi.username "sk")) }}
 kopia/*
 {{- end }}
+kopia/*.mlock
