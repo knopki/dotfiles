@@ -1,18 +1,17 @@
 [Desktop Entry]
 Name=KeePassXC
-GenericName=Password Manager
-GenericName[ru]=Менеджер паролей
-Comment=Community-driven port of the Windows application “KeePass Password Safe”
-Comment[ru]=Разработанный сообществом порт Windows-приложения KeePass Password Safe
-Exec=keepassxc %f
+GenericName=Менеджер паролей
+Exec=keepassxc
 TryExec=keepassxc
 Icon=keepassxc
 StartupWMClass=keepassxc
 StartupNotify=true
 Terminal=false
 Type=Application
+Version=1.0
 Categories=Utility;Security;Qt;
 MimeType=application/x-keepass2;
-SingleMainWindow=true
-X-GNOME-SingleWindow=true
-Keywords=security;privacy;password-manager;yubikey;password;keepass;
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=2
+X-KDE-autostart-after=panel
+X-LXQt-Need-Tray=true
