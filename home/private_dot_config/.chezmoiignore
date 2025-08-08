@@ -13,5 +13,5 @@ zed
 {{- end}}
 
 {{- if not (and (eq .chezmoi.hostname "alien") (eq .chezmoi.username "sk")) }}
-kopia/*.config
+kopia/*
 {{- end }}
