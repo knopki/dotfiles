@@ -13,6 +13,7 @@ zed
 {{- end}}
 
 {{- if not (and (eq .chezmoi.hostname "alien") (eq .chezmoi.username "sk")) }}
+autostart/kopia-ui.desktop
 kopia/*
 {{- end }}
 kopia/*.mlock
