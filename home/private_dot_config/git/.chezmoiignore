@@ -1,7 +1,9 @@
 {{- if not .isDesktopEnv }}
 lfs-config
 {{- end }}
-{{- if or .isMinimalUser (not .isTrustedHost) }}
-sk*-identity
+
+{{- if .allowShareIdentity }}
+sk-at-a-identity
+sk-identity
 wrk-config
 {{- end }}

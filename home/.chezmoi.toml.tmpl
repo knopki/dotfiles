@@ -10,6 +10,7 @@
 {{- $isUserRoot := eq .chezmoi.username "root" }}
 {{- $isUserSk := eq .chezmoi.username "sk" }}
 {{- $isUserKnopki := eq .chezmoi.username "knopki" }}
+{{- $nonRootUser := or $isUserSk $isUserKnopki }}
 
 #
 # OS variables
@@ -28,7 +29,8 @@
 #
 # User checks
 #
-{{- $isMinimalUser := or $isUserRoot $isDevVm (not $isTrustedHost) }}
+{{- $isDesktopUser := and $nonRootUser $isDesktopEnv }}
+{{- $allowShareIdentity := and $nonRootUser (or $isDevHost $isDevVm) }}
 
 
 encryption = "age"
@@ -52,15 +54,17 @@ encryption = "age"
     autoCommit = true
 
 [data]
-    # mark that only minimal stuff is needed
-    isMinimalUser = {{ $isMinimalUser }}
+    # is non root user
+    isNonRootUser = {{ $nonRootUser }}
     # desktop environment mark
     isDesktopEnv = {{ $isDesktopEnv }}
     # is a development vm?
     isDevVm = {{ $isDevVm }}
     # is a development host?
     isDevHost = {{ $isDevHost }}
+    # is a desktop user?
+    isDesktopUser = {{ $isDesktopUser }}
     # is trusted host?
     isTrustedHost = {{ $isTrustedHost }}
-    # mark that user has avatar
-    withFace = {{ and $isDesktopEnv (or $isUserSk $isUserKnopki) }}
+    # allow sharing identity
+    allowShareIdentity = {{ $allowShareIdentity }}

@@ -2,12 +2,12 @@
 
 # Avatar
 .face.user.*
-{{- if not .withFace }}
+{{- if not .isDesktopUser }}
 .face
 .face.icon
 {{- end }}
 
-{{- if .isMinimalUser }}
+{{- if .allowShareIdentity }}
 .gnupg/gpg.conf
 .pam-gnupg
 {{- end }}

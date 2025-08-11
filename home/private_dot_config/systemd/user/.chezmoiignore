@@ -1,11 +1,11 @@
-{{- if or .isMinimalUser (not .isDesktopEnv) }}
+{{- if not .isDesktopUser }}
 home-sk-remote-sk\\x2dnc.service
 default.target.wants/home-sk-remote-sk*
 vdirsyncer.*
 timers.target.wants/vdirsyncer.*
 {{- end }}
 
-{{- if not (and (eq .chezmoi.hostname "alien") (eq .chezmoi.username "sk")) }}
+{{- if not (and (eq .chezmoi.hostname "alien") .isDesktopUser) }}
 kopia-alien-*
 timers.target.wants/kopia-alien-*
 {{- end }}

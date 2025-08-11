@@ -1,14 +1,12 @@
-{{- if or .isMinimalUser (not .isDesktopEnv) }}
+{{- if not .isDesktopUser }}
 khal
 khard
 mpv
+rclone
 vdirsyncer
 {{- end }}
-{{- if .isMinimalUser }}
-rclone
-{{- end }}
 
-{{- if or .isMinimalUser (not .isDevHost) }}
+{{- if or .isNonRootUser (not .isDevHost) }}
 zed
 {{- end}}
 
