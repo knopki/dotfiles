@@ -2,7 +2,7 @@
 lfs-config
 {{- end }}
 
-{{- if .allowShareIdentity }}
+{{- if not .isDesktopUser }}
 sk-at-a-identity
 sk-identity
 wrk-config

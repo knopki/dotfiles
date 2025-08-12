@@ -7,7 +7,7 @@
 .face.icon
 {{- end }}
 
-{{- if .allowShareIdentity }}
+{{- if not .isDesktopUser }}
 .gnupg/gpg.conf
 .pam-gnupg
 {{- end }}

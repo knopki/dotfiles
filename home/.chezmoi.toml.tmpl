@@ -30,7 +30,6 @@
 # User checks
 #
 {{- $isDesktopUser := and $nonRootUser $isDesktopEnv }}
-{{- $allowShareIdentity := and $nonRootUser (or $isDevHost $isDevVm) }}
 
 
 encryption = "age"
@@ -66,5 +65,3 @@ encryption = "age"
     isDesktopUser = {{ $isDesktopUser }}
     # is trusted host?
     isTrustedHost = {{ $isTrustedHost }}
-    # allow sharing identity
-    allowShareIdentity = {{ $allowShareIdentity }}
