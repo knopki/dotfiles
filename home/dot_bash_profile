@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
-if [ -f ~/.bashrc ];
+if [ -f ~/.profile ];
 then
-	source $HOME/.bashrc; 
-fi 
+	source $HOME/.profile;
+fi
 
+if [ -f ~/.bashrc ] && [ -z "$__BASHRC_SOURCED" ];
+then
+	source $HOME/.bashrc;
+fi

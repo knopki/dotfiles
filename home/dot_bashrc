@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export __BASHRC_SOURCED=1
+
 prepend_path() {
 	case ":$PATH:" in
 	*:"$1":*) ;;
