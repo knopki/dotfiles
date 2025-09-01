@@ -5,7 +5,7 @@ then
 	source $HOME/.profile;
 fi
 
-if [ -f ~/.bashrc ] && [ -z "$__BASHRC_SOURCED" ];
+if [ -f ~/.bashrc ];
 then
 	source $HOME/.bashrc;
 fi

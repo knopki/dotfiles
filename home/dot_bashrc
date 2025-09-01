@@ -19,8 +19,6 @@
 # - Anything that should be available only to login shells should go in ~/.profile
 # - Ensure that ~/.bash_login does not exist.
 
-export __BASHRC_SOURCED=1
-
 prepend_path() {
 	case ":$PATH:" in
 	*:"$1":*) ;;
@@ -30,15 +28,21 @@ prepend_path() {
 
 #
 # Run fish shell
-# If parent shell is not shell,
+# If fish command is present
+# if parent shell is not shell,
 # if execution string not set (like bash -c),
 # if shell level 1,
-# if fish command is present
+# or, started by tmux,
 # Pass login option to fish shell
 #
-if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 ]] &&
-	command -v fish 2>/dev/null 1>&2; then
-	shopt -q login_shell && exec fish --login || exec fish
+if command -v fish 2>/dev/null 1>&2; then
+	PARENT_PS=$(ps --no-header --pid=$PPID --format=comm)
+	if [[ "${PARENT_PS}" != "fish" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 ]]; then
+		shopt -q login_shell && exec fish --login || exec fish
+	fi
+	if [[ "${PARENT_PS}" == "tmux: server" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 2 ]]; then
+		exec fish --login
+	fi
 fi
 
 #
