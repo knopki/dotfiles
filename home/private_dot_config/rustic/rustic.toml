@@ -1,0 +1,13 @@
+[backup]
+exclude-if-present = ["CACHEDIR.TAG"]
+git-ignore = true
+
+[forget]
+keep-last = 15
+keep-within-minutely="2 hours"
+keep-within-hourly="1 day"
+keep-within-daily="7 days"
+keep-within-weekly="1 month"
+keep-within-monthly="1 year"
+keep-within-yearly="5 years"
+keep-tags = ["keep", "important"]
