@@ -2,6 +2,9 @@
 exclude-if-present = ["CACHEDIR.TAG"]
 git-ignore = true
 
+# as devid changes every time we mount new snapshot we have to ignore it
+ignore-devid = true 
+
 [forget]
 keep-last = 15
 keep-within-minutely="2 hours"

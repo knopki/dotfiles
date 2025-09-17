@@ -4,7 +4,7 @@ use-profiles = ["rustic"]
 [repository]
 repository = "/srv/wdc3-filebased-backups/np"
 password-command = "secret-tool lookup Uuid 181c4759afb540e8a9a7027bbb440101"
-no-cache = true # no cache needed for local repository
+# no-cache = true # no cache needed for local repository
 
 [[backup.snapshots]]
 sources = ["/srv/np"]
