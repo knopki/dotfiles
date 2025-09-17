@@ -1,0 +1,4 @@
+version: v1.0.0
+sources:
+    np:
+        location: /srv/np

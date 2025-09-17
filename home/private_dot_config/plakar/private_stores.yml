@@ -1,0 +1,6 @@
+version: v1.0.0
+stores:
+    np-local:
+        concurrency: "2"
+        location: /srv/wdc3-filebased-backups/plakar-np
+        passphrase_cmd: secret-tool lookup Uuid 9a4c6fce40e94a078d863138611204be
