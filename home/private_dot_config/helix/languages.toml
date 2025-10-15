@@ -81,7 +81,7 @@ formatter = { command = "nixfmt" }
 [[language]]
 name = "python"
 formatter = { command = "ruff", args = ["format", "-"] }
-language-servers = ["pyright", "ruff", "ty"]
+language-servers = ["basedpyright", "ruff", "ty"]
 rulers = [88]
 
 [[language]]
