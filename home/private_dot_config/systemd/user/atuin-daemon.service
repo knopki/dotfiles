@@ -6,6 +6,7 @@ WantedBy=default.target
 BindPaths=%E/atuin
 BindPaths=%D/atuin
 BindPaths=%t
+Environment="PATH=/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin"
 ExecStart=/usr/bin/env atuin daemon
 LockPersonality=true
 MemoryDenyWriteExecute=true

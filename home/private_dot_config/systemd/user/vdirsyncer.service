@@ -7,6 +7,7 @@ BindPaths=%E/vdirsyncer
 BindPaths=%D/calendars
 BindPaths=%D/contacts
 BindPaths=%t
+Environment="PATH=/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin"
 ExecStart=/usr/bin/env vdirsyncer sync
 LockPersonality=true
 MemoryDenyWriteExecute=true
@@ -23,4 +24,3 @@ RestrictSUIDSGID=true
 StateDirectory=vdirsyncer
 StateDirectoryMode=0700
 Type=oneshot
-
