@@ -1,9 +1,0 @@
-(
-    output: "eDP-1",
-    source: Path("/home/sk/pics/wallpapers"),
-    filter_by_theme: false,
-    rotation_frequency: 1800,
-    filter_method: Lanczos,
-    scaling_mode: Zoom,
-    sampling_method: Alphanumeric,
-)
