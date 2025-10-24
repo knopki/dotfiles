@@ -1,4 +1,5 @@
 {{- if not .isDesktopUser }}
+autostart
 khal
 khard
 mpv
