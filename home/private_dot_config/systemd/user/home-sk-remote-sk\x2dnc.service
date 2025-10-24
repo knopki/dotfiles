@@ -2,7 +2,7 @@
 WantedBy=default.target
 
 [Service]
-Environment="PATH=/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="PATH=/run/wrappers/bin:/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin"
 ExecStart=/usr/bin/env rclone mount --cache-dir=%C/rclone/sk-nc --vfs-cache-mode=writes sk_at_nc: %h/remote/sk-nc
 ExecStop=/usr/bin/env fusermount3 -zu %h/remote/sk-nc
 Restart=on-failure
