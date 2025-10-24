@@ -7,7 +7,7 @@ rclone
 vdirsyncer
 {{- end }}
 
-{{- if or .isNonRootUser (not .isDevHost) }}
+{{- if or (not .isNonRootUser) (not .isDevHost) }}
 zed
 {{- end}}
 
