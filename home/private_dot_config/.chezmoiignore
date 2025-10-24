@@ -7,6 +7,10 @@ rclone
 vdirsyncer
 {{- end }}
 
+{{- if not .isDesktopUser }}
+cosmic
+{{- end }}
+
 {{- if or (not .isNonRootUser) (not .isDevHost) }}
 zed
 {{- end}}
