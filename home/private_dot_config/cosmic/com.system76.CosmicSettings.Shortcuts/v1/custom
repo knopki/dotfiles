@@ -4,4 +4,10 @@
             Super,
         ],
     ): System(Launcher),
+    (
+        modifiers: [
+            Super,
+        ],
+        key: "c",
+    ): Spawn("qalculate-gtk"),
 }
