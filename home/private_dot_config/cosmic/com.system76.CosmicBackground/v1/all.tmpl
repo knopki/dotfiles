@@ -1,6 +1,8 @@
 (
     output: "all",
+{{- if eq .chezmoi.username "sk"  }}
     source: Path("/home/sk/pics/wallpapers"),
+{{- end }}
     filter_by_theme: true,
     rotation_frequency: 1800,
     filter_method: Lanczos,
