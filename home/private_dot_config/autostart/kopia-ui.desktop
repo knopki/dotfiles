@@ -6,3 +6,5 @@ Icon=kopia-ui
 Name=KopiaUI
 Type=Application
 Version=1.4
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=10
