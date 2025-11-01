@@ -5,7 +5,7 @@ Some(([
     "com.system76.CosmicAppletPower",
     "com.system76.CosmicAppletWorkspaces",
 ], [
-    "com.system76.CosmicAppletStatusArea",
+    "net.tropicbliss.CosmicExtAppletCaffeine",
     "com.system76.CosmicAppletTiling",
     "com.system76.CosmicAppletA11y",
     "com.system76.CosmicAppletAudio",
