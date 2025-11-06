@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+export RCLONE_BWLIMIT=10M
+export RCLONE_CONFIG=/run/secrets/restic-backupman-rclone-config
+export RESTIC_PASSWORD_FILE=/run/secrets/restic-backupman-content-repo-password
+export RESTIC_REPOSITORY=rclone:backupman:/backups/restic-content
+export RESTIC_PACK_SIZE=128
+
+exec restic "$@"
+
+
