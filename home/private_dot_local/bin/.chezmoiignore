@@ -1,0 +1,4 @@
+{{- if not (and (eq .chezmoi.hostname "alien") (eq .chezmoi.username "sk")) }}
+restic-content-remote
+restic-user-data-remote
+{{- end }}

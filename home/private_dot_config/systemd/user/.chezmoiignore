@@ -14,3 +14,10 @@ timers.target.wants/kopia-alien-*
 default.target.wants/atuin-*
 sockets.target.wants/atuin-*
 {{- end }}
+
+{{- if not (and (eq .chezmoi.hostname "alien") (eq .chezmoi.username "sk")) }}
+restic-backups-content-remote.*
+restic-backups-user-data-remote.*
+timer.target.wants/restic-backups-content-remote.*
+timer.target.wants/restic-backups-user-data-remote.*
+{{- end }}
