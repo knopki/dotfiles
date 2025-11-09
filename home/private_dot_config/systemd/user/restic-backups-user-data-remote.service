@@ -7,6 +7,7 @@ BindPaths=/run/secrets
 BindPaths=%h/remote/sk-nc
 BindPaths=%C
 BindPaths=%h/.local/bin
+BindPaths=%h/.resticignore
 Environment="PATH=%h/.local/bin:/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin"
 ExecStart=%h/.local/bin/restic-user-data-remote backup --cleanup-cache --exclude-caches --ignore-ctime --ignore-inode --no-scan --exclude-file=%h/.resticignore "%h/remote/sk-nc/Dev/Archive" "%h/remote/sk-nc/Family Photos" "%h/remote/sk-nc/Pics/Mobile" "%h/remote/sk-nc/Pics/Photos Unsorted" "%h/remote/sk-nc/Pics/RAWs"
 LockPersonality=true
