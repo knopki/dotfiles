@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+export RESTIC_REPOSITORY_FILE=/run/secrets/restic-user-media-repo
+export RESTIC_PASSWORD_FILE=/run/secrets/restic-user-media-repo-password
+export RESTIC_PACK_SIZE=128
+
+source /run/secrets/restic-domashka-env
+exec restic "$@"
+
+
