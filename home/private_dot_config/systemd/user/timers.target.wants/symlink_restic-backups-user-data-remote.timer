@@ -1,1 +1,1 @@
-../restic-backups-user-data-remote.timer
+/home/sk/.config/systemd/user/restic-backups-user-data-remote.timer
