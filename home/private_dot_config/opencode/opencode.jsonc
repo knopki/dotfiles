@@ -1,7 +1,10 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  "plugin": ["@tarquinen/opencode-dcp@1.0.2"],
+  "plugin": [
+    "@simonwjackson/opencode-direnv@v2025.1211.9",
+    "@tarquinen/opencode-dcp@1.0.2",
+  ],
 
   "experimental": {
     "batch_tool": true,
@@ -9,11 +12,32 @@
     "primary_tools": ["prune"],
   },
 
-  "instructions": ["AGENTS.md", "CONTRIBUTING.md"],
+  "instructions": [
+    "CONTRIBUTING.md",
+    "CLAUDE.md",
+    "AGENTS.md",
+    "AGENTS.local.md",
+    "AGENTS.override.md",
+  ],
 
   "mcp": {
-    "grepapp": {
-      "enabled": false,
+    // TODO: Anytype
+    // TODO: web search via https://github.com/deedy5/ddgs
+    // TODO: https://ankimcp.ai/
+    // TODO: Chrome DevTools MCP
+    // TODO: https://github.com/chigwell/telegram-mcp
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}",
+      },
+    },
+    "deepwiki": {
+      "type": "remote",
+      "url": "https://mcp.deepwiki.com/sse",
+    },
+    "gh_grep": {
       "type": "remote",
       "url": "https://mcp.grep.app",
     },
@@ -23,6 +47,7 @@
     "bash": {
       "cut *": "allow",
       "diff *": "allow",
+      "date *": "allow",
       "du *": "allow",
       "file *": "allow",
       "find * -delete*": "ask",
@@ -75,7 +100,11 @@
     },
   },
 
-  "tools": {},
+  "tools": {
+    "context7*": false,
+    "deepwiki*": false,
+    "gh_grep*": false,
+  },
 
   "provider": {
     "opencode": {
@@ -133,7 +162,9 @@
   "agent": {
     // primary default build agent
     "build": {
-      "permission": { "skill": { "skill-creator": "allow" } },
+      "permission": {
+        "skill": { "continuity-ledger": "allow", "skill-creator": "allow" },
+      },
     },
 
     // primary default planning agent (save as build but with plan message)
@@ -148,6 +179,7 @@
     // General-purpose sub-agent for researching complex questions and executing multi-step tasks
     // Default tools without access to todos
     "general": {
+      "permission": { "skill": { "continuity-ledger": "allow" } },
       "tools": {},
     },
 
