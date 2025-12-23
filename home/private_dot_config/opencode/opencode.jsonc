@@ -1,0 +1,164 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "plugin": ["@tarquinen/opencode-dcp@1.0.2"],
+
+  "experimental": {
+    "batch_tool": true,
+    "chatMaxRetries": 10,
+    "primary_tools": ["prune"],
+  },
+
+  "instructions": ["AGENTS.md", "CONTRIBUTING.md"],
+
+  "mcp": {
+    "grepapp": {
+      "enabled": false,
+      "type": "remote",
+      "url": "https://mcp.grep.app",
+    },
+  },
+
+  "permission": {
+    "bash": {
+      "cut *": "allow",
+      "diff *": "allow",
+      "du *": "allow",
+      "file *": "allow",
+      "find * -delete*": "ask",
+      "find * -exec*": "ask",
+      "find * -fls*": "ask",
+      "find * -fprint*": "allow",
+      "find * -fprintf*": "allow",
+      "find * -ok*": "ask",
+      "find *": "allow",
+      "git branch -v": "allow",
+      "git branch": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "git show*": "allow",
+      "git status*": "allow",
+      "grep *": "allow",
+      "head *": "allow",
+      "less *": "allow",
+      "ls *": "allow",
+      "ls": "allow",
+      "more *": "allow",
+      "notify-send *": "allow",
+      "pwd *": "allow",
+      "pwd": "allow",
+      "pytest *": "allow",
+      "pytest": "allow",
+      "python -m compileall *": "allow",
+      "python -m py_compile *": "allow",
+      "python -m pytest *": "allow",
+      "rg *": "allow",
+      "ruff *": "allow",
+      "sort *": "allow",
+      "sort --output=*": "ask",
+      "sort -o *": "ask",
+      "stat *": "allow",
+      "tail *": "allow",
+      "tree *": "allow",
+      "tree -o *": "ask",
+      "uniq *": "allow",
+      "uv run ruff *": "allow",
+      "wc *": "allow",
+      "which*": "allow",
+      "*": "ask",
+    },
+    "webfetch": "allow",
+    "doom_loop": "ask",
+    "external_directory": "ask",
+    "skill": {
+      "*": "deny",
+    },
+  },
+
+  "tools": {},
+
+  "provider": {
+    "opencode": {
+      "models": {
+        // free coding model
+        "grok-code": {},
+        // big pickle is GLM 4.6
+        // free coding model
+        "pig-pickle": {},
+      },
+    },
+    "openrouter": {
+      "models": {
+        "anthropic/claude-sonnet-4.5": {},
+        "anthropic/claude-haiku-4.5": {},
+
+        "google/gemini-3-flash-preview": {},
+        "google/gemini-3-pro-preview": {},
+
+        "kwaipilot/kat-coder-pro:free": {},
+
+        "minimax/minimax-m2": {},
+
+        "mistralai/devstral-2512:free": {},
+        "mistralai/mistral-medium-3.1": {},
+        "mistralai/mistral-large-2512": {},
+
+        "moonshotai/kimi-k2-0905": {},
+
+        "openai/gpt-5.2": {},
+        "openai/gpt-5.1-codex": {},
+        "openai/gpt-oss-120b": {},
+
+        "qwen/qwen3-coder": {},
+        "qwen/qwen3-coder-plus": {},
+
+        "x-ai/grok-code-fast-1": {},
+
+        "xiaomi/mimo-v2-flash:free": {
+          "options": {
+            "reasoningEffort": "none",
+          },
+        },
+
+        "z-ai/glm-4.6": {},
+      },
+    },
+  },
+
+  // default model if not set by agent
+  "model": "opencode/big-pickle",
+  // small and cheap model used for title generation
+  "small_model": "opencode/big-pickle",
+
+  "agent": {
+    // primary default build agent
+    "build": {
+      "permission": { "skill": { "skill-creator": "allow" } },
+    },
+
+    // primary default planning agent (save as build but with plan message)
+    "plan": {
+      "tools": {
+        "edit": false,
+        "multiedit": false,
+        "write": false,
+      },
+    },
+
+    // General-purpose sub-agent for researching complex questions and executing multi-step tasks
+    // Default tools without access to todos
+    "general": {
+      "tools": {},
+    },
+
+    // Fast subagent specialized for exploring codebases
+    // Defaults tools without access to todos, edit, write
+    "explore": {
+      "tools": {
+        "edit": false,
+        "multiedit": false,
+        "write": false,
+      },
+    },
+  },
+}
