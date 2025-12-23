@@ -97,10 +97,10 @@ x-scheme-handler/anytype=anytype.desktop
 x-scheme-handler/http=brave-browser.desktop
 x-scheme-handler/https=brave-browser.desktop
 x-scheme-handler/terminal=com.system76.CosmicTerm.desktop
-x-scheme-handler/tg=org.telegram.desktop.desktop
-x-scheme-handler/tonsite=org.telegram.desktop.desktop
+x-scheme-handler/tg=userapp-Telegram Desktop-YNIXH3.desktop
+x-scheme-handler/tonsite=userapp-Telegram Desktop-3WZXH3.desktop
 x-scheme-handler/unknown=brave-browser.desktop
 
 [Added Associations]
-x-scheme-handler/tg=org.telegram.desktop.desktop
-x-scheme-handler/tonsite=org.telegram.desktop.desktop
+x-scheme-handler/tg=org.telegram.desktop.desktop;userapp-Telegram Desktop-YNIXH3.desktop;
+x-scheme-handler/tonsite=org.telegram.desktop.desktop;userapp-Telegram Desktop-3WZXH3.desktop;
