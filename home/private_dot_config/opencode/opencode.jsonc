@@ -7,7 +7,6 @@
   ],
 
   "experimental": {
-    "batch_tool": true,
     "chatMaxRetries": 10,
     "primary_tools": ["prune"],
   },
@@ -26,6 +25,7 @@
     // TODO: https://ankimcp.ai/
     // TODO: Chrome DevTools MCP
     // TODO: https://github.com/chigwell/telegram-mcp
+    // TODO: https://github.com/zilliztech/claude-context
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
@@ -37,7 +37,7 @@
       "type": "remote",
       "url": "https://mcp.deepwiki.com/sse",
     },
-    "gh_grep": {
+    "grep_app": {
       "type": "remote",
       "url": "https://mcp.grep.app",
     },
@@ -94,76 +94,76 @@
     },
     "webfetch": "allow",
     "doom_loop": "ask",
-    "external_directory": "ask",
+    // NOTE: run opencode only inside a bubblewrap/VM
+    "external_directory": "ask", // YOLO
     "skill": {
       "*": "deny",
+      "skill-creator": "deny", // skill is broken now
+      "professional-honesty": "allow",
     },
   },
 
   "tools": {
     "context7*": false,
     "deepwiki*": false,
-    "gh_grep*": false,
+    "grep_app*": false,
   },
 
   "provider": {
     "opencode": {
-      "models": {
-        // free coding model
-        "grok-code": {},
-        // big pickle is GLM 4.6
-        // free coding model
-        "pig-pickle": {},
-      },
+      "whitelist": ["grok-code", "glm-4.7-free", "big-pickle", "gpt-5-nano"],
     },
     "openrouter": {
+      "whitelist": [
+        "anthropic/claude-sonnet-4.5",
+        "anthropic/claude-haiku-4.5",
+
+        "google/gemini-3-flash-preview",
+        "google/gemini-3-pro-preview",
+
+        "kwaipilot/kat-coder-pro:free",
+
+        "minimax/minimax-m2.1",
+
+        "mistralai/devstral-2512:free",
+        "mistralai/mistral-medium-3.1",
+
+        "moonshotai/kimi-k2-0905",
+
+        "openai/gpt-5.2",
+        "openai/gpt-5.1-codex",
+        "openai/gpt-oss-120b",
+
+        "qwen/qwen3-coder",
+
+        "x-ai/grok-code-fast-1",
+
+        "xiaomi/mimo-v2-flash:free",
+      ],
       "models": {
-        "anthropic/claude-sonnet-4.5": {},
-        "anthropic/claude-haiku-4.5": {},
-
-        "google/gemini-3-flash-preview": {},
-        "google/gemini-3-pro-preview": {},
-
-        "kwaipilot/kat-coder-pro:free": {},
-
-        "minimax/minimax-m2": {},
-
-        "mistralai/devstral-2512:free": {},
-        "mistralai/mistral-medium-3.1": {},
-        "mistralai/mistral-large-2512": {},
-
-        "moonshotai/kimi-k2-0905": {},
-
-        "openai/gpt-5.2": {},
-        "openai/gpt-5.1-codex": {},
-        "openai/gpt-oss-120b": {},
-
-        "qwen/qwen3-coder": {},
-        "qwen/qwen3-coder-plus": {},
-
-        "x-ai/grok-code-fast-1": {},
-
         "xiaomi/mimo-v2-flash:free": {
           "options": {
             "reasoningEffort": "none",
           },
         },
-
-        "z-ai/glm-4.6": {},
       },
+    },
+    "zai-coding-plan": {
+      "whitelist": ["glm-4.7", "glm-4.6"],
     },
   },
 
   // default model if not set by agent
   "model": "opencode/big-pickle",
   // small and cheap model used for title generation
-  "small_model": "opencode/big-pickle",
+  // "small_model": "opencode/big-pickle",
 
   "agent": {
     // primary default build agent
     "build": {
+      "tools": { "skill": true },
       "permission": {
-        "skill": { "continuity-ledger": "allow", "skill-creator": "allow" },
+        "skill": { "continuity-ledger": "allow" },
       },
     },
 
@@ -176,16 +176,20 @@
       },
     },
 
-    // General-purpose sub-agent for researching complex questions and executing multi-step tasks
+    // General-purpose sub-agent and fast for researching complex questions and executing multi-step tasks
     // Default tools without access to todos
     "general": {
-      "permission": { "skill": { "continuity-ledger": "allow" } },
+      "permission": {
+        "skill": { "continuity-ledger": "allow" },
+      },
       "tools": {},
     },
 
     // Fast subagent specialized for exploring codebases
     // Defaults tools without access to todos, edit, write
     "explore": {
+      // prefer free/cheap and fast model
+      "model": "opencode/big-pickle",
       "tools": {
         "edit": false,
         "multiedit": false,

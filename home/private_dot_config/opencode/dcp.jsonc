@@ -11,30 +11,18 @@
     "deduplication": {
       "enabled": true,
       // Additional tools to protect from pruning
-      "protectedTools": []
+      "protectedTools": ["task"],
     },
     // Exposes a prune tool to your LLM to call when it determines pruning is necessary
     "pruneTool": {
       "enabled": true,
       // Additional tools to protect from pruning
-      "protectedTools": [],
+      "protectedTools": ["skill", "task"],
       // Nudge the LLM to use the prune tool (every <frequency> tool results)
       "nudge": {
         "enabled": true,
-        "frequency": 10
-      }
+        "frequency": 10,
+      },
     },
-    // (Legacy) Run an LLM to analyze what tool calls are no longer relevant on idle
-    "onIdle": {
-      "enabled": false,
-      // Additional tools to protect from pruning
-      "protectedTools": [],
-      // Override model for analysis (format: "provider/model")
-      "model": "openrouter/gpt-oss",
-      // Show toast notifications when model selection fails
-      "showModelErrorToasts": true,
-      // When true, fallback models are not permitted
-      "strictModelSelection": false
-    }
-  }
+  },
 }
