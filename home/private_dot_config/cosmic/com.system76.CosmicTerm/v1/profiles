@@ -5,7 +5,7 @@
         syntax_theme_dark: "OneHalfDark",
         syntax_theme_light: "OneHalfDark",
         tab_title: "",
-        working_directory: "~/desktop",
+        working_directory: "/home/sk/desktop",
         hold: false,
     ),
 }

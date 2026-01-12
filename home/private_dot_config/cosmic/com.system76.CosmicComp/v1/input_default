@@ -4,4 +4,10 @@
         profile: Some(Adaptive),
         speed: -0.30087823504454814,
     )),
+    scroll_config: Some((
+        method: None,
+        natural_scroll: Some(true),
+        scroll_button: None,
+        scroll_factor: None,
+    )),
 )

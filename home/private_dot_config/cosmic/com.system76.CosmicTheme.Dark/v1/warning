@@ -8,19 +8,19 @@
     hover: (
         red: 0.85261655,
         green: 0.7804597,
-        blue: 0.38516557,
+        blue: 0.38516554,
         alpha: 1.0,
     ),
     pressed: (
         red: 0.52736586,
-        green: 0.48226777,
-        blue: 0.235209,
+        green: 0.4822678,
+        blue: 0.23520897,
         alpha: 1.0,
     ),
     selected: (
         red: 0.85261655,
         green: 0.7804597,
-        blue: 0.38516557,
+        blue: 0.38516554,
         alpha: 1.0,
     ),
     selected_text: (
@@ -37,14 +37,14 @@
     ),
     divider: (
         red: 0.0,
-        green: -0.0,
-        blue: 0.000000000000000000000000000000000000000000036,
+        green: 0.0,
+        blue: 0.0,
         alpha: 1.0,
     ),
     on: (
         red: 0.0,
-        green: -0.0,
-        blue: 0.000000000000000000000000000000000000000000036,
+        green: 0.0,
+        blue: 0.0,
         alpha: 1.0,
     ),
     disabled: (
