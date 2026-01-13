@@ -7,6 +7,6 @@ Desktop.ini
 Thumbs.db
 
 # AI stuff - ignore by default
-AGENTS.md
+AGENTS.*.md
 CONTINUITY.md
 .opencode
