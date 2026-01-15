@@ -1,36 +1,36 @@
-#
-# Hostname variables
-#
+{{-/*
+Hostname variables
+*/}}
 {{- $isHostAlien := eq .chezmoi.hostname "alien" }}
 {{- $isHostRog := eq .chezmoi.hostname "rog" }}
-
-#
-# Username variables
-#
+{{-/*
+Username variables
+*/}}
 {{- $isUserRoot := eq .chezmoi.username "root" }}
 {{- $isUserSk := eq .chezmoi.username "sk" }}
 {{- $isUserKnopki := eq .chezmoi.username "knopki" }}
 {{- $nonRootUser := or $isUserSk $isUserKnopki }}
-
-#
-# OS variables
-#
+{{-/*
+OS variables
+*/}}
 {{- $isLinux := eq .chezmoi.os "linux" }}
 {{- $isNixOS := and $isLinux (eq .chezmoi.osRelease.id "nixos") }}
-
-#
-# Machine checks
-#
+{{-/*
+Machine checks
+*/}}
 {{- $isDesktopEnv := or $isHostAlien $isHostRog }}
 {{- $isDevHost := or $isHostAlien $isHostRog }}
 {{- $isDevVm := eq (printf "%.5s" .chezmoi.hostname) "lima-" }}
 {{- $isTrustedHost := or $isHostAlien $isHostRog }}
-
-#
-# User checks
-#
+{{- $isImpermanence := $isHostRog }}
+{{-/*
+User checks
+*/}}
 {{- $isDesktopUser := and $nonRootUser $isDesktopEnv }}
 
+{{- if .isImpermanence }}
+destDir = "/state{{ .chezmoi.homeDir }}"
+{{- end }}
 
 encryption = "age"
 
