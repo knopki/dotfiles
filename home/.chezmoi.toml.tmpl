@@ -1,21 +1,21 @@
-{{-/*
+{{- /*
 Hostname variables
 */}}
 {{- $isHostAlien := eq .chezmoi.hostname "alien" }}
 {{- $isHostRog := eq .chezmoi.hostname "rog" }}
-{{-/*
+{{- /*
 Username variables
 */}}
 {{- $isUserRoot := eq .chezmoi.username "root" }}
 {{- $isUserSk := eq .chezmoi.username "sk" }}
 {{- $isUserKnopki := eq .chezmoi.username "knopki" }}
 {{- $nonRootUser := or $isUserSk $isUserKnopki }}
-{{-/*
+{{- /*
 OS variables
 */}}
 {{- $isLinux := eq .chezmoi.os "linux" }}
 {{- $isNixOS := and $isLinux (eq .chezmoi.osRelease.id "nixos") }}
-{{-/*
+{{- /*
 Machine checks
 */}}
 {{- $isDesktopEnv := or $isHostAlien $isHostRog }}
@@ -23,12 +23,12 @@ Machine checks
 {{- $isDevVm := eq (printf "%.5s" .chezmoi.hostname) "lima-" }}
 {{- $isTrustedHost := or $isHostAlien $isHostRog }}
 {{- $isImpermanence := $isHostRog }}
-{{-/*
+{{- /*
 User checks
 */}}
 {{- $isDesktopUser := and $nonRootUser $isDesktopEnv }}
 
-{{- if .isImpermanence }}
+{{- if $isImpermanence }}
 destDir = "/state{{ .chezmoi.homeDir }}"
 {{- end }}
 
