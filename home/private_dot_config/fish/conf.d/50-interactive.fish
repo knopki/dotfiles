@@ -37,10 +37,18 @@ function _register_abbr
     abbr --add -- gco "git checkout"
 end
 
+function _apply_theme
+    status is-interactive || return 10
+    if not set -q fish_color_normal
+        fish_config theme save "Dracula Official"
+    end
+end
+
 status is-interactive
 begin
     _fzf_init
     _atuin_init
     _starship_init
     _register_abbr
+    _apply_theme
 end
