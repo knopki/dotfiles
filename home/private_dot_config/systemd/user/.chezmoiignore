@@ -19,7 +19,7 @@ sockets.target.wants/atuin-*
 restic-backups-content-remote.*
 restic-backups-user-data-remote.*
 restic-backups-user-media-remote.*
-timer.target.wants/restic-backups-content-remote.*
-timer.target.wants/restic-backups-user-data-remote.*
-timer.target.wants/restic-backups-user-media-remote.*
+timers.target.wants/restic-backups-content-remote.*
+timers.target.wants/restic-backups-user-data-remote.*
+timers.target.wants/restic-backups-user-media-remote.*
 {{- end }}
