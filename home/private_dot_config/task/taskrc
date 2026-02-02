@@ -1,0 +1,153 @@
+news.version=3.4.2
+
+data.location=~/.local/share/task
+hooks.location=~/.config/task/hooks
+
+# Color theme (uncomment one to use)
+#include light-16.theme
+#include light-256.theme
+#include bubblegum-256.theme
+#include dark-16.theme
+#include dark-256.theme
+#include dark-red-256.theme
+#include dark-green-256.theme
+#include dark-blue-256.theme
+#include dark-violets-256.theme
+#include dark-yellow-green.theme
+#include dark-gray-256.theme
+#include dark-gray-blue-256.theme
+#include solarized-dark-256.theme
+#include solarized-light-256.theme
+#include no-color.theme
+
+###
+
+report.next.columns=id,project,priority,due,start.active,entry.age,urgency,description.desc,tags
+report.next.labels=ID,Proj,Pri,Due,A,Age,Urg,Description,Tags
+report.next.filter=status:pending limit:page -BLOCKED -delegated
+
+report.ready.columns=id,project,priority,due,start.active,entry.age,urgency,description,tags
+report.ready.labels=ID,Proj,Pri,Due,A,Age,Urg,Description,Tags
+
+report.triage.description=Personal - To-Do
+report.triage.columns=id,priority,start.active,urgency,due,description.desc,tags
+report.triage.labels=ID,Pri,A,Urg,Due,Description,Tags
+report.triage.filter=( proj: or proj:personal ) ( due.before:tomorrow or due: ) status:pending -WAITING -idea
+report.triage.sort=urgency-
+
+report.today.description=Tasks for Today
+report.today.columns=id,project,priority,start.active,urgency,due,description.desc,tags
+report.today.labels=ID,Proj,Pri,A,Urg,Due,Description,Tags
+report.today.filter=status:pending -BLOCKED -review and ( ( proj: and ( ( prio:H and due: ) or due.before:tomorrow or +respond or +today or +next or +inprogress or +yesterday) ) or +daytime )
+report.today.sort=urgency-
+
+report.active.description=Active Tasks
+report.active.columns=id,description.desc,tags
+report.active.labels=ID,Description,Tags
+report.active.filter=status:pending +ACTIVE
+report.active.sort=urgency-
+
+report.inbox.columns=id,start.age,entry.age,priority,tags,description,urgency
+report.inbox.description=Inbox
+report.inbox.filter=-PROJECT status:pending limit:page
+report.inbox.labels=ID,Active,Age,P,Tag,Description,Urg
+
+
+report.delegated.columns=id,description,start.age,depends,priority,project,recur,scheduled.countdown,due.relative,until.remaining
+report.delegated.laberls=ID,Description,Active,Deps,P,Project,Recur,S,Due,Until
+report.delegated.filter=status:pending -BLOCKED +delegated
+report.delegated.sort=urgency-
+report.delegated.description=Delegated tasks
+
+
+# Contexts
+context.home=+@home
+
+uda.priority.values=H,M,,L
+uda.priority.default=M
+priority.default=M
+
+
+urgency.user.tag.next.coefficient=          15.0 # +next tag
+urgency.due.coefficient=                    12.0 # overdue or near due date
+# urgency.blocking.coefficient=              0.0 # blocking other tasks
+urgency.blocking.coefficient=                8.0 # blocking other tasks
+urgency.uda.priority.H.coefficient=          6.0 # high Priority
+urgency.uda.priority.M.coefficient=          3.9 # medium Priority
+# urgency.uda.priority.L.coefficient=        1.8 # low Priority
+urgency.uda.priority.L.coefficient=         -1.8 # low Priority
+urgency.scheduled.coefficient=               5.0 # scheduled tasks
+urgency.active.coefficient=                  4.0 # already started tasks
+urgency.age.coefficient=                     2.0 # coefficient for age
+urgency.annotations.coefficient=             0.0 # has annotations
+urgency.tags.coefficient=                    1.0 # has tags
+urgency.project.coefficient=                 1.0 # assigned to any project
+urgency.waiting.coefficient=                -3.0 # waiting task
+urgency.blocked.coefficient=                -5.0 # blocked by other tasks
+
+urgency.user.project.tilde.coefficient=      5.0 # assigned to project
+urgency.user.project.amperka.coefficient=    2.5 # assigned to project
+urgency.user.tag.respond.coefficient=       10.0
+urgency.user.tag.review.coefficient=        -5.0
+urgency.user.tag.inprogress.coefficient=     2.5
+urgency.user.tag.today.coefficient=          2.0
+urgency.user.tag.yesterday.coefficient=      3.0
+# urgency.user.tag.plane.coefficient=         -2.0
+urgency.user.tag.later.coefficient=         -6.0
+urgency.user.tag.problem.coefficient=        4.5
+
+# Bugwarrior UDAs
+uda.crbugsummary.type=string
+uda.crbugsummary.label=Crbug Summary
+uda.crbugurl.type=string
+uda.crbugurl.label=Crbug Short URL
+uda.crbugnumber.type=numeric
+uda.crbugnumber.label=Crbug Number
+uda.githubtitle.type=string
+uda.githubtitle.label=Github Title
+uda.githubbody.type=string
+uda.githubbody.label=Github Body
+uda.githubcreatedon.type=date
+uda.githubcreatedon.label=Github Created
+uda.githubupdatedat.type=date
+uda.githubupdatedat.label=Github Updated
+uda.githubclosedon.type=date
+uda.githubclosedon.label=GitHub Closed
+uda.githubmilestone.type=string
+uda.githubmilestone.label=Github Milestone
+uda.githubrepo.type=string
+uda.githubrepo.label=Github Repo Slug
+uda.githuburl.type=string
+uda.githuburl.label=Github URL
+uda.githubtype.type=string
+uda.githubtype.label=Github Type
+uda.githubnumber.type=numeric
+uda.githubnumber.label=Github Issue/PR #
+uda.githubuser.type=string
+uda.githubuser.label=Github User
+uda.githubnamespace.type=string
+uda.githubnamespace.label=Github Namespace
+uda.githubstate.type=string
+uda.githubstate.label=GitHub State
+uda.gerritsummary.type=string
+uda.gerritsummary.label=Gerrit Summary
+uda.gerriturl.type=string
+uda.gerriturl.label=Gerrit URL
+uda.gerritid.type=numeric
+uda.gerritid.label=Gerrit Change ID
+uda.gerritbranch.type=string
+uda.gerritbranch.label=Gerrit Branch
+uda.gerrittopic.type=string
+uda.gerrittopic.label=Gerrit Topic
+# END Bugwarrior UDAs
+
+# relative priority adjustments
+urgency.tags.coefficient=0
+
+# recurring tasks' due dates aren't that important (especially before they're due)
+urgency.due.coefficient=0.5
+
+# turn off confirmations
+#confirmation = no
+#bulk = 5
+#recurrence.confirmation = no
