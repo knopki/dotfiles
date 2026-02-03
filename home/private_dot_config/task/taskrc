@@ -2,6 +2,7 @@ news.version=3.4.2
 
 data.location=~/.local/share/task
 hooks.location=~/.config/task/hooks
+sync.local.server_dir=~/.local/share/task/sync
 
 # Color theme (uncomment one to use)
 #include light-16.theme
@@ -91,8 +92,6 @@ urgency.project.coefficient=                 1.0 # assigned to any project
 urgency.waiting.coefficient=                -3.0 # waiting task
 urgency.blocked.coefficient=                -5.0 # blocked by other tasks
 
-urgency.user.project.tilde.coefficient=      5.0 # assigned to project
-urgency.user.project.amperka.coefficient=    2.5 # assigned to project
 urgency.user.tag.respond.coefficient=       10.0
 urgency.user.tag.review.coefficient=        -5.0
 urgency.user.tag.inprogress.coefficient=     2.5
@@ -101,6 +100,17 @@ urgency.user.tag.yesterday.coefficient=      3.0
 # urgency.user.tag.plane.coefficient=         -2.0
 urgency.user.tag.later.coefficient=         -6.0
 urgency.user.tag.problem.coefficient=        4.5
+
+# per project coefficients
+urgency.user.project.tilde.coefficient=5.0
+urgency.user.project.tilde.3.coefficient=5.0
+urgency.user.project.tilde.4.coefficient=5.0
+urgency.user.project.amperka.coefficient=2.5
+urgency.user.project.amperka.amperka-infra.coefficient=2.5
+urgency.user.project.amperka.odoo.coefficient=2.5
+urgency.user.project.amperka.figuro.coefficient=2.5
+urgency.user.project.amperka.serial-projector.coefficient=2.5
+urgency.user.project.amperka.xod-infra.coefficient=2.5
 
 # Bugwarrior UDAs
 uda.crbugsummary.type=string
