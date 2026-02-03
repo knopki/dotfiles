@@ -52,13 +52,19 @@ report.inbox.description=Inbox
 report.inbox.filter=-PROJECT status:pending limit:page
 report.inbox.labels=ID,Active,Age,P,Tag,Description,Urg
 
-
 report.delegated.columns=id,description,start.age,depends,priority,project,recur,scheduled.countdown,due.relative,until.remaining
 report.delegated.laberls=ID,Description,Active,Deps,P,Project,Recur,S,Due,Until
 report.delegated.filter=status:pending -BLOCKED +delegated
 report.delegated.sort=urgency-
 report.delegated.description=Delegated tasks
 
+# tasksh review
+uda.reviewed.type=date
+uda.reviewed.label=Reviewed
+report._reviewed.description=Tasksh review report.  Adjust the filter to your needs.
+report._reviewed.columns=uuid
+report._reviewed.sort=reviewed+,modified+
+report._reviewed.filter=( reviewed.none: or reviewed.before:now-6days ) and ( +PENDING or +WAITING )
 
 # Contexts
 context.home=+@home
