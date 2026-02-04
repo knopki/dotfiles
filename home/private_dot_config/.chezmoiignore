@@ -4,6 +4,8 @@ khal
 khard
 mpv
 rclone
+task
+timewarrior
 vdirsyncer
 {{- end }}
 

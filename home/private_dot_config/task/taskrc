@@ -3,8 +3,11 @@ news.version=3.4.2
 data.location=~/.local/share/task
 hooks.location=~/.config/task/hooks
 sync.local.server_dir=~/.local/share/task/sync
+exit.on.missing.db=yes
 
-# Color theme (uncomment one to use)
+#
+# Color theme
+#
 #include light-16.theme
 #include light-256.theme
 #include bubblegum-256.theme
@@ -21,7 +24,10 @@ sync.local.server_dir=~/.local/share/task/sync
 #include solarized-light-256.theme
 #include no-color.theme
 
-###
+
+#
+# Reports
+#
 
 report.next.columns=id,project,priority,due,start.active,entry.age,urgency,description.desc,tags
 report.next.labels=ID,Proj,Pri,Due,A,Age,Urg,Description,Tags
@@ -39,7 +45,7 @@ report.triage.sort=urgency-
 report.today.description=Tasks for Today
 report.today.columns=id,project,priority,start.active,urgency,due,description.desc,tags
 report.today.labels=ID,Proj,Pri,A,Urg,Due,Description,Tags
-report.today.filter=status:pending -BLOCKED -review and ( ( proj: and ( ( prio:H and due: ) or due.before:tomorrow or +respond or +today or +next or +inprogress or +yesterday) ) or +daytime )
+report.today.filter=status:pending -BLOCKED -review and ( ( proj: and ( ( prio:H and due: ) or due.before:tomorrow or +respond or +today or +next or +wip or +yesterday) ) or +daytime )
 report.today.sort=urgency-
 
 report.active.description=Active Tasks
@@ -54,7 +60,7 @@ report.inbox.filter=-PROJECT status:pending limit:page
 report.inbox.labels=ID,Active,Age,P,Tag,Description,Urg
 
 report.delegated.columns=id,description,start.age,depends,priority,project,recur,scheduled.countdown,due.relative,until.remaining
-report.delegated.laberls=ID,Description,Active,Deps,P,Project,Recur,S,Due,Until
+report.delegated.labels=ID,Description,Active,Deps,P,Project,Recur,S,Due,Until
 report.delegated.filter=status:pending -BLOCKED +delegated
 report.delegated.sort=urgency-
 report.delegated.description=Delegated tasks
@@ -67,52 +73,70 @@ report._reviewed.columns=uuid
 report._reviewed.sort=reviewed+,modified+
 report._reviewed.filter=( reviewed.none: or reviewed.before:now-6days ) and ( +PENDING or +WAITING )
 
+
+#
 # Contexts
+#
+
+context.work=project:work or project:amperka or project:tilde
+context.family=project:family
+context.personal=project:personal
 context.home=+@home
+
+
+#
+# Priorities
+#
 
 uda.priority.values=H,M,,L
 uda.priority.default=M
 priority.default=M
 
+#
+# Urgency
+#
 
 urgency.user.tag.next.coefficient=          15.0 # +next tag
 urgency.due.coefficient=                    12.0 # overdue or near due date
-# urgency.blocking.coefficient=              0.0 # blocking other tasks
 urgency.blocking.coefficient=                8.0 # blocking other tasks
 urgency.uda.priority.H.coefficient=          6.0 # high Priority
 urgency.uda.priority.M.coefficient=          3.9 # medium Priority
-# urgency.uda.priority.L.coefficient=        1.8 # low Priority
 urgency.uda.priority.L.coefficient=         -1.8 # low Priority
 urgency.scheduled.coefficient=               5.0 # scheduled tasks
 urgency.active.coefficient=                  4.0 # already started tasks
 urgency.age.coefficient=                     2.0 # coefficient for age
 urgency.annotations.coefficient=             0.0 # has annotations
-urgency.tags.coefficient=                    1.0 # has tags
+urgency.tags.coefficient=                    0.0 # has tags
 urgency.project.coefficient=                 1.0 # assigned to any project
 urgency.waiting.coefficient=                -3.0 # waiting task
 urgency.blocked.coefficient=                -5.0 # blocked by other tasks
 
 urgency.user.tag.respond.coefficient=       10.0
 urgency.user.tag.review.coefficient=        -5.0
-urgency.user.tag.inprogress.coefficient=     2.5
+urgency.user.tag.wip.coefficient=     2.5
 urgency.user.tag.today.coefficient=          2.0
 urgency.user.tag.yesterday.coefficient=      3.0
-# urgency.user.tag.plane.coefficient=         -2.0
 urgency.user.tag.later.coefficient=         -6.0
 urgency.user.tag.problem.coefficient=        4.5
 
 # per project coefficients
-urgency.user.project.tilde.coefficient=5.0
-urgency.user.project.tilde.3.coefficient=5.0
-urgency.user.project.tilde.4.coefficient=5.0
-urgency.user.project.amperka.coefficient=2.5
-urgency.user.project.amperka.amperka-infra.coefficient=2.5
-urgency.user.project.amperka.odoo.coefficient=2.5
-urgency.user.project.amperka.figuro.coefficient=2.5
-urgency.user.project.amperka.serial-projector.coefficient=2.5
-urgency.user.project.amperka.xod-infra.coefficient=2.5
+urgency.user.project.personal.coefficient=0.0
+urgency.user.project.family.coefficient=1.0
+urgency.user.project.work.coefficient=1.0
+urgency.user.project.work.amperka.coefficient=1.0
+urgency.user.project.work.amperka.amperka-infra.coefficient=1.0
+urgency.user.project.work.amperka.figuro.coefficient=1.0
+urgency.user.project.work.amperka.odoo.coefficient=1.0
+urgency.user.project.work.amperka.serial-projector.coefficient=1.0
+urgency.user.project.work.amperka.xod-infra.coefficient=1.0
+urgency.user.project.work.tilde.coefficient=2.0
+urgency.user.project.work.tilde.3.coefficient=2.0
+urgency.user.project.work.tilde.4.coefficient=2.0
 
+#
 # Bugwarrior UDAs
+#
+
 uda.crbugsummary.type=string
 uda.crbugsummary.label=Crbug Summary
 uda.crbugurl.type=string
@@ -155,15 +179,45 @@ uda.gerritbranch.type=string
 uda.gerritbranch.label=Gerrit Branch
 uda.gerrittopic.type=string
 uda.gerrittopic.label=Gerrit Topic
-# END Bugwarrior UDAs
 
-# relative priority adjustments
-urgency.tags.coefficient=0
 
-# recurring tasks' due dates aren't that important (especially before they're due)
-urgency.due.coefficient=0.5
+#
+#░█▀█░█▀█░█░█░▀█▀░▀█▀░█▀▀░█▀█░█░░
+#░█░█░█▀█░█░█░░█░░░█░░█░░░█▀█░█░░
+#░▀░▀░▀░▀░▀▀▀░░▀░░▀▀▀░▀▀▀░▀░▀░▀▀▀
 
-# turn off confirmations
-#confirmation = no
-#bulk = 5
-#recurrence.confirmation = no
+recurrence=off
+
+## Classic Chain Recurrence
+uda.cp.type=duration
+uda.cp.label=Chain Period
+uda.chain.type=string
+uda.chain.label=Chain Status
+uda.chain.values=on,off
+uda.chain.default=off
+
+## Advanced Anchor Recurrence
+uda.anchor.type=string
+uda.anchor.label=Anchor
+uda.anchor_mode.type=string
+uda.anchor_mode.values=flex,all,skip
+uda.anchor_mode.default=skip
+uda.anchor_mode.label=Anchor Mode
+
+## Limits
+uda.chainMax.type=numeric
+uda.chainMax.label=Chain Max
+uda.chainUntil.type=date
+uda.chainUntil.label=Chain Until
+
+## Lineage
+uda.prevLink.type=uuid
+uda.prevLink.label=Previous Link
+uda.nextLink.type=uuid
+uda.nextLink.label=Next Link
+uda.link.type=numeric
+uda.link.label=Link Number
+uda.chainID.type=string
+uda.chainID.label=ChainID
+
+############
