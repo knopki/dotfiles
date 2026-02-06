@@ -1,6 +1,0 @@
-sync.server.url = http://alien.lan:10222
-{{- if and (eq .chezmoi.hostname "alien") (eq .chezmoi.username "sk") }}
-#recurrance=on
-sync.server.client_id = eaab8d5e-e739-4747-b379-868e22bd4181
-sync.encryption_secret = pisya
-{{- end }}
