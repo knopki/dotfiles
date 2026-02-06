@@ -2,8 +2,10 @@ news.version=3.4.2
 
 data.location=~/.local/share/task
 hooks.location=~/.config/task/hooks
-sync.local.server_dir=~/.local/share/task/sync
 exit.on.missing.db=yes
+
+recurrance=off
+include ./sync
 
 #
 # Color theme
@@ -185,8 +187,6 @@ uda.gerrittopic.label=Gerrit Topic
 #░█▀█░█▀█░█░█░▀█▀░▀█▀░█▀▀░█▀█░█░░
 #░█░█░█▀█░█░█░░█░░░█░░█░░░█▀█░█░░
 #░▀░▀░▀░▀░▀▀▀░░▀░░▀▀▀░▀▀▀░▀░▀░▀▀▀
-
-recurrence=off
 
 ## Classic Chain Recurrence
 uda.cp.type=duration
