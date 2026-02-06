@@ -16,6 +16,6 @@ default_timezone = Europe/Moscow
     color = dark green
     priority = 20
   [[ann]]
-    path = ~/.local/share/calendars/family
+    path = ~/.local/share/calendars/ann
     color = dark gray
     priority = 5
