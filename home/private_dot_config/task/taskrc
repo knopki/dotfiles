@@ -31,22 +31,22 @@ include ./sync
 # Reports
 #
 
-report.next.columns=id,project,priority,due,start.active,entry.age,urgency,description.desc,tags
-report.next.labels=ID,Proj,Pri,Due,A,Age,Urg,Description,Tags
+report.next.columns=id,project,priority,due,start.active,entry.age,description.desc
+report.next.labels=ID,Proj,Pri,Due,A,Age,Description
 report.next.filter=status:pending limit:page -BLOCKED -delegated
 
-report.ready.columns=id,project,priority,due,start.active,entry.age,urgency,description,tags
-report.ready.labels=ID,Proj,Pri,Due,A,Age,Urg,Description,Tags
+report.ready.columns=id,project,priority,due,start.active,entry.age,description
+report.ready.labels=ID,Proj,Pri,Due,A,Age,Description
 
 report.triage.description=Personal - To-Do
-report.triage.columns=id,priority,start.active,urgency,due,description.desc,tags
-report.triage.labels=ID,Pri,A,Urg,Due,Description,Tags
+report.triage.columns=id,priority,start.active,due,description.desc
+report.triage.labels=ID,Pri,A,Due,Description
 report.triage.filter=( proj: or proj:personal ) ( due.before:tomorrow or due: ) status:pending -WAITING -idea
 report.triage.sort=urgency-
 
 report.today.description=Tasks for Today
-report.today.columns=id,project,priority,start.active,urgency,due,description.desc,tags
-report.today.labels=ID,Proj,Pri,A,Urg,Due,Description,Tags
+report.today.columns=id,project,priority,start.active,due,description.desc
+report.today.labels=ID,Proj,Pri,A,Due,Description
 report.today.filter=status:pending -BLOCKED -review and ( ( proj: and ( ( prio:H and due: ) or due.before:tomorrow or +respond or +today or +next or +wip or +yesterday) ) or +daytime )
 report.today.sort=urgency-
 
@@ -56,10 +56,10 @@ report.active.labels=ID,Description,Tags
 report.active.filter=status:pending +ACTIVE
 report.active.sort=urgency-
 
-report.inbox.columns=id,start.age,entry.age,priority,tags,description,urgency
+report.inbox.columns=id,start.age,entry.age,priority,tags,description
 report.inbox.description=Inbox
 report.inbox.filter=-PROJECT status:pending limit:page
-report.inbox.labels=ID,Active,Age,P,Tag,Description,Urg
+report.inbox.labels=ID,Active,Age,P,Tag,Description
 
 report.delegated.columns=id,description,start.age,depends,priority,project,recur,scheduled.countdown,due.relative,until.remaining
 report.delegated.labels=ID,Description,Active,Deps,P,Project,Recur,S,Due,Until
@@ -134,53 +134,6 @@ urgency.user.project.work.amperka.xod-infra.coefficient=1.0
 urgency.user.project.work.tilde.coefficient=2.0
 urgency.user.project.work.tilde.3.coefficient=2.0
 urgency.user.project.work.tilde.4.coefficient=2.0
-
-#
-# Bugwarrior UDAs
-#
-
-uda.crbugsummary.type=string
-uda.crbugsummary.label=Crbug Summary
-uda.crbugurl.type=string
-uda.crbugurl.label=Crbug Short URL
-uda.crbugnumber.type=numeric
-uda.crbugnumber.label=Crbug Number
-uda.githubtitle.type=string
-uda.githubtitle.label=Github Title
-uda.githubbody.type=string
-uda.githubbody.label=Github Body
-uda.githubcreatedon.type=date
-uda.githubcreatedon.label=Github Created
-uda.githubupdatedat.type=date
-uda.githubupdatedat.label=Github Updated
-uda.githubclosedon.type=date
-uda.githubclosedon.label=GitHub Closed
-uda.githubmilestone.type=string
-uda.githubmilestone.label=Github Milestone
-uda.githubrepo.type=string
-uda.githubrepo.label=Github Repo Slug
-uda.githuburl.type=string
-uda.githuburl.label=Github URL
-uda.githubtype.type=string
-uda.githubtype.label=Github Type
-uda.githubnumber.type=numeric
-uda.githubnumber.label=Github Issue/PR #
-uda.githubuser.type=string
-uda.githubuser.label=Github User
-uda.githubnamespace.type=string
-uda.githubnamespace.label=Github Namespace
-uda.githubstate.type=string
-uda.githubstate.label=GitHub State
-uda.gerritsummary.type=string
-uda.gerritsummary.label=Gerrit Summary
-uda.gerriturl.type=string
-uda.gerriturl.label=Gerrit URL
-uda.gerritid.type=numeric
-uda.gerritid.label=Gerrit Change ID
-uda.gerritbranch.type=string
-uda.gerritbranch.label=Gerrit Branch
-uda.gerrittopic.type=string
-uda.gerrittopic.label=Gerrit Topic
 
 
 #
