@@ -33,6 +33,7 @@ prepend_path() {
 # if execution string not set (like bash -c),
 # if shell level 1,
 # or, started by tmux,
+# or, started by devenv,
 # Pass login option to fish shell
 #
 if command -v fish 2>/dev/null 1>&2; then
@@ -41,6 +42,9 @@ if command -v fish 2>/dev/null 1>&2; then
 		shopt -q login_shell && exec fish --login || exec fish
 	fi
 	if [[ "${PARENT_PS}" == "tmux: server" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 2 ]]; then
+		exec fish --login
+	fi
+	if [[ -z "${DEVENV_ROOT+x}" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 3 ]]; then
 		exec fish --login
 	fi
 fi
