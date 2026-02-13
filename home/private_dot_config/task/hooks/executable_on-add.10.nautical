@@ -53,31 +53,18 @@ _MAX_JSON_BYTES = 10 * 1024 * 1024
 # --------------------------------------------------------------------------------------
 # Locate and import nautical_core (single fixed location: ~/.task)
 # --------------------------------------------------------------------------------------
-
-try:
-    # Get fifth argument and remove prefix data:
-    hook_data_arg = len(sys.argv) > 5 and len(sys.argv[5]) >= 5 and Path(sys.argv[5][5:])
-except Exception:
-    hook_data_arg = None
-
 HOOK_DIR = Path(__file__).resolve().parent
 TW_DIR = HOOK_DIR.parent
-TW_DATA_DIR = hook_data_arg or Path(os.environ.get("TASKDATA") or str(TW_DIR)).expanduser()
+_CORE_BASE = Path(os.environ.get("NAUTICAL_CORE_PATH") or str(TW_DIR)).expanduser().resolve()
 
 # --- Optional micro-profiler (stderr-only; enable with NAUTICAL_PROFILE=1 or 2)
 _PROFILE_LEVEL = int(os.environ.get('NAUTICAL_PROFILE', '0') or '0')
 _IMPORT_T0 = time.perf_counter()
 
 core = None
-_IMPORT_MS = None
-
-def _load_core() -> None:
-    global core, _IMPORT_MS, _MAX_JSON_BYTES
-    if core is not None:
-        return
-    base = Path(os.environ.get("NAUTICAL_CORE_PATH") or str(TW_DIR)).expanduser().resolve()
-    pyfile = base / "nautical_core.py"
-    pkgini = base / "nautical_core" / "__init__.py"
+try:
+    pyfile = _CORE_BASE / "nautical_core.py"
+    pkgini = _CORE_BASE / "nautical_core" / "__init__.py"
     target = pyfile if pyfile.is_file() else pkgini if pkgini.is_file() else None
     if target:
         spec = importlib.util.spec_from_file_location("nautical_core", target)
@@ -86,6 +73,39 @@ def _load_core() -> None:
             sys.modules["nautical_core"] = module
             spec.loader.exec_module(module)
             core = module
+except Exception:
+    core = None
+
+def _resolve_task_data_context() -> tuple[str, bool]:
+    resolver = getattr(core, "resolve_task_data_context", None) if core is not None else None
+    if not callable(resolver):
+        raise RuntimeError("nautical_core.resolve_task_data_context is required")
+    data_dir, use_rc, _source = resolver(
+        argv=sys.argv[1:],
+        env=os.environ,
+        tw_dir=str(TW_DIR),
+    )
+    return str(data_dir), bool(use_rc)
+
+
+_TASKDATA_RAW, _USE_RC_DATA_LOCATION = _resolve_task_data_context()
+TW_DATA_DIR = Path(_TASKDATA_RAW).expanduser()
+_IMPORT_MS = None
+
+def _load_core() -> None:
+    global core, _IMPORT_MS, _MAX_JSON_BYTES
+    if core is None:
+        base = Path(os.environ.get("NAUTICAL_CORE_PATH") or str(TW_DIR)).expanduser().resolve()
+        pyfile = base / "nautical_core.py"
+        pkgini = base / "nautical_core" / "__init__.py"
+        target = pyfile if pyfile.is_file() else pkgini if pkgini.is_file() else None
+        if target:
+            spec = importlib.util.spec_from_file_location("nautical_core", target)
+            if spec and spec.loader:
+                module = importlib.util.module_from_spec(spec)
+                sys.modules["nautical_core"] = module
+                spec.loader.exec_module(module)
+                core = module
     if core is None:
         msg = "nautical_core.py not found. Expected in ~/.task or NAUTICAL_CORE_PATH."
         raise ModuleNotFoundError(msg)
@@ -887,19 +907,19 @@ def _validate_no_legacy_colon_ranges(expr: str) -> tuple[bool, str | None]:
     """
     if not expr:
         return (True, None)
-
+    
     expr = expr.strip()
-
+    
     # Check for colon-separated day patterns (legacy format)
     # Patterns like: mon:wed:fri, mon:wed, tue:thu
     day_names = {"mon", "tue", "wed", "thu", "fri", "sat", "sun"}
-
+    
     # Split by spaces first to handle DNF terms
     terms = expr.split()
     for term in terms:
         # Remove optional parentheses for DNF
         clean_term = term.strip("()")
-
+        
         # Check if this looks like a legacy range/day list
         if ":" in clean_term or "-" in clean_term:
             parts = re.split(r"[:\-]", clean_term)
@@ -910,7 +930,7 @@ def _validate_no_legacy_colon_ranges(expr: str) -> tuple[bool, str | None]:
                     False,
                     f"Legacy weekly range '{legacy_example}' is not supported. Use '..' (e.g., 'w:mon..fri').",
                 )
-
+    
     return (True, None)
 
 def _safe_parse_duration(s, field_name) -> tuple[timedelta | None, str | None]:
@@ -964,7 +984,10 @@ def _validate_anchor_mode(mode_str) -> tuple[str, str | None]:
 def tw_export_chain(chain_id: str, since: datetime | None = None, extra: str | None = None) -> list[dict]:
     if not chain_id:
         return []
-    args = ["task", "rc.hooks=off", "rc.json.array=on", "rc.verbose=nothing", f"chainID:{chain_id}"]
+    args = ["task"]
+    if _USE_RC_DATA_LOCATION:
+        args.append(f"rc.data.location={TW_DATA_DIR}")
+    args += ["rc.hooks=off", "rc.json.array=on", "rc.verbose=nothing", f"chainID:{chain_id}"]
     if since:
         args.append(f"modified.after:{since.strftime('%Y-%m-%dT%H:%M:%S')}")
     if extra:
@@ -1156,7 +1179,7 @@ def main():
         if core.ENABLE_ANCHOR_CACHE:
             pkg = core.build_and_cache_hints(anchor_str, anchor_mode, default_due_dt=due_dt)
             natural = pkg.get("natural") or core.describe_anchor_expr(anchor_str, default_due_dt=due_dt)
-            dnf = pkg.get("dnf")
+            dnf = pkg.get("dnf")  
         else:
             natural = core.describe_anchor_expr(anchor_str, default_due_dt=task.get("due"))
             dnf = core.validate_anchor_expr_strict(anchor_str)
@@ -1692,10 +1715,7 @@ def main():
 
 # --------------------------------------------------------------------------------------
 if __name__ == "__main__":
-    import io
-    raw = sys.stdin.read()
     try:
-        sys.stdin = io.TextIOWrapper(io.BytesIO(raw.encode("utf-8")), encoding="utf-8")
         main()
     except SystemExit:
         raise
@@ -1703,16 +1723,6 @@ if __name__ == "__main__":
         if os.environ.get("NAUTICAL_DIAG") == "1":
             try:
                 sys.stderr.write(f"[nautical] on-add unexpected error: {e}\n")
-            except Exception:
-                pass
-        out = (raw or "").strip()
-        if out:
-            try:
-                obj = json.loads(out)
-                if isinstance(obj, dict):
-                    print(json.dumps(obj, ensure_ascii=False), end="")
-                    sys.stdout.flush()
-                    raise SystemExit(0)
             except Exception:
                 pass
         raise SystemExit(1)

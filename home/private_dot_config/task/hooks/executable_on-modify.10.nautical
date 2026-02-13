@@ -255,16 +255,46 @@ def _append_next_wait_sched_rows(
 # ------------------------------------------------------------------------------
 # Locate nautical_core (single fixed location: ~/.task)
 # ------------------------------------------------------------------------------
-
-try:
-    # Get fifth argument and remove prefix data:
-    hook_data_arg = len(sys.argv) > 5 and len(sys.argv[5]) >= 5 and Path(sys.argv[5][5:])
-except Exception:
-    hook_data_arg = None
-
 HOOK_DIR = Path(__file__).resolve().parent
 TW_DIR = HOOK_DIR.parent
-TW_DATA_DIR = hook_data_arg or Path(os.environ.get("TASKDATA") or str(TW_DIR)).expanduser()
+_CORE_BASE = Path(os.environ.get("NAUTICAL_CORE_PATH") or str(TW_DIR)).expanduser().resolve()
+
+core = None
+try:
+    pyfile = _CORE_BASE / "nautical_core.py"
+    pkgini = _CORE_BASE / "nautical_core" / "__init__.py"
+    target = pyfile if pyfile.is_file() else pkgini if pkgini.is_file() else None
+    if target:
+        spec = importlib.util.spec_from_file_location("nautical_core", target)
+        if spec and spec.loader:
+            module = importlib.util.module_from_spec(spec)
+            sys.modules["nautical_core"] = module
+            spec.loader.exec_module(module)
+            core = module
+except Exception:
+    core = None
+
+def _resolve_task_data_context() -> tuple[str, bool]:
+    resolver = getattr(core, "resolve_task_data_context", None) if core is not None else None
+    if not callable(resolver):
+        raise RuntimeError("nautical_core.resolve_task_data_context is required")
+    data_dir, use_rc, _source = resolver(
+        argv=sys.argv[1:],
+        env=os.environ,
+        tw_dir=str(TW_DIR),
+    )
+    return str(data_dir), bool(use_rc)
+
+
+_TASKDATA_RAW, _USE_RC_DATA_LOCATION = _resolve_task_data_context()
+TW_DATA_DIR = Path(_TASKDATA_RAW).expanduser()
+
+
+def _task_cmd_prefix() -> list[str]:
+    cmd = ["task"]
+    if _USE_RC_DATA_LOCATION:
+        cmd.append(f"rc.data.location={TW_DATA_DIR}")
+    return cmd
 
 # ------------------------------------------------------------------------------
 # Deferred next-link spawn queue (used when nested `task import` times out due to TW lock)
@@ -281,23 +311,20 @@ _DEAD_LETTER_LOCK_SLEEP_BASE = _SPAWN_LOCK_SLEEP_BASE
 _WARNED_SPAWN_QUEUE_LOCK = False
 _DURABLE_QUEUE = os.environ.get("NAUTICAL_DURABLE_QUEUE") == "1"
 
-core = None
-
 def _load_core() -> None:
     global core, _MAX_JSON_BYTES
-    if core is not None:
-        return
-    base = Path(os.environ.get("NAUTICAL_CORE_PATH") or str(TW_DIR)).expanduser().resolve()
-    pyfile = base / "nautical_core.py"
-    pkgini = base / "nautical_core" / "__init__.py"
-    target = pyfile if pyfile.is_file() else pkgini if pkgini.is_file() else None
-    if target:
-        spec = importlib.util.spec_from_file_location("nautical_core", target)
-        if spec and spec.loader:
-            module = importlib.util.module_from_spec(spec)
-            sys.modules["nautical_core"] = module
-            spec.loader.exec_module(module)
-            core = module
+    if core is None:
+        base = Path(os.environ.get("NAUTICAL_CORE_PATH") or str(TW_DIR)).expanduser().resolve()
+        pyfile = base / "nautical_core.py"
+        pkgini = base / "nautical_core" / "__init__.py"
+        target = pyfile if pyfile.is_file() else pkgini if pkgini.is_file() else None
+        if target:
+            spec = importlib.util.spec_from_file_location("nautical_core", target)
+            if spec and spec.loader:
+                module = importlib.util.module_from_spec(spec)
+                sys.modules["nautical_core"] = module
+                spec.loader.exec_module(module)
+                core = module
     if core is None:
         msg = "nautical_core.py not found. Expected in ~/.task or NAUTICAL_CORE_PATH."
         raise ModuleNotFoundError(msg)
@@ -736,13 +763,13 @@ def _format_gap(prev_dt: datetime, next_dt: datetime, kind: str = "cp", round_ho
     """
     if not (prev_dt and next_dt):
         return ""
-
+    
     gap_seconds = (next_dt - prev_dt).total_seconds()
-
+    
     # Skip very small gaps
     if abs(gap_seconds) < 60:
         return ""
-
+    
     # Format based on chain type
     if kind == "cp":
         # For CP chains, show days/hours
@@ -764,7 +791,7 @@ def _format_gap(prev_dt: datetime, next_dt: datetime, kind: str = "cp", round_ho
         # For anchor chains, optionally round to nearest day
         total_hours = gap_seconds / 3600
         days = total_hours / 24
-
+        
         if round_hours and abs(days) >= 0.5:  # Only round if > 12h
             # Round to nearest day
             rounded_days = round(days)
@@ -776,7 +803,7 @@ def _format_gap(prev_dt: datetime, next_dt: datetime, kind: str = "cp", round_ho
             else:
                 # Show hours for sub-day gaps
                 gap_str = f"{total_hours:.0f}h"
-
+    
     return f" ➔ {gap_str}"
 
 
@@ -1098,7 +1125,7 @@ def _export_uuid_short(u_short: str, env=None):
             _diag_count("export_uuid_cache_misses")
     env = env or os.environ.copy()
     ok, out, err = _run_task(
-        ["task", "rc.hooks=off", "rc.json.array=off", f"uuid:{u_short}", "export"],
+        _task_cmd_prefix() + ["rc.hooks=off", "rc.json.array=off", f"uuid:{u_short}", "export"],
         env=env,
         timeout=2.5,
         retries=2,
@@ -1118,8 +1145,19 @@ def _export_uuid_short(u_short: str, env=None):
         return None
 
 
-def _task_exists_by_uuid(u: str, env: dict) -> bool:
-    q = ["task", "rc.hooks=off", "rc.json.array=off", f"uuid:{u}", "export"]
+def _task_exists_by_uuid(u: str, env: dict | None) -> bool:
+    if env is None:
+        return _task_exists_by_uuid_cached(u)
+    return _task_exists_by_uuid_uncached(u, env=env)
+
+
+@lru_cache(maxsize=512)
+def _task_exists_by_uuid_cached(u: str) -> bool:
+    return _task_exists_by_uuid_uncached(u, env=None)
+
+
+def _task_exists_by_uuid_uncached(u: str, env: dict | None) -> bool:
+    q = _task_cmd_prefix() + ["rc.hooks=off", "rc.json.array=off", f"uuid:{u}", "export"]
     ok, out, err = _run_task(q, env=env, timeout=2.5, retries=2)
     if not ok:
         _diag(f"task exists check failed (uuid={u[:8]}): {err.strip()}")
@@ -1134,13 +1172,7 @@ def _reserve_child_uuid(env: dict) -> str:
     candidate = str(uuid.uuid4())
     while True:
         ok, out, err = _run_task(
-            [
-                "task",
-                "rc.hooks=off",
-                "rc.json.array=off",
-                f"uuid:{candidate}",
-                "count",
-            ],
+            _task_cmd_prefix() + ["rc.hooks=off", "rc.json.array=off", f"uuid:{candidate}", "count"],
             env=env,
             timeout=2.5,
             retries=2,
@@ -1279,7 +1311,7 @@ def _spawn_child(child_task: dict) -> tuple[str, set[str]]:
         payload = json.dumps(obj) + "\n"
 
         ok, _out, err = _run_task(
-            ["task", "rc.hooks=off", "import", "-"],
+            _task_cmd_prefix() + ["rc.hooks=off", "import", "-"],
             input_text=payload,
             env=env,
             timeout=10,  # prevent hanging
@@ -1479,7 +1511,7 @@ def _task(args, env=None) -> str:
     """
     env = env or os.environ.copy()
     ok, out, err = _run_task(
-        ["task", "rc.hooks=off"] + list(args),
+        _task_cmd_prefix() + ["rc.hooks=off"] + list(args),
         env=env,
         timeout=3.0,
         retries=2,
@@ -1490,6 +1522,18 @@ def _task(args, env=None) -> str:
 
 def _export_uuid_full(u: str, env=None) -> dict | None:
     """Export a single task by full UUID."""
+    if env is None:
+        res = _export_uuid_full_cached(u)
+        return dict(res) if isinstance(res, dict) else None
+    return _export_uuid_full_uncached(u, env=env)
+
+
+@lru_cache(maxsize=256)
+def _export_uuid_full_cached(u: str) -> dict | None:
+    return _export_uuid_full_uncached(u, env=None)
+
+
+def _export_uuid_full_uncached(u: str, env=None) -> dict | None:
     if env is None and u and u in _CHAIN_BY_UUID:
         # Return a shallow copy to avoid accidental mutation of cache.
         _diag_count("export_full_cache_hits")
@@ -1543,21 +1587,21 @@ def _chain_root_and_age(task: dict, now_utc: datetime) -> tuple[str, int | None]
     try:
         # Get root short ID (chainID)
         root_short = _root_uuid_from(task)
-
+        
         # Get age if we have a root
         age_days = None
         if root_short:
             root_entry = _tw_get_cached(f"{root_short}.entry")
             entry_dt = _dtparse(root_entry)
-
+            
             if entry_dt:
                 entry_local = _tolocal(entry_dt).date()
                 today_local = _tolocal(now_utc).date()
                 age_days = (today_local - entry_local).days
-
+                
                 if age_days < 0:
                     age_days = 0
-
+        
         return root_short or "—", age_days
     except Exception:
         return "—", None
@@ -1566,14 +1610,14 @@ def _format_root_and_age(task: dict, now_utc: datetime) -> str:
     """Format root and age as a single string.
     Returns root (age) or just root if age is 0 or unavailable."""
     root_short, age_days = _chain_root_and_age(task, now_utc)
-
+    
     if not root_short or root_short == "—":
         return "—"
-
+    
     # Only show age if it's > 0
     if age_days is not None and age_days > 0:
         return f"{root_short} ▻ {age_days}d"
-
+    
     return root_short
 
 # ------------------------------------------------------------------------------
@@ -3014,36 +3058,36 @@ def _fmt_secs_delta(now_ref, secs: float | None) -> str:
 def _last_n_timeline(chain: list[dict], n: int = 6) -> list[str]:
     if not chain:
         return []
-
+    
     # Get link number for sorting - handle tasks without link numbers
     def get_link(obj):
         link = obj.get("link")
         if link is None or link == "":
             return -1  # Put tasks without links at the beginning
         return core.coerce_int(link, 999999)
-
+    
     # Sort by link number descending (most recent first)
     # But tasks without links (link=-1) should go at the end (oldest)
     chain_sorted = sorted(chain, key=get_link, reverse=True)
-
+    
     # Filter out tasks without link numbers for display (they're usually root tasks)
     chain_with_links = [t for t in chain_sorted if get_link(t) > 0]
-
+    
     # Determine max link number for formatting (only from tasks with links)
     if chain_with_links:
         max_link = max(get_link(obj) for obj in chain_with_links)
         label_width = len(str(max_link)) + 1  # +1 for the # symbol
     else:
         label_width = 4  # default width
-
+    
     # If chain has more than 10 tasks, show top 3 (most recent) and bottom 3 (oldest)
     if len(chain_with_links) > 10:
         # Top 3: most recent tasks (highest link numbers)
         top_tasks = chain_with_links[:3]
-
+        
         # Bottom 3: oldest tasks (lowest link numbers)
         bottom_tasks = chain_with_links[-3:]  # Already in descending order (e.g., [3, 2, 1])
-
+        
         # Create lines for top tasks (most recent)
         top_lines = []
         for obj in top_tasks:
@@ -3060,10 +3104,10 @@ def _last_n_timeline(chain: list[dict], n: int = 6) -> list[str]:
             if no == get_link(chain_with_links[0]):
                 line = f"[green]{line}[/]"
             top_lines.append(line)
-
+        
         # Add ellipsis
         ellipsis_line = f"[dim]{' ' * (label_width + 4)}... ({len(chain_with_links) - 6} more tasks) ...[/dim]"
-
+        
         # Create lines for bottom tasks (oldest) - also in descending order
         bottom_lines = []
         for obj in bottom_tasks:  # Already in descending order (e.g., 3, 2, 1)
@@ -3077,9 +3121,9 @@ def _last_n_timeline(chain: list[dict], n: int = 6) -> list[str]:
             marker = "✓"
             line = f"{lab} {marker:<2} {end_s} {delta} [dim]{short}[/]"
             bottom_lines.append(line)
-
+        
         return top_lines + [ellipsis_line] + bottom_lines
-
+    
     # For chains with <= 10 tasks, show all in reverse order (most recent at top)
     lines = []
     for obj in chain_with_links[:n]:
@@ -3096,19 +3140,19 @@ def _last_n_timeline(chain: list[dict], n: int = 6) -> list[str]:
         if no == get_link(chain_with_links[0]):
             line = f"[green]{line}[/]"
         lines.append(line)
-
+    
     return lines
 
 def _create_timeline_segment(tasks: list[dict], last_link_num) -> list[str]:
     """Helper to create timeline lines for a segment of tasks."""
     if not tasks:
         return []
-
+    
     base_no = core.coerce_int(last_link_num, len(tasks))
     labelw = max(4, len(f"#{base_no}"))
     lines = []
     start_no = base_no - (len(tasks) - 1)
-
+    
     for i, obj in enumerate(tasks):
         no = start_no + i
         end = _dtparse(obj.get("end"))
@@ -3121,17 +3165,17 @@ def _create_timeline_segment(tasks: list[dict], last_link_num) -> list[str]:
         if i == len(tasks) - 1:
             line = f"[green]{line}[/]"
         lines.append(line)
-
+    
     return lines
 
 
 def _end_chain_summary(current: dict, reason: str, now_utc, current_task: dict = None) -> None:
     # Use the passed current_task if provided, otherwise use current
     actual_current = current_task if current_task else current
-
+    
     kind_anchor = bool((actual_current.get("anchor") or "").strip())
     kind = "anchor" if kind_anchor else "cp"
-
+    
     chain_id = (actual_current.get("chainID") or actual_current.get("chainid") or "").strip()
     if not chain_id:
         _panel(
@@ -3146,7 +3190,7 @@ def _end_chain_summary(current: dict, reason: str, now_utc, current_task: dict =
 
     # Chain export (chainID required)
     chain = tw_export_chain_required(actual_current)
-
+    
     # Replace the last task in chain with the actual_current if it's more up-to-date
     if actual_current and chain:
         last_idx = -1
@@ -3189,15 +3233,7 @@ def _end_chain_summary(current: dict, reason: str, now_utc, current_task: dict =
     rows = []
     rows.append(("Reason", reason))
 
-    # Get root and age
-    root_short, age_str = _chain_root_and_age(current, now_utc)
-
-    # Show chain info with root and age
-    chain_display = f"{root_short}"
-    if age_str != "—":
-        chain_display += f" ({age_str})"
-
-    rows.append(("Root", chain_display))
+    rows.append(("Root", _format_root_and_age(current, now_utc)))
 
     # Show if chain was truncated
     chain_display = f"{root} … {cur_s}  [dim](#{L}, {len(chain)} tasks"
@@ -3287,21 +3323,21 @@ def _timeline_lines(
     allowed_future = (
         next_count if cap_no is None else max(0, min(next_count, cap_no - nxt_no))
     )
-
+    
     if kind == "cp":
-        prev_style = "dim green"
+        prev_style = "dim green"        
         cur_style = "spring_green1"
         next_style = "bold yellow"
     else:
         prev_style = "sky_blue3"
         cur_style = "spring_green1"
         next_style = "bold yellow"
-
+    
     future_style = _future_style_for_chain(task, kind)
-
+    
     # Collect items and their dates
     items = []
-
+    
     # Previous tasks
     prevs = _collect_prev_two(task)
     for obj in prevs:
@@ -3312,19 +3348,19 @@ def _timeline_lines(
         end_s = _fmtlocal(end_dt) if end_dt else "(no end)"
         short = _short(obj.get("uuid"))
         items.append((no, end_dt, obj, "prev"))
-
+    
     # Current task
     cur_end = _dtparse(task.get("end"))
     items.append((cur_no, cur_end, task, "current"))
-
+    
     # Next task
     items.append((nxt_no, child_due_utc, {"uuid": child_short}, "next"))
-
+    
     # Future tasks
     fut_dt = child_due_utc
     fut_no = nxt_no
     iterations = 0
-
+    
     if allowed_future > 0:
         if kind == "cp":
             td = core.parse_cp_duration(task.get("cp") or "")
@@ -3334,7 +3370,7 @@ def _timeline_lines(
                     if iterations >= _MAX_ITERATIONS:
                         break
                     iterations += 1
-
+                    
                     fut_no += 1
                     if secs % 86400 == 0:
                         dl = _tolocal(fut_dt)
@@ -3344,10 +3380,10 @@ def _timeline_lines(
                         ).astimezone(timezone.utc)
                     else:
                         fut_dt = fut_dt + td
-
+                    
                     if cap_no is not None and fut_no > cap_no:
                         break
-
+                    
                     items.append((fut_no, fut_dt, {"is_future": True}, "future"))
         else:
             # Anchor patterns are date-based in the core; multi-time @t=HH:MM,HH:MM,...
@@ -3388,7 +3424,7 @@ def _timeline_lines(
                     break
 
                 items.append((fut_no, fut_dt, {"is_future": True}, "future"))
-
+    
     # Build lines with inline gaps
     lines = []
     for i, (no, dt, obj, item_type) in enumerate(items):
@@ -3401,7 +3437,7 @@ def _timeline_lines(
             short = _short(obj.get("uuid"))
             marker = "✓"
             base_line = f"[{prev_style}]{no:>2} {marker:<2}{end_s} {delta} {short}[/]"
-
+            
         elif item_type == "current":
             cur_end = _dtparse(task.get("end"))
             cur_due = _dtparse(task.get("due"))
@@ -3409,7 +3445,7 @@ def _timeline_lines(
             cur_end_s = _fmtlocal(cur_end) if cur_end else "(no end)"
             marker = "✓"
             base_line = f"[{cur_style}]{no:>2} {marker:<2}{cur_end_s} {cur_delta} {_short(task.get('uuid'))}[/]"
-
+            
         elif item_type == "next":
             is_last = cap_no is not None and no == cap_no
             marker = "►"
@@ -3418,7 +3454,7 @@ def _timeline_lines(
                 base_line = f"[{next_style}]{next_text} [bold red](last link)[/][/]"
             else:
                 base_line = f"[{next_style}]{next_text}[/]"
-
+                
         elif item_type == "future":
             is_last = cap_no is not None and no == cap_no
             marker = "»"
@@ -3427,26 +3463,24 @@ def _timeline_lines(
                 base_line = f"[{future_style}]{future_text} [bold red](last link)[/][/]"
             else:
                 base_line = f"[{future_style}]{future_text}[/]"
-
+        
         # Add gap annotation if applicable
         full_line = base_line
         if show_gaps and i < len(items) - 1:
             next_item = items[i + 1]
             next_dt = next_item[1]
-
+            
             if dt and next_dt:
                 gap_text = _format_gap(dt, next_dt, kind, round_anchor_gaps)
                 if gap_text:
                     full_line = f"{base_line}{gap_text}"
-
+        
         lines.append(full_line)
-
+    
     return lines
 
 def _got_anchor_invalid(msg: str) -> None:
-    _panel("❌ Invalid anchor", [("Validation", msg)], kind="error")
-    print(json.dumps({"error": "Invalid anchor", "message": msg}, ensure_ascii=False))
-    sys.exit(1)
+    _fail_and_exit("Invalid anchor", msg)
 
 
 # chainUntil -> numeric cap and "Final (until)"
@@ -3580,7 +3614,7 @@ def tw_export_chain(chain_id: str, since: datetime | None = None, extra: str | N
     global _CHAIN_EXPORT_TIMEOUT_FLOOR
     if not chain_id:
         return []
-    args = ["task", "rc.hooks=off", "rc.json.array=on", "rc.verbose=nothing", f"chainID:{chain_id}"]
+    args = _task_cmd_prefix() + ["rc.hooks=off", "rc.json.array=on", "rc.verbose=nothing", f"chainID:{chain_id}"]
     if since:
         args.append(f"modified.after:{since.strftime('%Y-%m-%dT%H:%M:%S')}")
     if limit and isinstance(limit, int) and limit > 0:
@@ -3633,8 +3667,7 @@ def _export_chain_endpoint(chain_id: str, direction: str) -> dict | None:
     if not chain_id:
         return None
     sort_dir = "+" if direction == "first" else "-"
-    args = [
-        "task",
+    args = _task_cmd_prefix() + [
         "rc.hooks=off",
         "rc.json.array=on",
         "rc.verbose=nothing",
@@ -3680,8 +3713,8 @@ def main():
     if (old.get("status") == new.get("status")) or (new.get("status") != "completed"):
         # This is a non-completion modification
         anchor_raw = (new.get("anchor") or "").strip()
-        new_anchor = _strip_quotes(anchor_raw)
-
+        new_anchor = _strip_quotes(anchor_raw) 
+        
         if new_anchor:
             # Anchor validation on modification (catch errors early)
             try:
@@ -3739,7 +3772,7 @@ def main():
 
         # CP validation only happens on completion, NOT on modification
         # because taskwarrior already validates the duration format
-
+        
         # [CHAINID] stamp only when task just became nautical and has no chainID/links
         try:
             became_anchor = (not (old.get("anchor") or "").strip()) and ((new.get("anchor") or "").strip())
@@ -3770,13 +3803,9 @@ def main():
             if td is None:
                 raise ValueError(f"Invalid duration format '{new_cp}'")
         except ValueError as e:
-            _panel("❌ Invalid CP", [("Validation", str(e))], kind="error")
-            print(json.dumps({"error": "Invalid CP", "message": str(e)}, ensure_ascii=False))
-            sys.exit(1)
+            _fail_and_exit("Invalid CP", str(e))
         except Exception as e:
-            _panel("❌ CP Error", [("Validation", f"Unexpected error: {str(e)}")], kind="error")
-            print(json.dumps({"error": "CP parsing error", "message": str(e)}, ensure_ascii=False))
-            sys.exit(1)
+            _fail_and_exit("CP parsing error", f"Unexpected error: {e}")
 
         # Deep checks only if fields changed
         if _field_changed(old, new, "anchor") or _field_changed(old, new, "anchor_mode"):
@@ -4063,7 +4092,7 @@ def main():
     fb = []
     if kind == "anchor":
         anchor_raw = (new.get("anchor") or "").strip()
-        expr_str = _strip_quotes(anchor_raw)
+        expr_str = _strip_quotes(anchor_raw) 
         mode_tag = {
             "skip": "[cyan]SKIP[/]",
             "all": "[yellow]ALL[/]",
@@ -4290,10 +4319,7 @@ def main():
 
 # ------------------------------------------------------------------------------
 if __name__ == "__main__":
-    import io
-    raw = sys.stdin.read()
     try:
-        sys.stdin = io.TextIOWrapper(io.BytesIO(raw.encode("utf-8")), encoding="utf-8")
         main()
     except SystemExit:
         raise
@@ -4303,35 +4329,4 @@ if __name__ == "__main__":
                 sys.stderr.write(f"[nautical] on-modify unexpected error: {e}\n")
             except Exception:
                 pass
-        new_obj = None
-        try:
-            decoder = json.JSONDecoder()
-            idx = 0
-            objs = []
-            n = len(raw)
-            while idx < n:
-                while idx < n and raw[idx].isspace():
-                    idx += 1
-                if idx >= n:
-                    break
-                obj, end = decoder.raw_decode(raw, idx)
-                objs.append(obj)
-                idx = end
-            if len(objs) == 1 and isinstance(objs[0], list):
-                arr = [o for o in objs[0] if isinstance(o, dict)]
-                if arr:
-                    new_obj = arr[-1]
-            else:
-                arr = [o for o in objs if isinstance(o, dict)]
-                if arr:
-                    new_obj = arr[-1]
-        except Exception:
-            new_obj = None
-        if new_obj is not None:
-            print(json.dumps(new_obj, ensure_ascii=False), end="")
-            try:
-                sys.stdout.flush()
-            except Exception:
-                pass
-            raise SystemExit(0)
         raise SystemExit(1)

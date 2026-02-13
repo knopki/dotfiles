@@ -277,10 +277,39 @@ def _warn_once_per_day_any(key: str, message: str) -> None:
 
         with open(stamp_path, "w", encoding="utf-8") as f:
             f.write(today)
-        try:
-            print(message, file=sys.stderr)
-        except Exception:
-            pass
+        if os.environ.get("NAUTICAL_DIAG") == "1":
+            try:
+                print(message, file=sys.stderr)
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+
+def _warn_rate_limited_any(key: str, message: str, min_interval_s: float = 3600.0) -> None:
+    """Emit a diagnostic warning at most once per min_interval_s (always on)."""
+    try:
+        d = _nautical_cache_dir()
+        os.makedirs(d, exist_ok=True)
+        stamp_path = os.path.join(d, f".diag_{key}.stamp")
+        now = time.time()
+        last = None
+        if os.path.exists(stamp_path):
+            try:
+                with open(stamp_path, "r", encoding="utf-8") as f:
+                    raw = f.read().strip()
+                last = float(raw) if raw else None
+            except Exception:
+                last = None
+        if last is not None and (now - last) < float(min_interval_s or 0.0):
+            return
+        with open(stamp_path, "w", encoding="utf-8") as f:
+            f.write(str(now))
+        if os.environ.get("NAUTICAL_DIAG") == "1":
+            try:
+                print(message, file=sys.stderr)
+            except Exception:
+                pass
     except Exception:
         pass
 
@@ -2021,9 +2050,62 @@ def _cache_lock(key: str):
 _DIAG_LOG_REDACT_KEYS = frozenset({"description", "annotation", "annotations", "note", "notes"})
 
 
+def _hook_arg_value(argv: list[str], keys: tuple[str, ...]) -> str:
+    for tok in argv:
+        s = str(tok or "").strip()
+        if not s:
+            continue
+        for key in keys:
+            for sep in (":", "="):
+                prefix = f"{key}{sep}"
+                if s.startswith(prefix):
+                    val = s[len(prefix):].strip()
+                    if val:
+                        return val
+    return ""
+
+
+def resolve_task_data_context(
+    *,
+    argv: list[str] | None = None,
+    env: dict | None = None,
+    tw_dir: str | None = None,
+) -> tuple[str, bool, str]:
+    """
+    Resolve Taskwarrior data directory context for hooks.
+
+    Returns: (task_data_dir, use_rc_data_location, source)
+      - task_data_dir: resolved directory path (user-expanded)
+      - use_rc_data_location: True only when source is explicit (argv/env)
+      - source: one of "argv", "env", "fallback"
+    """
+    args = list(argv if argv is not None else sys.argv[1:])
+    env_map = env if env is not None else os.environ
+    taskdata_env = str((env_map.get("TASKDATA") if hasattr(env_map, "get") else "") or "").strip()
+    taskdata_arg = _hook_arg_value(args, ("data", "data.location"))
+    explicit = taskdata_arg or taskdata_env
+    if explicit:
+        source = "argv" if taskdata_arg else "env"
+        return os.path.expanduser(str(explicit)), True, source
+    base = str(tw_dir or "~/.task")
+    return os.path.expanduser(base), False, "fallback"
+
+
+def _redact_dict(data: dict, redact_keys: frozenset) -> dict:
+    out = {}
+    for k, v in (data or {}).items():
+        if k in redact_keys:
+            out[k] = "[redacted]"
+        else:
+            out[k] = v
+    return out
+
+
 def diag_log_redact(msg: str, redact_keys: frozenset | None = None) -> str:
     """Redact sensitive keys from JSON msg for diagnostic logs."""
     keys = redact_keys or _DIAG_LOG_REDACT_KEYS
+    if isinstance(msg, dict):
+        return _redact_dict(msg, keys)
     try:
         data = json.loads(msg)
         if isinstance(data, dict):
@@ -2072,15 +2154,28 @@ def diag_log(msg: str, hook_name: str, data_dir: str | None = None) -> None:
         payload = {
             "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "hook": hook_name,
-            "msg": diag_log_redact(str(msg)),
+            "pid": os.getpid(),
+            "ppid": os.getppid(),
+            "cwd": os.getcwd(),
         }
+        if data_dir:
+            payload["data_dir"] = str(data_dir)
+        if isinstance(msg, dict):
+            red = diag_log_redact(msg)
+            if isinstance(red, dict):
+                payload["msg"] = str(red.get("msg") or red.get("message") or "")
+                payload["data"] = red
+            else:
+                payload["msg"] = str(red)
+        else:
+            payload["msg"] = diag_log_redact(str(msg))
         with os.fdopen(fd, "a", encoding="utf-8") as f:
             f.write(json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n")
     except Exception:
         pass
 
 
-def diag(msg: str, hook_name: str = "nautical", data_dir: str | None = None) -> None:
+def diag(msg, hook_name: str = "nautical", data_dir: str | None = None) -> None:
     """Write diagnostics to stderr when NAUTICAL_DIAG=1 and append to diag log when NAUTICAL_DIAG_LOG=1."""
     if os.environ.get("NAUTICAL_DIAG") == "1":
         try:
@@ -2118,14 +2213,19 @@ def run_task(
                 except Exception:
                     out_f = err_f = None
                     out_path = err_path = None
+            text_mode = not bool(out_f)
+            if not text_mode and isinstance(input_text, str):
+                input_text = input_text.encode("utf-8")
+            elif text_mode and isinstance(input_text, (bytes, bytearray)):
+                input_text = input_text.decode("utf-8", "replace")
             proc = subprocess.Popen(
                 cmd,
                 stdin=subprocess.PIPE,
                 stdout=(out_f if out_f is not None else subprocess.PIPE),
                 stderr=(err_f if err_f is not None else subprocess.PIPE),
-                text=not bool(out_f),
-                encoding="utf-8",
-                errors="replace",
+                text=text_mode,
+                encoding=("utf-8" if text_mode else None),
+                errors=("replace" if text_mode else None),
                 close_fds=True,
                 env=env,
             )
