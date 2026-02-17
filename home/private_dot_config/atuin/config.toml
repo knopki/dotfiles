@@ -86,6 +86,8 @@ history_filter = [
 # https://docs.rs/regex/latest/regex/#syntax
 cwd_filter = [
   "^/srv/np",
+  "^/run/media/sk/np",
+  "^/run/media/knopki/np",
 ]
 
 # Configure the maximum height of the preview to show.
@@ -166,7 +168,7 @@ common_subcommands = [
 ]
 
 # Set commands that should be totally stripped and ignored from stats
-common_prefix = ["sudo"]
+common_prefix = ["run0", "sudo"]
 
 # Set commands that will be completely ignored from stats
 ignored_commands = [
