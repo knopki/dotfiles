@@ -1,4 +1,8 @@
-{{- if not .isDesktopEnv }}
+{{- if not (lookPath "git-lfs") }}
+difftastic-config
+{{- end }}
+
+{{- if not (lookPath "git-lfs") }}
 lfs-config
 {{- end }}
 

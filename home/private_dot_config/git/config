@@ -95,6 +95,7 @@
     fsckobjects = "true"
 
 [include]
+    path = difftastic-config
     path = lfs-config
     path = identity
     path = wrk-config
