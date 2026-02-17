@@ -1,4 +1,7 @@
-.Xauthority
+.actrc
+.aiida
+.aiida-fleur
+.android
 
 # Avatar
 .face.user.*
@@ -12,8 +15,12 @@
 .pam-gnupg
 {{- end }}
 
-# Lima
 {{- if not .isDevHost }}
 .lima
+{{- end }}
+
+{{- if not .isDevHost }}
 .terraformrc
 {{- end }}
+
+.Xauthority
