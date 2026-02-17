@@ -1,24 +1,67 @@
 {{- if not .isDesktopUser }}
 autostart
-khal
-khard
-mpv
-rclone
-task
-timewarrior
-vdirsyncer
 {{- end }}
 
-{{- if not .isDesktopUser }}
+{{- if not (lookPath "atuin") }}
+atuin
+{{- end }}
+
+{{- if or (not .isDesktopUser) (not (lookPath "cosmic-comp")) }}
 cosmic
 {{- end }}
 
-{{- if or (not .isNonRootUser) (not .isDevHost) }}
+{{- if not (lookPath "hx") }}
+helix
+{{- end }}
+
+{{- if not (lookPath "htop") }}
+htop
+{{- end }}
+
+{{- if or (not .isDesktopUser) (not (lookPath "khal")) }}
+khal
+{{- end }}
+
+{{- if or (not .isDesktopUser) (not (lookPath "khard")) }}
+khard
+{{- end }}
+
+{{- if or (not .isDesktopUser) (not (lookPath "lazygit")) }}
+lazygit
+{{- end }}
+
+{{- if or (not .isDesktopUser) (not (lookPath "mpv")) }}
+mpv
+{{- end }}
+
+{{- if or (not .isDesktopUser) (not (lookPath "opencode")) }}
+opencode
+{{- end }}
+
+{{- if or (not .isDesktopUser) (not .isTrustedHost) (not (lookPath "rclone")) }}
+rclone
+{{- end }}
+
+{{- if not (lookPath "rustic") }}
+rustic
+{{- end }}
+
+{{- if not (lookPath "starship") }}
+starship.toml
+{{- end }}
+
+{{- if or (not .isDesktopUser) (not (lookPath "task")) }}
+task
+{{- end }}
+
+{{- if or (not .isDesktopUser) (not (lookPath "timew")) }}
+timewarrior
+{{- end }}
+
+{{- if or (not .isDesktopUser) (not .isTrustedHost) (not (lookPath "vdirsyncer")) }}
+vdirsyncer
+{{- end }}
+
+{{- if or (not .isNonRootUser) (not .isTrustedHost) (not (lookPath "zeditor")) }}
 zed
 {{- end}}
-
-{{- if not (and (eq .chezmoi.hostname "alien") (eq .chezmoi.username "sk")) }}
-autostart/kopia-ui.desktop
-kopia/*
-{{- end }}
-kopia/*.mlock

@@ -1,16 +1,14 @@
 {{- if not .isDesktopUser }}
 home-sk-remote-sk\\x2dnc.service
 default.target.wants/home-sk-remote-sk*
+{{- end }}
+
+{{- if not (lookPath "vdirsyncer") }}
 vdirsyncer.*
 timers.target.wants/vdirsyncer.*
 {{- end }}
 
-{{- if not (and (eq .chezmoi.hostname "alien") .isDesktopUser) }}
-kopia-alien-*
-timers.target.wants/kopia-alien-*
-{{- end }}
-
-{{- if not (or .isDesktopEnv .isDevHost .isDevVm) }}
+{{- if not (lookPath "atuin") }}
 default.target.wants/atuin-*
 sockets.target.wants/atuin-*
 {{- end }}

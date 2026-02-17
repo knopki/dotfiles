@@ -1,4 +1,4 @@
-{{- if not .isDesktopUser }}
+{{- if not (lookPath "nextcloud") }}
 Nextcloud.desktop
 org.keepassxc.KeePassXC.desktop
 {{- end }}
