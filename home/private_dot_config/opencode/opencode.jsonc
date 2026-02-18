@@ -71,24 +71,21 @@
       "ls": "allow",
       "more *": "allow",
       "notify-send *": "allow",
+      "openspec *": "allow",
       "pwd *": "allow",
       "pwd": "allow",
       "pytest *": "allow",
       "pytest": "allow",
-      "uv run pytest": "allow",
-      "uv run pytest *": "allow",
       "python -m compileall *": "allow",
       "python -m py_compile *": "allow",
       "python -m pytest *": "allow",
       "rg *": "allow",
       "ruff *": "allow",
-      "sort *": "allow",
-      "sort --output=*": "ask",
-      "sort -o *": "ask",
-      "stat *": "allow",
       "tail *": "allow",
       "tree *": "allow",
       "tree -o *": "ask",
+      "uv run pytest": "allow",
+      "uv run pytest *": "allow",
       "uniq *": "allow",
       "uv run ruff *": "allow",
       "wc *": "allow",
@@ -127,13 +124,10 @@
       "options": {
         // "projectId": "centered-song-135214",
         "projectId": "gen-lang-client-0017400975",
-      }
+      },
     },
     "opencode": {
-      "whitelist": [
-        "big-pickle",
-        "gpt-5-nano",
-      ],
+      "whitelist": ["big-pickle", "gpt-5-nano", "glm-5-free"],
     },
     "openrouter": {
       "whitelist": [
@@ -209,7 +203,7 @@
         "deepwiki_*": "allow",
         "grep_app_*": "allow",
         "task": "allow",
-      }
+      },
     },
 
     // General-purpose sub-agent and fast for researching complex questions and executing multi-step tasks
@@ -231,7 +225,7 @@
         "deepwiki_*": "allow",
         "grep_app_*": "allow",
         "task": "allow",
-      }
+      },
     },
 
     // Fast subagent specialized for exploring codebases

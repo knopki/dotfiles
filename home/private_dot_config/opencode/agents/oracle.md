@@ -2,6 +2,7 @@
 description: Expert technical advisor with deep reasoning for architecture decisions, code analysis, and engineering guidance.
 mode: subagent
 #model: zai-coding-plan/glm-4.7
+model: opencode/glm-5-free
 #model: google/gemini-3-pro-preview
 #model: google/gemini-3-flash-preview
 model: openai/gpt-5.3-codex
@@ -12,6 +13,7 @@ permission:
     "*": deny
     ".opencode/adr/*": allow
     ".opencode/CONTINUITY.md": allow
+    "openspec/*": allow
   grep: allow
   glob: allow
   list: allow

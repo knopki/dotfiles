@@ -1,7 +1,8 @@
 ---
 description: Reviews code for correctness, maintainability, and best practices. Use proactively for significant code changes (new features, refactors, critical fixes) and always before task completion. Do NOT use for trivial changes (typo fixes, formatting), work-in-progress code, or generated/boilerplate code.
 mode: subagent
-model: zai-coding-plan/glm-4.7
+# model: zai-coding-plan/glm-4.7
+model: opencode/glm-5-free
 temperature: 0.1
 permission:
   read: allow
