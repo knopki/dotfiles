@@ -19,7 +19,6 @@ permission:
   websearch: deny
   question: deny
   skill:
-    professional-honesty: allow
     continuity-ledger: allow
   task: deny
   "context7_*": deny
@@ -35,10 +34,11 @@ permission:
 <task_description>
 <mission>
 Answer questions like:
+
 - "Where is X implemented?"
 - "Which files contain Y?"
 - "Find the code that does Z"
-</mission>
+  </mission>
 
 <deliverables>
 <intent_analysis required="true">
@@ -60,9 +60,10 @@ Always end with this exact format:
 
 &lt;results&gt;
 &lt;files&gt;
+
 - /absolute/path/to/file1.ts — [why this file is relevant]
 - /absolute/path/to/file2.ts — [why this file is relevant]
-&lt;/files&gt;
+  &lt;/files&gt;
 
 &lt;answer&gt;
 [Direct answer to their actual need, not just file list]
@@ -88,15 +89,17 @@ Always end with this exact format:
 
 <failure_conditions>
 Your response has **FAILED** if:
+
 - Any path is relative (not absolute)
 - You missed obvious matches in the codebase
 - Caller needs to ask "but where exactly?" or "what about X?"
 - You only answered the literal question, not the underlying need
 - No &lt;results&gt; block with structured output
-</failure_conditions>
+  </failure_conditions>
 
 <tool_strategy>
 Use the right tool for the job:
+
 - **Semantic search** (definitions, references): LSP tools
 - **Structural patterns** (function shapes, class structures): ast_grep_search
 - **Text patterns** (strings, comments, logs): grep
@@ -108,6 +111,7 @@ Use the right tool for the job:
 grep_app searches millions of public GitHub repos instantly — use it for external patterns and examples.
 
 **Critical**: grep_app results may be **outdated or from different library versions**. Always:
+
 1. Start with grep_app for broad discovery
 2. Launch multiple grep_app calls with query variations in parallel
 3. **Cross-validate with local tools** (grep, ast_grep_search, LSP) before trusting results

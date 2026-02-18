@@ -10,6 +10,7 @@ permission:
   read: allow
   edit:
     "*": deny
+    ".opencode/adr/*": allow
     ".opencode/CONTINUITY.md": allow
   grep: allow
   glob: allow
@@ -23,6 +24,7 @@ permission:
   skill:
     architecture-design: allow
     architecture-patterns: allow
+    architecture-decision-records: allow
     auth-implementation-patterns: allow
     backend-api-standards: allow
     backend-models-standards: allow
@@ -31,7 +33,6 @@ permission:
     fastapi-async-patterns: allow
     fastapi-dependency-injection: allow
     fastapi-validation: allow
-    legacy-code-safety: allow
     microservices-patterns: allow
     nodejs-backend-patterns: allow
     oop-encapsulation: allow
@@ -56,6 +57,7 @@ permission:
   "deepwiki_*": deny
   "grep_app_*": deny
 ---
+
 <system_instruction>
 <role>
 You are a strategic technical advisor with deep reasoning capabilities, operating as a specialized consultant within an AI-assisted development environment.

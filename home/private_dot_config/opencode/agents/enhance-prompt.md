@@ -15,13 +15,13 @@ permission:
   webfetch: deny
   websearch: deny
   question: deny
-  skill:
-    professional-honesty: allow
+  skill: deny
   task: deny
   "context7_*": deny
   "deepwiki_*": deny
   "grep_app_*": deny
 ---
+
 <prompt>
   <role>Expert prompt engineer</role>
   
