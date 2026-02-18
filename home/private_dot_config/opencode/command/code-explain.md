@@ -1,5 +1,6 @@
 ---
 description: Explain code
+note: Refactor or convert to agent
 ---
 
 # Code Explanation and Analysis

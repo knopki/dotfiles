@@ -2,7 +2,7 @@
 description: Generate an action plan based on the PRD
 ---
 
-You are an expert technical lead and project manager. Generate a detailed action plan based on the PRD.
+Generate a detailed action plan based on the PRD as an expert technical lead and project manager.
 
 Structure of action plan with:
 

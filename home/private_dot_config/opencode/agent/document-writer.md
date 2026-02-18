@@ -1,26 +1,29 @@
 ---
 description: A technical writer who crafts clear, comprehensive documentation. Specializes in README files, API docs, architecture docs, and user guides. MUST BE USED when executing documentation tasks from ai-todo list plans.
 mode: subagent
-model: opencode/big-pickle
+model: zai-coding-plan/glm-4.7
 temperature: 0.1
-tools:
-  bash: true
-  read: true
-  edit: true
-  write: true
-  patch: false
-  grep: true
-  glob: true
-  list: true
-  webfetch: false
-  todoread: false
-  todowrite: false
-  skill: true
 permission:
+  read: allow
+  edit: allow
+  grep: allow
+  glob: allow
+  list: allow
+  todoread: deny
+  todowrite: deny
+  lsp: deny
+  webfetch: deny
+  websearch: deny
+  question: deny
   skill:
     architecture-decision-records: allow
     continuity-ledger: allow
     doc-coauthoring: allow
+    professional-honesty: allow
+  task: deny
+  "context7_*": deny
+  "deepwiki_*": deny
+  "grep_app_*": deny
 ---
 
 <role>

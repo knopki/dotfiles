@@ -3,29 +3,27 @@
 
   "plugin": [
     "@simonwjackson/opencode-direnv@v2025.1211.9",
-    "@tarquinen/opencode-dcp@1.0.2",
+    "@tarquinen/opencode-dcp@2.1.3",
+    "opencode-gemini-auth@v1.3.10",
+    "@slkiser/opencode-quota@2.0.0",
   ],
 
   "experimental": {
-    "chatMaxRetries": 10,
     "primary_tools": ["prune"],
+    "chatMaxRetries": 100,
   },
 
   "instructions": [
-    "CONTRIBUTING.md",
-    "CLAUDE.md",
     "AGENTS.md",
     "AGENTS.local.md",
     "AGENTS.override.md",
+    "CLAUDE.md",
+    "CONTRIBUTING.md",
+    ".opencode/CONTINUITY.md",
   ],
 
   "mcp": {
-    // TODO: Anytype
-    // TODO: web search via https://github.com/deedy5/ddgs
-    // TODO: https://ankimcp.ai/
     // TODO: Chrome DevTools MCP
-    // TODO: https://github.com/chigwell/telegram-mcp
-    // TODO: https://github.com/zilliztech/claude-context
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
@@ -35,7 +33,7 @@
     },
     "deepwiki": {
       "type": "remote",
-      "url": "https://mcp.deepwiki.com/sse",
+      "url": "https://mcp.deepwiki.com/mcp",
     },
     "grep_app": {
       "type": "remote",
@@ -63,6 +61,7 @@
       "git log*": "allow",
       "git show*": "allow",
       "git status*": "allow",
+      "git *": "ask",
       "grep *": "allow",
       "head *": "allow",
       "less *": "allow",
@@ -74,6 +73,8 @@
       "pwd": "allow",
       "pytest *": "allow",
       "pytest": "allow",
+      "uv run pytest": "allow",
+      "uv run pytest *": "allow",
       "python -m compileall *": "allow",
       "python -m py_compile *": "allow",
       "python -m pytest *": "allow",
@@ -92,32 +93,51 @@
       "which*": "allow",
       "*": "ask",
     },
-    "webfetch": "allow",
+    "edit": "deny",
+    "read": "allow",
+    "grep": "allow",
+    "glob": "allow",
+    "list": "allow",
+    "todowrite": "allow",
+    "todoread": "allow",
+    // needs OPENCODE_EXPERIMENTAL_LSP_TOOL=true
+    "lsp": "deny",
+    "webfetch": "deny",
+    // needs OPENCODE_ENABLE_EXA=1
+    "websearch": "deny",
+    "question": "deny",
+    "skill": {
+      "skill-creator": "deny", // skill is broken now
+      "professional-honesty": "allow",
+      "*": "deny",
+    },
+    "context7_*": "deny",
+    "deepwiki_*": "deny",
+    "grep_app_*": "deny",
+    "task": "deny",
     "doom_loop": "ask",
     // NOTE: run opencode only inside a bubblewrap/VM
     "external_directory": "ask", // YOLO
-    "skill": {
-      "*": "deny",
-      "skill-creator": "deny", // skill is broken now
-      "professional-honesty": "allow",
-    },
-  },
-
-  "tools": {
-    "context7*": false,
-    "deepwiki*": false,
-    "grep_app*": false,
   },
 
   "provider": {
+    "google": {
+      "options": {
+        // "projectId": "centered-song-135214",
+        "projectId": "gen-lang-client-0017400975",
+      }
+    },
     "opencode": {
-      "whitelist": ["grok-code", "glm-4.7-free", "big-pickle", "gpt-5-nano"],
+      "whitelist": [
+        "big-pickle",
+        "glm-4.7-free",
+        "gpt-5-nano",
+        "grok-code",
+        "minimax-m2.1-free",
+      ],
     },
     "openrouter": {
       "whitelist": [
-        "anthropic/claude-sonnet-4.5",
-        "anthropic/claude-haiku-4.5",
-
         "google/gemini-3-flash-preview",
         "google/gemini-3-pro-preview",
 
@@ -127,8 +147,10 @@
 
         "mistralai/devstral-2512:free",
         "mistralai/mistral-medium-3.1",
+        "mistralai/mistral-large-2512",
 
         "moonshotai/kimi-k2-0905",
+        "moonshotai/kimi-k2:free",
 
         "openai/gpt-5.2",
         "openai/gpt-5.1-codex",
@@ -139,8 +161,14 @@
         "x-ai/grok-code-fast-1",
 
         "xiaomi/mimo-v2-flash:free",
+
+        "openrouter/pony-alpha",
       ],
       "models": {
+        "openrouter/aurora-alpha": {
+          "id": "openrouter/aurora-alpha",
+          "name": "Aurota Alpha"
+        },
         "xiaomi/mimo-v2-flash:free": {
           "options": {
             "reasoningEffort": "none",
@@ -149,51 +177,110 @@
       },
     },
     "zai-coding-plan": {
-      "whitelist": ["glm-4.7", "glm-4.6"],
+      "whitelist": ["glm-4.7", "glm-4.6", "glm-5", "glm-5.0"],
     },
   },
 
   // default model if not set by agent
   "model": "opencode/big-pickle",
   // small and cheap model used for title generation
-  // "small_model": "opencode/big-pickle",
+  "small_model": "opencode/big-pickle",
 
   "agent": {
     // primary default build agent
     "build": {
-      "tools": { "skill": true },
       "permission": {
+        "edit": "allow",
+        "read": "allow",
+        "grep": "allow",
+        "glob": "allow",
+        "list": "allow",
+        "todowrite": "allow",
+        "todoread": "allow",
+        "lsp": "allow",
+        "webfetch": "ask",
+        "websearch": "ask",
+        "question": "allow",
         "skill": { "continuity-ledger": "allow" },
+        "context7_*": "ask",
+        "deepwiki_*": "ask",
+        "grep_app_*": "ask",
+        "task": "allow",
       },
     },
 
     // primary default planning agent (save as build but with plan message)
     "plan": {
-      "tools": {
-        "edit": false,
-        "multiedit": false,
-        "write": false,
-      },
+      "permission": {
+        "bash": "ask",
+        "edit": {
+          "*": "deny",
+          ".opencode/CONTINUITY.md": "allow",
+        },
+        "read": "allow",
+        "grep": "allow",
+        "glob": "allow",
+        "list": "allow",
+        "todowrite": "allow",
+        "todoread": "allow",
+        "lsp": "deny",
+        "webfetch": "allow",
+        "websearch": "allow",
+        "question": "allow",
+        "skill": { "continuity-ledger": "allow" },
+        "context7_*": "allow",
+        "deepwiki_*": "allow",
+        "grep_app_*": "allow",
+        "task": "allow",
+      }
     },
 
     // General-purpose sub-agent and fast for researching complex questions and executing multi-step tasks
-    // Default tools without access to todos
     "general": {
       "permission": {
+        "edit": "allow",
+        "read": "allow",
+        "grep": "allow",
+        "glob": "allow",
+        "list": "allow",
+        "todowrite": "deny",
+        "todoread": "deny",
+        "lsp": "allow",
+        "webfetch": "deny",
+        "websearch": "allow",
+        "question": "deny",
         "skill": { "continuity-ledger": "allow" },
-      },
-      "tools": {},
+        "context7_*": "allow",
+        "deepwiki_*": "allow",
+        "grep_app_*": "allow",
+        "task": "allow",
+      }
     },
 
     // Fast subagent specialized for exploring codebases
-    // Defaults tools without access to todos, edit, write
     "explore": {
       // prefer free/cheap and fast model
       "model": "opencode/big-pickle",
-      "tools": {
-        "edit": false,
-        "multiedit": false,
-        "write": false,
+      "permission": {
+        "edit": {
+          "*": "deny",
+          ".opencode/CONTINUITY.md": "allow",
+        },
+        "read": "allow",
+        "grep": "allow",
+        "glob": "allow",
+        "list": "allow",
+        "todowrite": "deny",
+        "todoread": "deny",
+        "lsp": "allow",
+        "webfetch": "deny",
+        "websearch": "deny",
+        "question": "deny",
+        "skill": { "continuity-ledger": "allow" },
+        "context7_*": "deny",
+        "deepwiki_*": "deny",
+        "grep_app_*": "deny",
+        "task": "deny",
       },
     },
   },
