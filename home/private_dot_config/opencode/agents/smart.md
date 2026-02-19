@@ -18,7 +18,7 @@ permission:
   lsp: allow
   webfetch: deny
   websearch: deny
-  question: deny
+  question: allow
   skill:
     architecture-decision-records: allow
     architecture-design: allow
@@ -31,6 +31,16 @@ permission:
     doc-coauthoring: allow
     git-advanced-workflows: allow
     legacy-code-safety: allow
+    openspec-apply-change: allow
+    openspec-archive-change: allow
+    openspec-bulk-archive-change: allow
+    openspec-continue-change: allow
+    openspec-explore: allow
+    openspec-ff-change: allow
+    openspec-new-change: allow
+    openspec-onboard: deny
+    openspec-verify-change: allow
+    openspec-sync-specs: allow
     performance-optimization: allow
     professional-honesty: allow
     proof-of-work: allow
