@@ -8,5 +8,4 @@ Thumbs.db
 
 # AI stuff - ignore by default
 AGENTS.*.md
-CONTINUITY.md
 .opencode
