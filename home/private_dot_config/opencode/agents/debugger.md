@@ -1,7 +1,7 @@
 ---
 description: Deep error diagnosis and root cause analysis. Use when stuck on complex bugs after 2+ failed attempts, mysterious test failures, or errors requiring systematic investigation. Do NOT use for simple/obvious errors, syntax errors, or as first resort before attempting diagnosis yourself.
 mode: subagent
-# model: zai-coding-plan/glm-4.7
+#model: cliproxyapi/glm-4.7
 model: opencode/glm-5-free
 temperature: 0.3
 permission:

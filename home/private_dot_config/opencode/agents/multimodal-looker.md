@@ -1,8 +1,8 @@
 ---
 description: Analyze media files (PDFs, images, diagrams) that require interpretation beyond raw text. Extracts specific information or summaries from documents, describes visual content. Use when you need analyzed/extracted data rather than literal file contents.
 mode: subagent
-#model: openrouter/google/gemini-3-flash-preview
-model: google/gemini-3-flash-preview
+model: cliproxyapi/google/gemini-3-flash-preview
+#model: cliproxyapi/openai/chatgpt-5.3-codex
 temperature: 0.1
 permission:
   bash: deny

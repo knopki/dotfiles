@@ -1,12 +1,13 @@
 ---
 description: Expert technical advisor with deep reasoning for architecture decisions, code analysis, and engineering guidance.
 mode: subagent
-#model: zai-coding-plan/glm-4.7
-model: opencode/glm-5-free
-#model: google/gemini-3-pro-preview
-#model: google/gemini-3-flash-preview
+#model: cliproxyapi/z-ai/glm-4.7
+#model: cliproxyapi/google/gemini-3.1-pro-preview
+#model: cliproxyapi/google/gemini-3-flash-preview
+#model: cliproxyapi/openai/gpt-5.2-pro
 model: openai/gpt-5.3-codex
-temperature: 0.4
+temperature: 0.3
+reasoningEffort: xhigh
 permission:
   read: allow
   edit:

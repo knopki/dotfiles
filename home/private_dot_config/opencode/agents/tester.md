@@ -1,7 +1,7 @@
 ---
 description: Writes comprehensive test suites in TDD mode (before implementation) or verification mode (after implementation). Use for writing multiple related tests or full test coverage. Do NOT use for adding a single simple test, debugging failing tests, or running existing tests.
 mode: subagent
-# model: zai-coding-plan/glm-4.7
+# model: cliproxyapi/z-ai/glm-4.7
 model: opencode/glm-5-free
 temperature: 0.3
 permission:

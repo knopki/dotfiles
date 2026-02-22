@@ -1,7 +1,7 @@
 ---
 description: 'Contextual grep for codebases. Answers "Where is X?", "Which file has Y?", "Find the code that does Z". Fire multiple in parallel for broad searches. Specify thoroughness: "quick" for basic, "medium" for moderate, "very thorough" for comprehensive analysis.'
 mode: subagent
-model: zai-coding-plan/glm-4.7
+model: cliproxyapi/glm-4.7
 temperature: 0.1
 permission:
   bash: deny

@@ -1,8 +1,9 @@
 ---
 description: A designer-turned-developer who crafts stunning UI/UX even without design mockups. Code may be a bit messy, but the visual output is always fire.
 mode: subagent
-#model: zai-coding-plan/glm-4.7
-model: openrouter/google/gemini-3-flash-preview
+#model: cliproxyapi/z-ai/glm-4.7
+#model: cliproxyapi/openai/gpt-5.3-codex
+model: cliproxyapi/google/gemini-3-flash-preview
 temperature: 0.1
 permission:
   read: allow

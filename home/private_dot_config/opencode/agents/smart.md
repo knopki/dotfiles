@@ -1,12 +1,12 @@
 ---
 description: Intelligent agent that understands user intent and chooses the right approach - whether to plan, ask for clarification, or build directly. Use for tasks where the best workflow isn't immediately obvious.
 mode: primary
-#model: zai-coding-plan/glm-4.7
-#model: openrouter/google/gemini-3-flash-preview
-#model: google/gemini-3-flash-preview
-#model: google/gemini-3-pro-preview
-model: openai/gpt-5.3-codex
-temperature: 0.3
+#model: cliproxyapi/z-ai/glm-4.7
+#model: cliproxyapi/google/gemini-3-flash-preview
+#model: cliproxyapi/google/gemini-3.1-pro-preview
+model: cliproxyapi/openai/gpt-5.3-codex
+reasoningEffort: xhigh
+temperature: 0.1
 permission:
   read: allow
   edit: allow
