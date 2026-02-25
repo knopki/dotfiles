@@ -1,11 +1,12 @@
 ---
 description: Expert technical advisor with deep reasoning for architecture decisions, code analysis, and engineering guidance.
 mode: subagent
-#model: cliproxyapi/z-ai/glm-4.7
-#model: cliproxyapi/google/gemini-3.1-pro-preview
-#model: cliproxyapi/google/gemini-3-flash-preview
+model: cliproxyapi/google/gemini-3.1-pro-preview
 #model: cliproxyapi/openai/gpt-5.2-pro
-model: openai/gpt-5.3-codex
+#model: cliproxyapi/openai/gpt-5.2
+#model: cliproxyapi/openai/gpt-5.3-codex
+#model: cliproxyapi/google/gemini-3-flash-preview
+#model: cliproxyapi/z-ai/glm-4.7
 temperature: 0.3
 reasoningEffort: xhigh
 permission:

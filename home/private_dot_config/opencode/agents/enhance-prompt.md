@@ -1,8 +1,8 @@
 ---
 description: AI agent prompt enhancer
 mode: primary
-# model: cliproxyapi/z-ai/glm-4.7
-model: opencode/glm-5-free
+model: cliproxyapi/openai/gpt-5.2
+#model: cliproxyapi/z-ai/glm-4.7
 temperature: 0.3
 permission:
   read: deny

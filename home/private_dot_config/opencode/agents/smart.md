@@ -1,11 +1,12 @@
 ---
 description: Intelligent agent that understands user intent and chooses the right approach - whether to plan, ask for clarification, or build directly. Use for tasks where the best workflow isn't immediately obvious.
 mode: primary
-#model: cliproxyapi/z-ai/glm-4.7
-#model: cliproxyapi/google/gemini-3-flash-preview
+model: cliproxyapi/openai/gpt-5.2
 #model: cliproxyapi/google/gemini-3.1-pro-preview
-model: cliproxyapi/openai/gpt-5.3-codex
-reasoningEffort: xhigh
+#model: cliproxyapi/openai/gpt-5.3-codex
+#model: cliproxyapi/google/gemini-3-flash-preview
+#model: cliproxyapi/z-ai/glm-4.7
+reasoningEffort: high
 temperature: 0.1
 permission:
   read: allow
@@ -31,16 +32,16 @@ permission:
     doc-coauthoring: allow
     git-advanced-workflows: allow
     legacy-code-safety: allow
-    openspec-apply-change: allow
-    openspec-archive-change: allow
-    openspec-bulk-archive-change: allow
-    openspec-continue-change: allow
-    openspec-explore: allow
-    openspec-ff-change: allow
-    openspec-new-change: allow
-    openspec-onboard: deny
-    openspec-verify-change: allow
-    openspec-sync-specs: allow
+    #openspec-apply-change: allow
+    #openspec-archive-change: allow
+    #openspec-bulk-archive-change: allow
+    #openspec-continue-change: allow
+    #openspec-explore: allow
+    #openspec-ff-change: allow
+    #openspec-new-change: allow
+    #openspec-onboard: deny
+    #openspec-verify-change: allow
+    #openspec-sync-specs: allow
     performance-optimization: allow
     professional-honesty: allow
     proof-of-work: allow

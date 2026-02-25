@@ -1,13 +1,11 @@
 {
     "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
-    // Enable or disable the plugin
     "enabled": true,
-    // Enable debug logging to ~/.config/opencode/logs/dcp/
     "debug": false,
     // Notification display: "off", "minimal", or "detailed"
     "pruneNotification": "detailed",
     // Notification type: "chat" (in-conversation) or "toast" (system toast)
-    "pruneNotificationType": "chat",
+    "pruneNotificationType": "toast",
     // Slash commands configuration
     "commands": {
         "enabled": true,
@@ -17,19 +15,19 @@
     // Manual mode: disables autonomous context management,
     // tools only run when explicitly triggered via /dcp commands
     "manualMode": {
-        "enabled": false,
+        "enabled": true,
         // When true, automatic strategies (deduplication, supersedeWrites, purgeErrors)
         // still run even in manual mode
-        "automaticStrategies": true,
+        "automaticStrategies": false,
     },
     // Protect from pruning for <turns> message turns past tool invocation
     "turnProtection": {
-        "enabled": false,
-        "turns": 4,
+        "enabled": true,
+        "turns": 10,
     },
     // Protect file operations from pruning via glob patterns
     // Patterns match tool parameters.filePath (e.g. read/write/edit)
-    "protectedFilePatterns": [],
+    "protectedFilePatterns": [".opencode", "openspec"],
     // LLM-driven context pruning tools
     "tools": {
         // Shared settings for all prune tools
@@ -56,14 +54,14 @@
             // Permission mode: "allow" (no prompt), "ask" (prompt), "deny" (tool not registered)
             "permission": "allow",
             // Show distillation content as an ignored message notification
-            "showDistillation": false,
+            "showDistillation": true,
         },
         // Collapses a range of conversation content into a single summary
         "compress": {
             // Permission mode: "deny" (tool not registered), "ask" (prompt), "allow" (no prompt)
-            "permission": "deny",
+            "permission": "allow",
             // Show summary content as an ignored message notification
-            "showCompression": false,
+            "showCompression": true,
         },
         // Removes tool content from context without preservation (for completed tasks or noise)
         "prune": {
@@ -87,7 +85,7 @@
         "purgeErrors": {
             "enabled": true,
             // Number of turns before errored tool inputs are pruned
-            "turns": 4,
+            "turns": 10,
             // Additional tools to protect from pruning
             "protectedTools": ["skill", "task", "webfetch"],
         },

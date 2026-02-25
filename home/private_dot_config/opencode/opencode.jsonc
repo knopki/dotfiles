@@ -3,7 +3,7 @@
 
   "plugin": [
     // "@simonwjackson/opencode-direnv@v2025.1211.9",
-    "@tarquinen/opencode-dcp@2.1.3",
+    "@tarquinen/opencode-dcp@2.1.7",
     "@franlol/opencode-md-table-formatter@0.0.3",
     "opencode-plugin-preload-skills@1.8.0",
   ],

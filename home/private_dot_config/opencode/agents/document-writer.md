@@ -1,8 +1,9 @@
 ---
 description: A technical writer who crafts clear, comprehensive documentation. Specializes in README files, API docs, architecture docs, and user guides. MUST BE USED when executing documentation tasks from ai-todo list plans.
 mode: subagent
-# model: cliproxyapi/z-ai/glm-4.7
-model: opencode/glm-5-free
+model: cliproxyapi/z-ai/glm-4.7
+#model: cliproxyapi/openai/gpt-5.2
+#model: cliproxyapi/google/gemini-3-flash-preview
 temperature: 0.1
 permission:
   read: allow

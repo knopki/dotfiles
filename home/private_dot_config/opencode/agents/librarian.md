@@ -1,8 +1,9 @@
 ---
 description: Specialized codebase understanding agent for multi-repository analysis, searching remote codebases, retrieving official documentation, and finding implementation examples using GitHub CLI, Context7, and Web Search. MUST BE USED when users ask to look up code in remote repositories, explain library internals, or find usage examples in open source.
 mode: subagent
-# model: cliproxyapi/z-ai/glm-4.7
-model: opencode/glm-5-free
+model: cliproxyapi/z-ai/glm-4.7
+#model: cliproxyapi/openai/gpt-5.2
+#model: cliproxyapi/google/gemini-3-flash-preview
 temperature: 0.1
 permission:
   bash: deny

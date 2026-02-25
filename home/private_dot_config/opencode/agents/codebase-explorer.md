@@ -1,7 +1,9 @@
 ---
 description: 'Contextual grep for codebases. Answers "Where is X?", "Which file has Y?", "Find the code that does Z". Fire multiple in parallel for broad searches. Specify thoroughness: "quick" for basic, "medium" for moderate, "very thorough" for comprehensive analysis.'
 mode: subagent
-model: cliproxyapi/glm-4.7
+model: cliproxyapi/z-ai/glm-4.7
+#model: cliproxyapi/google/gemini-3-flash-preview
+#model: cliproxyapi/openai/gpt-5.3-codex
 temperature: 0.1
 permission:
   bash: deny
