@@ -26,28 +26,46 @@ prepend_path() {
 	esac
 }
 
+# Only for interactive bash
+case $- in
+*i*) ;;
+*) return ;;
+esac
+
+# Must be a real terminal (helps avoid odd non-tty interactive contexts)
+[[ -t 0 && -t 1 ]] || return
+
 #
 # Run fish shell
-# If fish command is present
-# if parent shell is not shell,
-# if execution string not set (like bash -c),
-# if shell level 1,
-# or, started by tmux,
-# or, started by devenv,
-# Pass login option to fish shell
 #
-if command -v fish 2>/dev/null 1>&2; then
-	PARENT_PS=$(ps --no-header --pid=$PPID --format=comm)
-	if [[ "${PARENT_PS}" != "fish" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 ]]; then
-		shopt -q login_shell && exec fish --login || exec fish
-	fi
-	if [[ "${PARENT_PS}" == "tmux: server" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 2 ]]; then
+
+__maybe_exec_fish() {
+	# Fish must exist
+	command -v fish >/dev/null 2>&1 || return 1
+
+	# Avoid loops / double-runs
+	[[ -n "${__AUTO_FISH_DONE-}" ]] && return 1
+	export __AUTO_FISH_DONE=1
+
+	# Don't interfere with `bash -c ...`
+	[[ -z "${BASH_EXECUTION_STRING-}" ]] || return 1
+
+	# Don't switch if we are already fish
+	[[ -n "${FISH_VERSION-}" ]] && return 1
+
+	# Optional: manual override to stay in bash
+	[[ -n "${NO_FISH-}" ]] && return 1
+
+	# Exec fish (login iff current bash is login)
+	if shopt -q login_shell; then
 		exec fish --login
+	else
+		exec fish
 	fi
-	if [[ -z "${DEVENV_ROOT+x}" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 3 ]]; then
-		exec fish --login
-	fi
-fi
+}
+
+# Try to switch early; if it doesn't happen, continue bash init normally.
+__maybe_exec_fish
 
 #
 # Environment variables
@@ -65,33 +83,27 @@ export EDITOR=${EDITOR:-hx}
 source "$XDG_CONFIG_HOME/user-dirs.dirs"
 
 # fzf init
-# Install fzf hoot if all:
-#  - shell is interactive
+# Install fzf hook if all:
 #  - fzf command is present
-if [ -n "$PS1" ] &&
-	command -v fzf 2>/dev/null 1>&2; then
+if command -v fzf 2>/dev/null 1>&2; then
 	eval "$(fzf --bash)"
 fi
 
 # Atuin init
 # Install atuin hook if all:
-#  - shell is interactive
 #  - atuin command is present
 #  - atuin is configured
-if [ -n "$PS1" ] &&
-	command -v atuin 2>/dev/null 1>&2 &&
+if command -v atuin 2>/dev/null 1>&2 &&
 	[[ -f "$XDG_CONFIG_HOME/atuin/config.toml" ]]; then
 	eval "$(atuin init bash --disable-up-arrow --disable-ctrl-r)"
 fi
 
 # Starship init
 # Install starship hook if all:
-#  - shell is interactive
 #  - terminal is not dumb
 #  - starship is available
 #  - starship config exists
-if [ -n "$PS1" ] &&
-	[[ $TERM != "dumb" ]] &&
+if [[ $TERM != "dumb" ]] &&
 	command -v starship 2>/dev/null 1>&2 &&
 	[[ -f "$XDG_CONFIG_HOME/starship.toml" ]]; then
 	eval "$(starship init bash)"
