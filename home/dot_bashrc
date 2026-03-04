@@ -40,21 +40,25 @@ esac
 #
 
 __maybe_exec_fish() {
-	# Fish must exist
-	command -v fish >/dev/null 2>&1 || return 1
-
 	# Avoid loops / double-runs
 	[[ -n "${__AUTO_FISH_DONE-}" ]] && return 1
-	export __AUTO_FISH_DONE=1
+	__AUTO_FISH_DONE=1
 
 	# Don't interfere with `bash -c ...`
 	[[ -z "${BASH_EXECUTION_STRING-}" ]] || return 1
 
-	# Don't switch if we are already fish
-	[[ -n "${FISH_VERSION-}" ]] && return 1
-
 	# Optional: manual override to stay in bash
 	[[ -n "${NO_FISH-}" ]] && return 1
+
+	# Fish must exist
+	command -v fish >/dev/null 2>&1 || return 1
+
+	# Fast path: immediate parent is fish
+	if [[ -r "/proc/$PPID/comm" ]]; then
+		local comm
+		IFS= read -r comm < "/proc/$PPID/comm" || true
+		[[ "$comm" == fish ]] && return 0
+	fi
 
 	# Exec fish (login iff current bash is login)
 	if shopt -q login_shell; then
