@@ -39,6 +39,19 @@ esac
 # Run fish shell
 #
 
+__is_devenv_wrapped_bash() {
+	# strong signal: env
+	[[ -n "${DEVENV_ROOT-}" ]] && return 0
+
+	# strong signal: cmdline contains .devenv rcfile
+	# /proc/$$/cmdline is NUL-separated
+	local cmdline
+	cmdline="$(tr '\0' ' ' </proc/$$/cmdline 2>/dev/null || true)"
+	[[ "$cmdline" == *"--rcfile "*".devenv/"* ]] && return 0
+
+	return 1
+}
+
 __maybe_exec_fish() {
 	# Avoid loops / double-runs
 	[[ -n "${__AUTO_FISH_DONE-}" ]] && return 1
@@ -53,11 +66,14 @@ __maybe_exec_fish() {
 	# Fish must exist
 	command -v fish >/dev/null 2>&1 || return 1
 
-	# Fast path: immediate parent is fish
+	# Parent is fish: normally we skip to avoid loops,
+	# but NOT if bash is devenv-wrapped.
 	if [[ -r "/proc/$PPID/comm" ]]; then
 		local comm
 		IFS= read -r comm < "/proc/$PPID/comm" || true
-		[[ "$comm" == fish ]] && return 0
+		if [[ "$comm" == fish ]] && ! __is_devenv_wrapped_bash; then
+			return 0
+		fi
 	fi
 
 	# Exec fish (login iff current bash is login)
