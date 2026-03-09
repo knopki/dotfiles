@@ -1,7 +1,8 @@
 ---
 description: Makes focused code changes to a single file. Use for parallel edits when changes are repetitive and isolated (e.g., updating imports across 5 files). Do NOT use when changes depend on each other, when editing fewer than 3 files, or for complex logic requiring deep context.
 mode: subagent
-model: cliproxyapi/openai/chatgpt-5.3-codex
+#model: cliproxyapi/openai/chatgpt-5.3-codex
+model: cliproxyapi/openai/chatgpt-5.3-codex-spark
 #model: cliproxyapi/google/gemini-3.1-pro-preview
 #model: cliproxyapi/z-ai/glm-4.7
 #model: cliproxyapi/google/gemini-3-flash-preview
