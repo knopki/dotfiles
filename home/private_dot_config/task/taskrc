@@ -47,7 +47,7 @@ report.triage.sort=urgency-
 report.today.description=Tasks for Today
 report.today.columns=id,project,priority,start.active,due,description.desc
 report.today.labels=ID,Proj,Pri,A,Due,Description
-report.today.filter=status:pending -BLOCKED -review and ( ( proj: and ( ( prio:H and due: ) or due.before:tomorrow or +respond or +today or +next or +wip or +yesterday) ) or +daytime )
+report.today.filter=status:pending -BLOCKED -review and ( proj.any: and ( ( prio:H and due: ) or due.before:tomorrow or +respond or +today or +next or +wip or +yesterday) )
 report.today.sort=urgency-
 
 report.active.description=Active Tasks
@@ -74,7 +74,6 @@ report._reviewed.description=Tasksh review report.  Adjust the filter to your ne
 report._reviewed.columns=uuid
 report._reviewed.sort=reviewed+,modified+
 report._reviewed.filter=( reviewed.none: or reviewed.before:now-6days ) and ( +PENDING or +WAITING )
-
 
 #
 # Contexts
