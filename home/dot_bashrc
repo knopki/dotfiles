@@ -76,6 +76,10 @@ __maybe_exec_fish() {
 		fi
 	fi
 
+	if [[ -f "./.devenv/shell-env.sh" ]]; then
+		source "./.devenv/shell-env.sh"
+	fi
+
 	# Exec fish (login iff current bash is login)
 	if shopt -q login_shell; then
 		exec fish --login
