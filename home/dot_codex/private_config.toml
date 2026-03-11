@@ -1,0 +1,13 @@
+personality = "pragmatic"
+model = "gpt-5.4"
+model_reasoning_effort = "medium"
+[projects."/home/sk/prj/media-viewer/media-viewer"]
+trust_level = "trusted"
+
+[projects."/home/sk/prj/ops/devops-at-home"]
+trust_level = "trusted"
+
+[features]
+use_linux_sandbox_bwrap = true
+multi_agent = true
+prevent_idle_sleep = true

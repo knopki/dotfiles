@@ -16,10 +16,8 @@
 {{- end }}
 
 {{- if not .isDevHost }}
+.codex
 .lima
-{{- end }}
-
-{{- if not .isDevHost }}
 .terraformrc
 {{- end }}
 
