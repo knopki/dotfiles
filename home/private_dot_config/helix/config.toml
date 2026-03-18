@@ -15,7 +15,7 @@ display-inlay-hints = true
 
 [editor.indent-guides]
 render = true
-character = "╎" # Some characters that work well: "▏", "┆", "┊", "⸽"
+character = "╎"  # Some characters that work well: "▏", "┆", "┊", "⸽"
 skip-levels = 1
 
 [editor.inline-diagnostics]
@@ -42,7 +42,7 @@ nbsp = "⍽"
 nnbsp = "␣"
 tab = "→"
 newline = "⏎"
-tabpad = "·" # Tabs will look like "→···" (depending on tab width)
+tabpad = "·"  # Tabs will look like "→···" (depending on tab width)
 
 # lazygit integration
 [keys.normal]

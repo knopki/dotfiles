@@ -1,9 +1,10 @@
 [language-server]
+biome = { command = "biome", args = ["lsp-proxy"] }
 fish-lsp = { command = "fish-lsp", args = [
   "start",
 ], environment = { fish_lsp_show_client_popups = "false" } }
 just-lsp = { command = "just-lsp" }
-systemd-lsp = { command = "systemd-language-server" }
+systemd-lsp = { command = "systemd-lsp" }
 ty = { command = "ty", args = ["server"] }
 
 [[language]]
@@ -15,13 +16,17 @@ formatter = { command = "awk", timeout = 5, args = [
 
 [[language]]
 name = "bash"
-indent = { tab-width = 4, unit = "\t" }
-formatter = { command = "shfmt" }
+indent = { tab-width = 2, unit = "\t" }
+formatter = { command = "shfmt", args = ["-s", "-i", "2"] }
 
 [[language]]
 name = "css"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "malva"] }
-language-servers = ["vscode-html-language-server", "tailwindcss-ls"]
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "buffer.css"
+] }
+language-servers = ["biome", "vscode-html-language-server", "tailwindcss-ls"]
 
 [[language]]
 name = "dockerfile"
@@ -36,34 +41,81 @@ name = "fish"
 language-servers = ["fish-lsp"]
 
 [[language]]
+name = "graphql"
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "buffer.graphql"
+] }
+language-servers = ["biome"]
+
+[[language]]
 name = "hcl"
 formatter = { command = "terraform", args = ["fmt", "-"] }
 
 [[language]]
 name = "html"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "markup"] }
-language-servers = ["vscode-html-language-server", "tailwindcss-ls"]
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "buffer.html"
+] }
+language-servers = ["vscode-html-language-server", "tailwindcss-ls", "biome"]
 
 [[language]]
 name = "javascript"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "typescript"] }
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "buffer.js"
+] }
+language-servers = [
+  { name = "typescript-language-server", except-features = ["format"] },
+  "biome"
+]
 
 [[language]]
 name = "jsx"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "typescript"] }
-language-servers = ["typescript-language-server", "tailwindcss-ls"]
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "buffer.jsx"
+] }
+language-servers = [
+  { name = "typescript-language-server", except-features = ["format"] },
+  "biome"
+]
 
 [[language]]
 name = "json"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "json"] }
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "buffer.json"
+] }
+language-servers = ["vscode-json-language-server", "biome"]
 
 [[language]]
 name = "jsonc"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "json"] }
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "buffer.jsonc"
+] }
+language-servers = ["vscode-json-language-server", "biome"]
+
+[[language]]
+name = "jsonc"
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "buffer.jsonc"
+] }
+language-servers = ["vscode-json-language-server", "biome"]
 
 [[language]]
 name = "just"
-formatter = { command = "just", args = ['--justfile', '/dev/stdin', '--dump'] }
+formatter = { command = "just", args = ["--justfile", "/dev/stdin", "--dump"] }
 language-servers = ["just-lsp"]
 
 [[language]]
@@ -114,8 +166,12 @@ language-servers = ["systemd-lsp"]
 
 [[language]]
 name = "svelte"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "markup"] }
-language-servers = ["svelteserver", "tailwindcss-ls"]
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "buffer.json"
+] }
+language-servers = ["svelteserver", "tailwindcss-ls", "biome"]
 
 [[language]]
 name = "tfvars"
@@ -123,24 +179,38 @@ formatter = { command = "terraform", args = ["fmt", "-"] }
 
 [[language]]
 name = "toml"
-formatter = { command = "taplo", args = ["fmt", "-"] }
-
-[language-server.taplo.config]
-config = {}
+language-servers = ["tombi", "taplo"]
 
 [[language]]
 name = "typescript"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "typescript"] }
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "buffer.ts"
+] }
+language-servers = [
+  { name = "typescript-language-server", except-features = ["format"] },
+  "biome"
+]
 
 [[language]]
 name = "tsx"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "typescript"] }
-language-servers = ["typescript-language-server", "tailwindcss-ls"]
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "buffer.tsx"
+] }
+language-servers = [
+  { name = "typescript-language-server", except-features = ["format"] },
+  "tailwindcss-ls",
+  "biome"
+]
 
 [[language]]
 name = "vue"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "markup"] }
-
-[[language]]
-name = "yaml"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "yaml"] }
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "buffer.vue"
+] }
+language-servers = ["biome"]
