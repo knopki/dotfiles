@@ -1,3 +1,24 @@
+prefix_rule(
+  pattern=[["python", "python3"]],
+  decision="forbidden",
+  justification="Use uv run instead of python to keep the interpreter and dependencies consistent.",
+)
+prefix_rule(
+  pattern=[["pip", "pip3"]],
+  decision="forbidden",
+  justification="Use uv add/remove for dependencies or uv run --with for one-off scripts instead of pip.",
+)
+prefix_rule(pattern=["nix", "flake", "check"], decision="allow")
 prefix_rule(pattern=["nix", "--extra-experimental-features", "nix-command flakes", "flake", "check"], decision="allow")
+prefix_rule(pattern=["nix", "build"], decision="allow")
 prefix_rule(pattern=["nix", "--extra-experimental-features", "nix-command flakes", "build"], decision="allow")
 prefix_rule(pattern=["nix-build"], decision="allow")
+prefix_rule(pattern=["nix", "build"], decision="allow")
+prefix_rule(pattern=["treefmt"], decision="allow")
+prefix_rule(pattern=["prek"], decision="allow")
+prefix_rule(pattern=["markdownlint"], decision="allow")
+prefix_rule(pattern=["devenv", "shell", "--", "markdownlint"], decision="allow")
+prefix_rule(pattern=["devenv", "shell", "--", "prek"], decision="allow")
+prefix_rule(pattern=["devenv", "shell", "--", "treefmt"], decision="allow")
+prefix_rule(pattern=["uv run --with freemcp python ./scripts/grep-app-mcp", "call-tool", "searchGitHub"], decision="allow")
+prefix_rule(pattern=["curl", "-L"], decision="allow")
