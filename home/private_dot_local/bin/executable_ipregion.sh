@@ -1733,7 +1733,7 @@ lookup_gemini_supported() {
   fi
 
   country_name=$(curl_wrapper GET "https://restcountries.com/v3.1/alpha/${country_code}?fields=name" \
-    --ip-version "$ip_version")
+    --ip-version "4")
   country_name=$(process_json "$country_name" ".name.common")
 
   if [[ -z "$country_name" || "$country_name" == "null" ]]; then
