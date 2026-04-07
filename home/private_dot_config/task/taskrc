@@ -33,7 +33,7 @@ include ./sync
 
 report.next.columns=id,project,priority,due,start.active,entry.age,description.desc
 report.next.labels=ID,Proj,Pri,Due,A,Age,Description
-report.next.filter=status:pending limit:page -BLOCKED -delegated
+report.next.filter=status:pending limit:page -BLOCKED -delegated limit:25
 
 report.ready.columns=id,project,priority,due,start.active,entry.age,description
 report.ready.labels=ID,Proj,Pri,Due,A,Age,Description
@@ -41,29 +41,29 @@ report.ready.labels=ID,Proj,Pri,Due,A,Age,Description
 report.triage.description=Personal - To-Do
 report.triage.columns=id,priority,start.active,due,description.desc
 report.triage.labels=ID,Pri,A,Due,Description
-report.triage.filter=( proj: or proj:personal ) ( due.before:tomorrow or due: ) status:pending -WAITING -idea
+report.triage.filter=( proj: or proj:personal ) ( due.before:tomorrow or due: ) status:pending -WAITING limit:25
 report.triage.sort=urgency-
 
 report.today.description=Tasks for Today
 report.today.columns=id,project,priority,start.active,due,description.desc
 report.today.labels=ID,Proj,Pri,A,Due,Description
-report.today.filter=status:pending -BLOCKED -review and ( proj.any: and ( ( prio:H and due: ) or due.before:tomorrow or +respond or +today or +next or +wip or +yesterday) )
+report.today.filter=status:pending -BLOCKED -review and ( proj.any: and ( ( prio:H and due: ) or due.before:tomorrow or +respond or +today or +next or +wip or +yesterday) ) limit:25
 report.today.sort=urgency-
 
 report.active.description=Active Tasks
 report.active.columns=id,description.desc,tags
 report.active.labels=ID,Description,Tags
-report.active.filter=status:pending +ACTIVE
+report.active.filter=status:pending +ACTIVE limit:25
 report.active.sort=urgency-
 
 report.inbox.columns=id,start.age,entry.age,priority,tags,description
 report.inbox.description=Inbox
-report.inbox.filter=-PROJECT status:pending limit:page
+report.inbox.filter=-PROJECT status:pending limit:25
 report.inbox.labels=ID,Active,Age,P,Tag,Description
 
 report.delegated.columns=id,description,start.age,depends,priority,project,recur,scheduled.countdown,due.relative,until.remaining
 report.delegated.labels=ID,Description,Active,Deps,P,Project,Recur,S,Due,Until
-report.delegated.filter=status:pending -BLOCKED +delegated
+report.delegated.filter=status:pending -BLOCKED +delegated limit:25
 report.delegated.sort=urgency-
 report.delegated.description=Delegated tasks
 
