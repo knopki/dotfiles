@@ -1,2 +1,4 @@
 cache=~/.cache/npm
 prefix=~/.local/share/npm
+min-release-age=7 # days
+ignore-scripts=true
