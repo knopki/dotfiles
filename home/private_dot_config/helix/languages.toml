@@ -23,6 +23,7 @@ formatter = { command = "shfmt", args = ["-s", "-i", "2"] }
 name = "css"
 formatter = { command = "biome", args = [
   "format",
+  "--indent-style=space",
   "--stdin-file-path",
   "buffer.css"
 ] }
@@ -44,6 +45,7 @@ language-servers = ["fish-lsp"]
 name = "graphql"
 formatter = { command = "biome", args = [
   "format",
+  "--indent-style=space",
   "--stdin-file-path",
   "buffer.graphql"
 ] }
@@ -57,6 +59,7 @@ formatter = { command = "terraform", args = ["fmt", "-"] }
 name = "html"
 formatter = { command = "biome", args = [
   "format",
+  "--indent-style=space",
   "--stdin-file-path",
   "buffer.html"
 ] }
@@ -66,6 +69,7 @@ language-servers = ["vscode-html-language-server", "tailwindcss-ls", "biome"]
 name = "javascript"
 formatter = { command = "biome", args = [
   "format",
+  "--indent-style=space",
   "--stdin-file-path",
   "buffer.js"
 ] }
@@ -78,6 +82,7 @@ language-servers = [
 name = "jsx"
 formatter = { command = "biome", args = [
   "format",
+  "--indent-style=space",
   "--stdin-file-path",
   "buffer.jsx"
 ] }
@@ -90,6 +95,8 @@ language-servers = [
 name = "json"
 formatter = { command = "biome", args = [
   "format",
+  "--indent-style=space",
+  "--indent-width=2",
   "--stdin-file-path",
   "buffer.json"
 ] }
@@ -99,6 +106,8 @@ language-servers = ["vscode-json-language-server", "biome"]
 name = "jsonc"
 formatter = { command = "biome", args = [
   "format",
+  "--indent-style=space",
+  "--indent-width=2",
   "--stdin-file-path",
   "buffer.jsonc"
 ] }
@@ -108,6 +117,8 @@ language-servers = ["vscode-json-language-server", "biome"]
 name = "jsonc"
 formatter = { command = "biome", args = [
   "format",
+  "--indent-style=space",
+  "--indent-width=2",
   "--stdin-file-path",
   "buffer.jsonc"
 ] }
@@ -168,6 +179,7 @@ language-servers = ["systemd-lsp"]
 name = "svelte"
 formatter = { command = "biome", args = [
   "format",
+  "--indent-style=space",
   "--stdin-file-path",
   "buffer.json"
 ] }
@@ -185,6 +197,7 @@ language-servers = ["tombi", "taplo"]
 name = "typescript"
 formatter = { command = "biome", args = [
   "format",
+  "--indent-style=space",
   "--stdin-file-path",
   "buffer.ts"
 ] }
@@ -197,6 +210,7 @@ language-servers = [
 name = "tsx"
 formatter = { command = "biome", args = [
   "format",
+  "--indent-style=space",
   "--stdin-file-path",
   "buffer.tsx"
 ] }
@@ -210,6 +224,7 @@ language-servers = [
 name = "vue"
 formatter = { command = "biome", args = [
   "format",
+  "--indent-style=space",
   "--stdin-file-path",
   "buffer.vue"
 ] }
