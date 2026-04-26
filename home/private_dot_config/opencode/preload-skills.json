@@ -22,25 +22,20 @@
     ".sh": ["bash-defensive-patterns"]
   },
   "agentSkills": {
-    "smart": ["continuity-ledger", "professional-honesty", "boy-scout-rule"],
+    "smart": [],
     "oracle": [
-      "continuity-ledger",
       "architecture-design",
       "architecture-patterns",
       "architecture-decision-records"
     ],
-    "codebase-explorer": ["continuity-ledger"],
-    "librarian": ["continuity-ledger"],
-    "implementer": [
-      "continuity-ledger",
-      "boy-scout-rule",
-      "legacy-code-safety"
-    ],
-    "ux": ["continuity-ledger"],
-    "debugger": ["continuity-ledger", "debuging-strategies"],
-    "tester": ["continuity-ledger"],
-    "reviewer": ["continuity-ledger", "code-review-excellence"],
-    "document-writer": ["continuity-ledger"]
+    "codebase-explorer": [],
+    "librarian": [],
+    "implementer": [],
+    "ux": [],
+    "debugger": ["debuging-strategies"],
+    "tester": [],
+    "reviewer": ["code-review-excellence"],
+    "document-writer": []
   },
   "pathPatterns": {
     "src/api/**": [],

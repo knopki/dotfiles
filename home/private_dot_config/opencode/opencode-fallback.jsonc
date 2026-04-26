@@ -1,0 +1,44 @@
+{
+  // Master switch — set to false to disable the plugin entirely.
+  // Default: true
+  "enabled": true,
+
+  // HTTP status codes that trigger a fallback to the next model.
+  // Default: [429, 500, 502, 503, 504]
+  "retry_on_errors": [429, 500, 502, 503, 504],
+
+  // Extra regex patterns matched case-insensitively against error messages.
+  // These add to the built-in patterns (rate limit, quota exceeded, etc.).
+  // Each string is compiled as a regex. Invalid patterns are silently skipped.
+  // Default: []
+  // Example: ["billing\\s+suspended", "entity was not found"]
+  "retryable_error_patterns": [],
+
+  // Maximum number of fallback models to try before giving up.
+  // Default: 10
+  "max_fallback_attempts": 10,
+
+  // How long (seconds) a failed model stays in cooldown before it can be
+  // used again. During cooldown the model is skipped in the chain.
+  // Default: 60
+  "cooldown_seconds": 60,
+
+  // Time-to-first-token timeout in seconds. If the model produces no output
+  // within this window it is aborted and the next fallback is tried.
+  // Once the model starts streaming the timeout is cancelled — streaming
+  // models are never interrupted.
+  // Set to 0 to disable timeouts entirely.
+  // Default: 30
+  "timeout_seconds": 30,
+
+  // Show a toast notification in the UI when the plugin switches models
+  // or exhausts the fallback chain.
+  // Default: true
+  "notify_on_fallback": true,
+
+  // Global fallback chain. Used by agents that don't define their own
+  // fallback_models in opencode.json.
+  // Accepts a string (single model) or an array of strings.
+  // Default: []
+  "fallback_models": []
+}

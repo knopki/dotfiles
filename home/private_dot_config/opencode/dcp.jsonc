@@ -1,93 +1,123 @@
 {
-    "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
+  "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
+  "enabled": true,
+  "debug": false,
+  // Notification display: "off", "minimal", or "detailed"
+  "pruneNotification": "detailed",
+  // Notification type: "chat" (in-conversation) or "toast" (system toast)
+  "pruneNotificationType": "chat",
+  // Slash commands configuration
+  "commands": {
     "enabled": true,
-    "debug": false,
-    // Notification display: "off", "minimal", or "detailed"
-    "pruneNotification": "detailed",
-    // Notification type: "chat" (in-conversation) or "toast" (system toast)
-    "pruneNotificationType": "toast",
-    // Slash commands configuration
-    "commands": {
-        "enabled": true,
-        // Additional tools to protect from pruning via commands (e.g., /dcp sweep)
-        "protectedTools": [],
+    // Additional tools to protect from pruning via commands (e.g., /dcp sweep)
+    "protectedTools": []
+  },
+  // Manual mode: disables autonomous context management,
+  // tools only run when explicitly triggered via /dcp commands
+  "manualMode": {
+    "enabled": true,
+    // When true, automatic strategies (deduplication, supersedeWrites, purgeErrors)
+    // still run even in manual mode
+    "automaticStrategies": false
+  },
+  // Protect from pruning for <turns> message turns past tool invocation
+  "turnProtection": {
+    "enabled": true,
+    "turns": 10
+  },
+  // Experimental settings
+  "experimental": {
+    // Allow DCP processing in subagent sessions
+    "allowSubAgents": false,
+    // Enable user-editable prompt overrides under dcp-prompts directories
+    // When false (default), prompt override files/directories are ignored
+    "customPrompts": false
+  },
+
+  // Protect file operations from pruning via glob patterns
+  // Patterns match tool parameters.filePath (e.g. read/write/edit)
+  "protectedFilePatterns": [".opencode", "openspec"],
+
+  // Unified context compression tool and behavior settings
+  "compress": {
+    // Compression mode: "range" (compress spans into block summaries)
+    // or experimental "message" (compress individual raw messages)
+    "mode": "range",
+    // Permission mode: "allow" (no prompt), "ask" (prompt), "deny" (tool not registered)
+    "permission": "allow",
+    // Show compression content in a chat notification
+    "showCompression": false,
+    // Let active summary tokens extend the effective maxContextLimit
+    "summaryBuffer": true,
+    // Soft upper threshold: above this, DCP keeps injecting strong
+    // compression nudges (based on nudgeFrequency), so compression is
+    // much more likely. Accepts: number or "X%" of model context window.
+    "maxContextLimit": 120000,
+    // Soft lower threshold for reminder nudges: below this, turn/iteration
+    // reminders are off (compression less likely). At/above this, reminders
+    // are on. Accepts: number or "X%" of model context window.
+    "minContextLimit": 100000,
+    // Optional per-model override for maxContextLimit by providerID/modelID.
+    // If present, this wins over the global maxContextLimit.
+    // Accepts: number or "X%".
+    // Example:
+    "modelMaxLimits": {
+      "minimax/MiniMax-M2.5": 190000,
+      "minimax/MiniMax-M2.7": 190000,
+      "moonshotai/kimi-k2.6": 200000,
+      "openai/gpt-5.4": 200000,
+      "openai/gpt-5.4-mini": 128000,
+      "openai/gpt-5.5": 200000,
+      "openrouter/google/gemini-3-flash-preview": 500000,
+      "openrouter/google/gemini-3.1-pro-preview": 500000,
+      "zai/glm-4.7": 120000,
+      "zai/glm-5-turbo": 120000,
+      "zai/glm-5.1": 120000
     },
-    // Manual mode: disables autonomous context management,
-    // tools only run when explicitly triggered via /dcp commands
-    "manualMode": {
-        "enabled": true,
-        // When true, automatic strategies (deduplication, supersedeWrites, purgeErrors)
-        // still run even in manual mode
-        "automaticStrategies": false,
+    // Optional per-model override for minContextLimit.
+    // If present, this wins over the global minContextLimit.
+    "modelMinLimits": {
+      "minimax/MiniMax-M2.5": 100000,
+      "minimax/MiniMax-M2.7": 100000,
+      "moonshotai/kimi-k2.6": 100000,
+      "openai/gpt-5.4": 150000,
+      "openai/gpt-5.4-mini": 64000,
+      "openai/gpt-5.5": 150000,
+      "openrouter/google/gemini-3-flash-preview": 200000,
+      "openrouter/google/gemini-3.1-pro-preview": 200000,
+      "zai/glm-4.7": 100000,
+      "zai/glm-5-turbo": 100000,
+      "zai/glm-5.1": 100000
     },
-    // Protect from pruning for <turns> message turns past tool invocation
-    "turnProtection": {
-        "enabled": true,
-        "turns": 10,
+    // How often the context-limit nudge fires (1 = every fetch, 5 = every 5th)
+    "nudgeFrequency": 5,
+    // Start adding compression reminders after this many
+    // messages have happened since the last user message
+    "iterationNudgeThreshold": 15,
+    // Controls how likely compression is after user messages
+    // ("strong" = more likely, "soft" = less likely)
+    "nudgeForce": "soft",
+    // Tool names whose completed outputs are appended to the compression
+    "protectedTools": [],
+    // Preserve your messages during compression.
+    // Warning: large copy-pasted prompts will never be compressed away
+    "protectUserMessages": false
+  },
+  // Automatic pruning strategies
+  "strategies": {
+    // Remove duplicate tool calls (same tool with same arguments)
+    "deduplication": {
+      "enabled": true,
+      // Additional tools to protect from pruning
+      "protectedTools": []
     },
-    // Protect file operations from pruning via glob patterns
-    // Patterns match tool parameters.filePath (e.g. read/write/edit)
-    "protectedFilePatterns": [".opencode", "openspec"],
-    // LLM-driven context pruning tools
-    "tools": {
-        // Shared settings for all prune tools
-        "settings": {
-            // Nudge the LLM to use prune tools (every <nudgeFrequency> tool results)
-            "nudgeEnabled": true,
-            "nudgeFrequency": 10,
-            // Token limit at which the model compresses session context
-            // to keep the model in the "smart zone" (not a hard limit)
-            // Accepts: number or "X%" (percentage of model's context window)
-            "contextLimit": 100000,
-            // Optional per-model overrides by exact providerID/modelID
-            // Accepts: number or "X%"
-            // Example:
-            // "modelLimits": {
-            //     "openai/gpt-5": 120000,
-            //     "anthropic/claude-3-7-sonnet": "80%"
-            // },
-            // Additional tools to protect from pruning
-            "protectedTools": [],
-        },
-        // Distills key findings into preserved knowledge before removing raw content
-        "distill": {
-            // Permission mode: "allow" (no prompt), "ask" (prompt), "deny" (tool not registered)
-            "permission": "allow",
-            // Show distillation content as an ignored message notification
-            "showDistillation": true,
-        },
-        // Collapses a range of conversation content into a single summary
-        "compress": {
-            // Permission mode: "deny" (tool not registered), "ask" (prompt), "allow" (no prompt)
-            "permission": "allow",
-            // Show summary content as an ignored message notification
-            "showCompression": true,
-        },
-        // Removes tool content from context without preservation (for completed tasks or noise)
-        "prune": {
-            // Permission mode: "allow" (no prompt), "ask" (prompt), "deny" (tool not registered)
-            "permission": "allow",
-        },
-    },
-    // Automatic pruning strategies
-    "strategies": {
-        // Remove duplicate tool calls (same tool with same arguments)
-        "deduplication": {
-            "enabled": true,
-            // Additional tools to protect from pruning
-            "protectedTools": ["task", "skill"],
-        },
-        // Prune write tool inputs when the file has been subsequently read
-        "supersedeWrites": {
-            "enabled": true,
-        },
-        // Prune tool inputs for errored tools after X turns
-        "purgeErrors": {
-            "enabled": true,
-            // Number of turns before errored tool inputs are pruned
-            "turns": 10,
-            // Additional tools to protect from pruning
-            "protectedTools": ["skill", "task", "webfetch"],
-        },
-    },
+    // Prune tool inputs for errored tools after X turns
+    "purgeErrors": {
+      "enabled": true,
+      // Number of turns before errored tool inputs are pruned
+      "turns": 10,
+      // Additional tools to protect from pruning
+      "protectedTools": []
+    }
+  }
 }
