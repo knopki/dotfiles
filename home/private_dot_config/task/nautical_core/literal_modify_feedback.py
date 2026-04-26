@@ -1,0 +1,567 @@
+from __future__ import annotations
+
+
+def _pretty_basis_cp(task: dict, meta: dict, *, parse_cp_duration) -> str:
+    td = parse_cp_duration(task.get("cp") or "")
+    if not td:
+        return "end + cp"
+    secs = int(td.total_seconds())
+    rem = secs % 86400
+    if rem != 0:
+        hrs, rems = divmod(rem, 3600)
+        mins, _ = divmod(rems, 60)
+        hint = []
+        if hrs:
+            hint.append(f"{hrs}h")
+        if mins:
+            hint.append(f"{mins}m")
+        rem_s = " ".join(hint) if hint else f"{rem}s"
+        return f"Exact end + cp (remainder {rem_s} vs 24h)"
+    return "Preserve wall clock (period is multiple of 24h)"
+
+
+def _pretty_basis_anchor(meta: dict, task: dict, *, parse_dt_any, fmt_dt_local) -> str:
+    mode = (meta.get("mode") or "skip").lower()
+    basis = meta.get("basis")
+    missed = int(meta.get("missed_count") or 0)
+    target_field = "scheduled" if meta.get("target_field") == "scheduled" else "due"
+    due0 = parse_dt_any(task.get("due") or task.get("scheduled"))
+    due_s = fmt_dt_local(due0) if due0 else f"(no {target_field})"
+    if mode == "skip":
+        return "SKIP — Next anchor after completion (multi-time: between slots counts as previous slot)"
+    if mode == "flex":
+        return f"FLEX — Skip missed up to now; next after completion ({missed} missed since {due_s})"
+    if basis == "missed":
+        return f"ALL — Backfilling first of {missed} missed anchor(s) since {due_s}"
+    if basis == "after_due":
+        return f"ALL (no missed) — Next anchor after original {target_field}"
+    return "ALL — Next anchor after completion"
+
+
+def _anchor_summary(task: dict) -> tuple[str, str]:
+    anchor_expr = str(task.get("anchor") or "").strip()
+    anchor_file = str(task.get("anchor_file") or "").strip()
+    if anchor_expr and anchor_file:
+        return "Sources", "anchor + anchor_file"
+    if anchor_file:
+        return "Anchor file", anchor_file
+    return "Pattern", anchor_expr
+
+
+def _anchor_mode_tag(new: dict) -> str:
+    return {
+        "skip": "[cyan]SKIP[/]",
+        "all": "[yellow]ALL[/]",
+        "flex": "[magenta]FLEX[/]",
+    }.get((new.get("anchor_mode") or "skip").lower(), "[cyan]SKIP[/]")
+
+
+def _anchor_feedback_natural(core, task: dict, dnf) -> str:
+    natural = core.describe_anchor_dnf(dnf, task) if dnf else ''
+    omit_raw, omit_natural, _omit_warns, omit_file = _anchor_omit_summary(core, task)
+    omit_parts = []
+    if omit_raw:
+        omit_parts.append(omit_natural or omit_raw)
+    if omit_file:
+        omit_parts.append(f"Dates from {omit_file.split('@', 1)[0]}")
+    if omit_parts and (task.get('anchor_mode') or 'skip').lower() == 'skip':
+        tail = '; skip missed anchors'
+        if natural.endswith(tail):
+            natural = natural[:-len(tail)]
+        natural = natural.rstrip()
+        return f"{natural}; skip {' and '.join(omit_parts)}" if natural else f"skip {' and '.join(omit_parts)}"
+    return natural
+
+
+def _anchor_omit_summary(core, task: dict) -> tuple[str | None, str | None, list[str], str | None]:
+    omit_raw = str(task.get("omit") or "").strip()
+    omit_file = str(task.get("omit_file") or "").strip() or None
+    if not omit_raw:
+        return None, None, [], omit_file
+    try:
+        anchor_omit = core._import_sibling("anchor_omit")
+        omit_norm = anchor_omit.normalize_omit_expr(omit_raw)
+    except Exception:
+        omit_norm = omit_raw
+    try:
+        natural = core.describe_anchor_expr(omit_norm)
+    except Exception:
+        natural = None
+    try:
+        _fatal, warns = core.lint_anchor_expr(omit_norm)
+    except Exception:
+        warns = []
+    return omit_raw, natural, list(warns or []), omit_file
+
+
+def _append_wait_sched_feedback_rows(fb: list[tuple[str, object]], *, debug_wait_sched: bool, last_wait_sched_debug) -> None:
+    if not (debug_wait_sched and last_wait_sched_debug):
+        return
+    for field in ("scheduled", "wait"):
+        data = last_wait_sched_debug.get(field)
+        if not data:
+            continue
+        if data.get("ok"):
+            fb.append(
+                (
+                    f"{field} carry",
+                    f"Δ {data.get('delta')}  parent {data.get('parent_val')} vs {data.get('parent_anchor')}  →  child {data.get('child_val')}",
+                )
+            )
+        else:
+            fb.append(
+                (
+                    f"{field} carry",
+                    f"[yellow]skip[/] ({data.get('reason')})  parent {data.get('parent_val')} vs {data.get('parent_anchor')}",
+                )
+            )
+
+
+def _append_sanitised_fields_row(fb: list[tuple[str, object]], stripped_attrs: list[str]) -> None:
+    if stripped_attrs:
+        fb.append(("Sanitised", f"Removed unknown fields: {', '.join(sorted(stripped_attrs))}"))
+
+
+def _append_integrity_warnings_row(fb: list[tuple[str, object]], integrity_warnings: list[str] | None) -> None:
+    if not integrity_warnings:
+        return
+    warn_list = integrity_warnings[:4]
+    if len(integrity_warnings) > 4:
+        warn_list.append(f"...and {len(integrity_warnings) - 4} more")
+    fb.append(("Integrity", "\n".join(warn_list)))
+
+
+def _append_link_status_rows(
+    fb: list[tuple[str, object]],
+    cap_no: int | None,
+    base_no: int,
+    *,
+    second_to_last_text: str,
+) -> None:
+    if not cap_no:
+        return
+    if base_no >= cap_no:
+        fb.append(("Link status", "[bold red]This was the last link[/]"))
+    elif base_no == cap_no - 1:
+        fb.append(("Link status", second_to_last_text))
+    fb.append(("Links left", f"{max(0, cap_no - base_no)} left (cap #{cap_no})"))
+
+
+def _append_final_rows(
+    fb: list[tuple[str, object]],
+    finals: list[tuple[str, object]],
+    now_utc,
+    *,
+    fmt_dt_local,
+    human_delta,
+) -> None:
+    for label, when in finals:
+        fb.append((f"Final ({label})", f"{fmt_dt_local(when)}  ({human_delta(now_utc, when, True)})"))
+
+
+def _display_mode_name(core) -> str:
+    mode = str(getattr(core, "PANEL_MODE", "rich") or "rich").strip().lower()
+    if mode == "quiet":
+        return "text"
+    return mode
+
+
+def _rows_are_notable(rows: list[tuple[str, object]]) -> bool:
+    notable_labels = {"integrity", "warning", "error", "link status", "links left", "sanitised", "intent"}
+    for k, v in rows:
+        if k is None:
+            continue
+        lk = str(k).strip().lower()
+        if lk in notable_labels or lk.startswith("final"):
+            return True
+        if lk == "basis":
+            return True
+        if lk == "analytics" and str(v or "").strip():
+            return True
+    return False
+
+
+def _build_text_feedback(
+    core,
+    *,
+    kind: str,
+    parent_short: str,
+    next_no: int,
+    child_short: str,
+    summary: str | None,
+    preview_line: str,
+    cap_no: int | None,
+    base_no: int,
+    until_dt,
+    extra_line: str | None = None,
+) -> str:
+    text = core.strip_rich_markup(preview_line or "")
+    parts = [part.strip() for part in text.split("·") if part and part.strip()]
+    lead = parts[0] if parts else ""
+    due_part = parts[2] if len(parts) >= 3 else ""
+    status_tail = lead.split(" ", 1)[1].strip() if " " in lead else ""
+    status_tail = status_tail.replace(" next ⚓︎", "").replace(" next ⚓", "").replace(" next ⛓", "").strip()
+
+    line1 = f"[bold white]{parent_short}[/]"
+    if status_tail:
+        status_tokens = status_tail.split(" ", 1)
+        first = status_tokens[0]
+        rest = status_tokens[1].strip() if len(status_tokens) > 1 else ""
+        if first:
+            line1 += f" [green]{first}[/]"
+        if rest:
+            line1 += f" [dim]{rest}[/]"
+
+    due_part = due_part.replace("(due in ", "in ").replace("(due overdue by ", "overdue by ").replace("(", "").replace(")", "").strip()
+    accent = "cyan" if str(kind or "").lower() == "anchor" else "yellow"
+    due_style = "red" if due_part.startswith("overdue by ") else "bright_white"
+    line2 = f"[bold {accent}]Next[/] [{accent}]" + ("⚓︎" if str(kind or "").lower() == "anchor" else "⛓") + f"[/] [bold]{'#' + str(next_no)}[/] [bold white]{child_short}[/]"
+    if due_part:
+        line2 += f" [dim]→[/] [{due_style}]{due_part}[/]"
+
+    lines = [line1, line2]
+    if summary and str(summary).strip():
+        if str(kind or "").lower() == "anchor":
+            label = "Sources" if str(summary).strip() == "anchor + anchor_file" else "Pattern"
+            summary_text = f"[bold cyan]{label}:[/] [white]{summary.split(':', 1)[1].strip() if ':' in summary else summary}[/]"
+        else:
+            summary_text = f"[bold yellow]Period:[/] [white]{summary.split(':', 1)[1].strip() if ':' in summary else summary}[/]"
+        lines.append(summary_text)
+    if extra_line and str(extra_line).strip():
+        lines.append(extra_line)
+
+    limit_parts = []
+    if cap_no:
+        limit_parts.append(f"[yellow]cap #{cap_no}[/]")
+        limit_parts.append(f"[dim]{max(0, cap_no - base_no)} left[/]")
+    if until_dt:
+        limit_parts.append(f"[dim]until[/] [white]{core.fmt_dt_local(until_dt)}[/]")
+    if limit_parts:
+        lines.append("[bold yellow]Limits:[/] " + " [dim]·[/] ".join(limit_parts))
+    return "\n".join(line for line in lines if line)
+
+
+def _compact_feedback_rows(rows: list[tuple[str, object]], *, include_timeline: bool = True) -> list[tuple[str, object]]:
+    keep_labels = {
+        "pattern",
+        "period",
+        "next",
+        "natural",
+        "basis",
+        "root",
+        "link status",
+        "links left",
+        "integrity",
+        "timeline",
+        "sanitised",
+        "warning",
+        "error",
+        "intent",
+    }
+    out: list[tuple[str, object]] = []
+    for k, v in rows:
+        if k is None:
+            continue
+        lk = str(k).strip().lower()
+        if lk == "timeline" and not include_timeline:
+            continue
+        if lk in keep_labels or lk.startswith("final"):
+            out.append((k, v))
+    return out
+
+
+def render_anchor_completion_feedback(
+    *,
+    feedback,
+    services,
+) -> None:
+    core = services.core
+    debug_wait_sched = services.debug_wait_sched
+    last_wait_sched_debug = services.last_wait_sched_debug
+    diag_enabled = services.diag_enabled
+    format_root_and_age = services.format_root_and_age
+    append_next_wait_sched_rows = services.append_next_wait_sched_rows
+    timeline_lines = services.timeline_lines
+    show_timeline_gaps = services.show_timeline_gaps
+    root_uuid_from = services.root_uuid_from
+    short = services.short
+    format_next_anchor_rows = services.format_next_anchor_rows
+    format_line_preview = services.format_line_preview
+    panel_line = services.panel_line
+    text_line = services.text_line
+    panel = services.panel
+    chain_color_per_chain = services.chain_color_per_chain
+    chain_colour_for_task = services.chain_colour_for_task
+    strip_quotes = services.strip_quotes
+    human_delta = services.human_delta
+    anchor_label, anchor_value = _anchor_summary(feedback.new)
+    expr_str = strip_quotes(anchor_value)
+    omit_raw, omit_natural, omit_warns, omit_file = _anchor_omit_summary(core, feedback.new)
+    mode_tag = _anchor_mode_tag(feedback.new)
+    title = f"⚓︎ Next anchor  #{feedback.next_no}  {feedback.parent_short} → {feedback.child_short}"
+    mode = _display_mode_name(core)
+    if mode in {"line", "minimal"}:
+        line = format_line_preview(
+            feedback.base_no,
+            feedback.new,
+            feedback.child_due,
+            feedback.child_short,
+            feedback.now_utc,
+            child_field=("scheduled" if feedback.meta.get("target_field") == "scheduled" else "due"),
+            cap_no=feedback.cap_no,
+            until_dt=feedback.until_dt,
+            until_no=feedback.until_cap_no,
+            kind="anchor",
+            minimal=(mode == "minimal"),
+        )
+        title_style = chain_colour_for_task(feedback.new, "anchor") if chain_color_per_chain else None
+        panel_line(title, line, kind="preview_anchor", border_style=title_style, title_style=title_style, markup_body=True)
+        return
+    if mode == "text":
+        line = format_line_preview(
+            feedback.base_no,
+            feedback.new,
+            feedback.child_due,
+            feedback.child_short,
+            feedback.now_utc,
+            child_field=("scheduled" if feedback.meta.get("target_field") == "scheduled" else "due"),
+            cap_no=feedback.cap_no,
+            until_dt=feedback.until_dt,
+            until_no=feedback.until_cap_no,
+            kind="anchor",
+            minimal=False,
+        )
+        text_line(
+            _build_text_feedback(
+                core,
+                kind="anchor",
+                parent_short=feedback.parent_short,
+                next_no=feedback.next_no,
+                child_short=feedback.child_short,
+                summary=f"{anchor_label}: {expr_str}  {mode_tag}",
+                preview_line=line,
+                cap_no=feedback.cap_no,
+                base_no=feedback.base_no,
+                until_dt=feedback.until_dt,
+                extra_line=(f"[bold cyan]Except:[/] [white]{omit_natural or omit_raw}[/]" if omit_raw else (f"[bold cyan]Omit file:[/] [white]{omit_file}[/]" if omit_file else None)),
+            ),
+            kind="preview_anchor",
+            markup_body=True,
+        )
+        return
+
+    fb = []
+    fb.append((anchor_label, f"{expr_str}  {mode_tag}"))
+    if omit_raw:
+        fb.append(("Omit", omit_raw))
+        if omit_natural:
+            fb.append(("Except", omit_natural))
+        for warn in omit_warns:
+            fb.append(("Warning", warn))
+    if omit_file:
+        fb.append(("Omit file", omit_file))
+    delta = core.humanize_delta(feedback.now_utc, feedback.child_due, use_months_days=core.expr_has_m_or_y(feedback.dnf))
+    fb.append(("Next", f"#{feedback.next_no} → {core.fmt_dt_local(feedback.child_due)}  ({delta})"))
+    if anchor_label == "Sources":
+        file_expr = str(feedback.new.get("anchor_file") or "").strip()
+        natural_expr = _anchor_feedback_natural(core, feedback.new, feedback.dnf)
+        fb.append(("Pattern", str(feedback.new.get("anchor") or "").strip()))
+        fb.append(("Anchor file", file_expr))
+        if natural_expr:
+            fb.append(("Natural", natural_expr))
+        else:
+            fb.append(("Natural", f"Dates from {file_expr.split('@', 1)[0]}"))
+    elif feedback.dnf:
+        fb.append(("Natural", _anchor_feedback_natural(core, feedback.new, feedback.dnf)))
+    elif anchor_label == "Anchor file":
+        fb.append(("Natural", f"Dates from {expr_str.split('@', 1)[0]}"))
+    basis_text = _pretty_basis_anchor(feedback.meta, feedback.new, parse_dt_any=core.parse_dt_any, fmt_dt_local=core.fmt_dt_local)
+    if basis_text != "SKIP — Next anchor after completion (multi-time: between slots counts as previous slot)":
+        fb.append(("Basis", basis_text))
+    fb.append(("Root", format_root_and_age(feedback.new, feedback.now_utc)))
+
+    _append_wait_sched_feedback_rows(fb, debug_wait_sched=debug_wait_sched, last_wait_sched_debug=last_wait_sched_debug)
+    _append_sanitised_fields_row(fb, feedback.stripped_attrs)
+    if feedback.analytics_advice:
+        fb.append(("Analytics", feedback.analytics_advice))
+    _append_integrity_warnings_row(fb, feedback.integrity_warnings)
+    append_next_wait_sched_rows(
+        fb,
+        feedback.child,
+        feedback.child_due,
+        anchor_field=("scheduled" if feedback.meta.get("target_field") == "scheduled" else "due"),
+    )
+
+    _append_link_status_rows(
+        fb,
+        feedback.cap_no,
+        feedback.base_no,
+        second_to_last_text="[yellow]This was the second-to-last link[/]",
+    )
+    _append_final_rows(fb, feedback.finals, feedback.now_utc, fmt_dt_local=core.fmt_dt_local, human_delta=human_delta)
+    if feedback.deferred_spawn and diag_enabled and feedback.spawn_intent_id:
+        fb.append(("Intent", feedback.spawn_intent_id))
+
+    if mode not in {"line", "minimal", "text"}:
+        tl = timeline_lines(
+            "anchor",
+            feedback.new,
+            feedback.child_due,
+            feedback.child_short,
+            feedback.dnf,
+            next_count=3,
+            cap_no=feedback.cap_no,
+            cur_no=feedback.base_no,
+            show_gaps=show_timeline_gaps,
+        )
+        if tl:
+            fb.append(("Timeline", "\n".join(tl)))
+    if feedback.dnf and "rand" in expr_str.lower():
+        fb.append(("Rand", f"[dim]Deterministic picks seeded by root {short(root_uuid_from(feedback.new))}[/]"))
+
+    fb = format_next_anchor_rows(fb)
+    if mode == "compact":
+        fb = _compact_feedback_rows(fb, include_timeline=True)
+    if chain_color_per_chain:
+        chain_colour = chain_colour_for_task(feedback.new, "anchor")
+        panel(
+            title,
+            fb,
+            kind="preview_anchor",
+            border_style=chain_colour,
+            title_style=chain_colour,
+        )
+        return
+    panel(title, fb, kind="preview_anchor")
+
+
+def render_cp_completion_feedback(
+    *,
+    feedback,
+    services,
+) -> None:
+    core = services.core
+    diag_enabled = services.diag_enabled
+    format_root_and_age = services.format_root_and_age
+    append_next_wait_sched_rows = services.append_next_wait_sched_rows
+    timeline_lines = services.timeline_lines
+    show_timeline_gaps = services.show_timeline_gaps
+    format_next_cp_rows = services.format_next_cp_rows
+    format_line_preview = services.format_line_preview
+    panel_line = services.panel_line
+    text_line = services.text_line
+    panel = services.panel
+    chain_color_per_chain = services.chain_color_per_chain
+    chain_colour_for_task = services.chain_colour_for_task
+    human_delta = services.human_delta
+    title = f"⛓ Next link  #{feedback.next_no}  {feedback.parent_short} → {feedback.child_short}"
+    mode = _display_mode_name(core)
+    if mode in {"line", "minimal"}:
+        line = format_line_preview(
+            feedback.base_no,
+            feedback.new,
+            feedback.child_due,
+            feedback.child_short,
+            feedback.now_utc,
+            child_field=("scheduled" if feedback.meta.get("target_field") == "scheduled" else "due"),
+            cap_no=feedback.cap_no,
+            until_dt=feedback.until_dt,
+            until_no=feedback.until_cap_no,
+            kind="cp",
+            minimal=(mode == "minimal"),
+        )
+        title_style = chain_colour_for_task(feedback.new, "cp") if chain_color_per_chain else None
+        panel_line(title, line, kind="preview_cp", border_style=title_style, title_style=title_style, markup_body=True)
+        return
+    if mode == "text":
+        line = format_line_preview(
+            feedback.base_no,
+            feedback.new,
+            feedback.child_due,
+            feedback.child_short,
+            feedback.now_utc,
+            child_field=("scheduled" if feedback.meta.get("target_field") == "scheduled" else "due"),
+            cap_no=feedback.cap_no,
+            until_dt=feedback.until_dt,
+            until_no=feedback.until_cap_no,
+            kind="cp",
+            minimal=False,
+        )
+        text_line(
+            _build_text_feedback(
+                core,
+                kind="cp",
+                parent_short=feedback.parent_short,
+                next_no=feedback.next_no,
+                child_short=feedback.child_short,
+                summary=f"Period: {feedback.new.get('cp')}",
+                preview_line=line,
+                cap_no=feedback.cap_no,
+                base_no=feedback.base_no,
+                until_dt=feedback.until_dt,
+            ),
+            kind="preview_cp",
+            markup_body=True,
+        )
+        return
+
+    fb = []
+    delta = core.humanize_delta(feedback.now_utc, feedback.child_due, use_months_days=False)
+    fb.append(("Period", feedback.new.get("cp")))
+    fb.append(("Next", f"#{feedback.next_no} → {core.fmt_dt_local(feedback.child_due)}  ({delta})"))
+    basis_text = _pretty_basis_cp(feedback.new, feedback.meta, parse_cp_duration=core.parse_cp_duration)
+    if basis_text != "Preserve wall clock (period is multiple of 24h)":
+        fb.append(("Basis", basis_text))
+    fb.append(("Root", format_root_and_age(feedback.new, feedback.now_utc)))
+    if feedback.analytics_advice:
+        fb.append(("Analytics", feedback.analytics_advice))
+    _append_integrity_warnings_row(fb, feedback.integrity_warnings)
+    append_next_wait_sched_rows(
+        fb,
+        feedback.child,
+        feedback.child_due,
+        anchor_field=("scheduled" if feedback.meta.get("target_field") == "scheduled" else "due"),
+    )
+
+    if feedback.cap_no:
+        _append_link_status_rows(
+            fb,
+            feedback.cap_no,
+            feedback.base_no,
+            second_to_last_text="[yellow]Next link is the last in the chain.[/]",
+        )
+
+    _append_final_rows(fb, feedback.finals, feedback.now_utc, fmt_dt_local=core.fmt_dt_local, human_delta=human_delta)
+
+    if feedback.deferred_spawn and diag_enabled and feedback.spawn_intent_id:
+        fb.append(("Intent", feedback.spawn_intent_id))
+
+    if mode not in {"line", "minimal", "text"}:
+        tl = timeline_lines(
+            "cp",
+            feedback.new,
+            feedback.child_due,
+            feedback.child_short,
+            None,
+            next_count=3,
+            cap_no=feedback.cap_no,
+            cur_no=feedback.base_no,
+            show_gaps=show_timeline_gaps,
+        )
+        if tl:
+            fb.append(("Timeline", "\n".join(tl)))
+
+    fb = format_next_cp_rows(fb)
+    if mode == "compact":
+        fb = _compact_feedback_rows(fb, include_timeline=True)
+    if chain_color_per_chain:
+        chain_colour = chain_colour_for_task(feedback.new, "cp")
+        panel(
+            title,
+            fb,
+            kind="preview_cp",
+            border_style=chain_colour,
+            title_style=chain_colour,
+        )
+    else:
+        panel(title, fb, kind="preview_cp")
