@@ -1,5 +1,5 @@
 personality = "pragmatic"
-model = "google/gemini-3-flash-preview"
+model = "gpt-5.4"
 model_reasoning_effort = "medium"
 model_provider = "proxy"
 model_catalog_json = "./custom_models.json"
@@ -10,8 +10,7 @@ allow_login_shell = false # optional hardening: disallow login shells for shell-
 
 [model_providers.proxy]
 name = "Proxy"
-base_url = "http://127.0.0.1:8317/v1"
-#env_key = "OPENAI_API_KEY"
+base_url = "http://localhost:8317/v1"
 
 [features]
 use_linux_sandbox_bwrap = true
@@ -23,12 +22,17 @@ smart_approvals = true
 unified_exec = true
 undo = true
 
+[agents]
+max_threads = 6
+max_depth = 2
+job_max_runtime_seconds = 1800
+
 [sandbox_workspace_write]
 network_access = true
 web_search = "cached"  # default
 exclude_tmpdir_env_var = false  # Allow $TMPDIR
 exclude_slash_tmp = false       # Allow /tmp
-writable_roots = ["/home/sk/.cache/uv"]
+writable_roots = ["~/.cache/uv", "~/.local/share/rtk"]
 approval_policy = { granular = {
   sandbox_approval = false,
   rules = true,
@@ -48,24 +52,30 @@ sandbox_mode    = "read-only"
 [tui]
 status_line = ["model-with-reasoning", "context-remaining", "current-dir", "context-used", "five-hour-limit", "weekly-limit"]
 
-[projects."/home/sk/prj/media-viewer/media-viewer"]
-trust_level = "trusted"
-
-[projects."/home/sk/prj/ops/devops-at-home"]
-trust_level = "trusted"
-
-[projects."/home/sk/prj/wrk-tld4-esdd/esdd-online"]
-trust_level = "trusted"
-
 [projects."/home/sk/prj/media-viewer"]
+trust_level = "trusted"
+
+[projects."/home/sk/prj/ops"]
+trust_level = "trusted"
+
+[projects."/home/sk/prj/wrk-tld4-esdd"]
 trust_level = "trusted"
 
 [projects."/home/sk/.hermes"]
 trust_level = "trusted"
 
-[projects."/home/sk/prj/agent-skills/agent-skills"]
+[projects."/home/sk/prj/agent-skills"]
 trust_level = "trusted"
 
 [projects."/home/sk/.codex"]
 trust_level = "trusted"
 
+[projects."/home/sk/prj/media-viewer/media-viewer"]
+trust_level = "trusted"
+
+[projects."/home/sk/.config/opencode"]
+trust_level = "trusted"
+
+[mcp_servers.gitnexus]
+command = "npx"
+args = ["-y", "gitnexus@latest", "mcp"]
