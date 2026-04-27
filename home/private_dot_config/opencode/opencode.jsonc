@@ -9,7 +9,7 @@
     // "opencode-pty@0.3.2",
     "@franlol/opencode-md-table-formatter@0.0.6",
     // "opencode-plugin-preload-skills@1.8.0"
-    "opencode-runtime-fallback@0.2.4",
+    "opencode-runtime-fallback@0.2.4"
   ],
 
   "instructions": [
@@ -17,19 +17,19 @@
     "AGENTS.local.md",
     "AGENTS.override.md",
     "CLAUDE.md",
-    "CONTRIBUTING.md",
+    "CONTRIBUTING.md"
   ],
 
   "mcp": {
     "gitnexus": {
       "type": "local",
-      "command": ["gitnexus", "mcp"],
-    },
+      "command": ["gitnexus", "mcp"]
+    }
     // TODO: Chrome DevTools MCP
   },
 
   "tools": {
-    "gitnexus_*": false,
+    "gitnexus_*": false
   },
 
   "permission": {
@@ -49,11 +49,14 @@
       "find * -fprintf*": "allow",
       "find * -ok*": "ask",
       "git *": "ask",
+      "git add *": "allow",
       "git branch*": "ask",
+      "git commit -m *": "allow",
       "git diff*": "allow",
       "git log*": "allow",
       "git show*": "allow",
       "git status*": "allow",
+      "grace *": "allow",
       "grep *": "allow",
       "head *": "allow",
       "less *": "allow",
@@ -81,13 +84,13 @@
       "uv run ruff *": "allow",
       "wc *": "allow",
       "which*": "allow",
-      "./scripts/grep-app-mcp call-tool searchGitHu *": "allow",
+      "./scripts/grep-app-mcp call-tool searchGitHu *": "allow"
     },
     "read": {
       "*": "allow",
       ".env": "deny",
       ".env.*": "deny",
-      ".envrc": "deny",
+      ".envrc": "deny"
     },
     "edit": "deny",
     "grep": "allow",
@@ -104,22 +107,22 @@
     // whitelist only
     "skill": "deny",
     // no subagents
-    "task": "deny",
+    "task": "deny"
   },
 
   "disabled_providers": ["anthropic", "gemini", "openai-codex"],
   "provider": {
     "minimax": {
       "options": {
-        "baseURL": "http://localhost:8317/v1",
+        "baseURL": "http://localhost:8317/v1"
       },
-      "whitelist": ["MiniMax-M2.5", "MiniMax-M2.7"],
+      "whitelist": ["MiniMax-M2.5", "MiniMax-M2.7"]
     },
     "moonshotai": {
       "options": {
-        "baseURL": "http://localhost:8317/v1",
+        "baseURL": "http://localhost:8317/v1"
       },
-      "whitelist": ["kimi-k2.6"],
+      "whitelist": ["kimi-k2.6"]
     },
     // "omniroute": {
     //   "options": {
@@ -139,13 +142,13 @@
     // },
     "openai": {
       "options": {
-        "baseURL": "http://localhost:8317/v1",
+        "baseURL": "http://localhost:8317/v1"
       },
-      "whitelist": ["gpt-5.4-pro", "gpt-5.4", "gpt-5.4-mini", "gpt-5.5"],
+      "whitelist": ["gpt-5.4-pro", "gpt-5.4", "gpt-5.4-mini", "gpt-5.5"]
     },
     "openrouter": {
       "options": {
-        "baseURL": "http://localhost:8317/v1",
+        "baseURL": "http://localhost:8317/v1"
       },
       "whitelist": [
         "anthropic/claude-opus-4.7",
@@ -156,21 +159,21 @@
         "google/gemini-3-flash-preview",
         "google/gemini-3.1-pro-preview",
         "google/gemini-3.1-flash-lite-preview",
-        "qwen/qwen3.6-plus",
-      ],
+        "qwen/qwen3.6-plus"
+      ]
     },
     "zai": {
       "options": {
-        "baseURL": "http://localhost:8317/v1",
+        "baseURL": "http://localhost:8317/v1"
       },
-      "whitelist": ["glm-5.1", "glm-5-turbo", "glm-4.7"],
-    },
+      "whitelist": ["glm-5.1", "glm-5-turbo", "glm-4.7"]
+    }
   },
 
   "compaction": {
     "auto": true,
     "prune": true,
-    "reserved": 10000,
+    "reserved": 10000
   },
 
   // default model if not set by agent
@@ -187,7 +190,7 @@
       "fallback_models": [
         "openai/gpt-5.4",
         "moonshotai/kimi-k2.6",
-        "zai/glm-5.1",
+        "zai/glm-5.1"
       ],
       "permission": {
         "edit": "allow",
@@ -206,18 +209,18 @@
           "find-docs": "allow",
           "gitnexus-*": "allow",
           "grep-app-cli": "allow",
-          "ui-ux-pro-max": "allow",
+          "ui-ux-pro-max": "allow"
         },
         "task": {
           "*": "deny",
           "general": "allow",
           "explore": "allow",
-          "build": "allow",
-        },
+          "build": "allow"
+        }
       },
       "tools": {
-        "gitnexus_*": true,
-      },
+        "gitnexus_*": true
+      }
     },
 
     // primary default planning agent (save as build but with plan message)
@@ -226,7 +229,7 @@
       "fallback_models": [
         "openai/gpt-5.4",
         "moonshotai/kimi-k2.6",
-        "zai/glm-5.1",
+        "zai/glm-5.1"
       ],
       "permission": {
         "bash": "ask",
@@ -246,17 +249,17 @@
           "find-docs": "allow",
           "gitnexus-*": "allow",
           "grep-app-cli": "allow",
-          "ui-ux-pro-max": "allow",
+          "ui-ux-pro-max": "allow"
         },
         "task": {
           "*": "deny",
-          "explore": "allow",
-        },
+          "explore": "allow"
+        }
       },
       "tools": {
         "pty_*": false,
-        "gitnexus_*": true,
-      },
+        "gitnexus_*": true
+      }
     },
 
     // General-purpose sub-agent and fast for researching complex questions and executing multi-step tasks
@@ -274,17 +277,17 @@
         "skill": {
           "find-docs": "allow",
           "gitnexus-*": "allow",
-          "grep-app-cli": "allow",
+          "grep-app-cli": "allow"
         },
         "task": {
           "*": "deny",
           "general": "allow",
-          "explore": "allow",
-        },
+          "explore": "allow"
+        }
       },
       "tools": {
-        "gitnexus_*": true,
-      },
+        "gitnexus_*": true
+      }
     },
 
     // Fast subagent specialized for exploring codebases
@@ -304,15 +307,15 @@
         "skill": {
           "find-docs": "allow",
           "gitnexus-exploring": "allow",
-          "gitnexus-impact-analysis": "allow",
+          "gitnexus-impact-analysis": "allow"
         },
-        "task": "deny",
+        "task": "deny"
       },
       "tools": {
         "pty_*": false,
-        "gitnexus_*": true,
-      },
-    },
+        "gitnexus_*": true
+      }
+    }
   },
 
   "watcher": {
@@ -321,11 +324,11 @@
       "dist/**",
       ".git/**",
       ".devenv/*",
-      ".direnv/*",
-    ],
+      ".direnv/*"
+    ]
   },
 
   "formatter": {},
 
-  "lsp": {},
+  "lsp": {}
 }

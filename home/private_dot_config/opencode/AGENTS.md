@@ -94,5 +94,25 @@
     <instruction>
     When work is complete, inform the user that changes are ready. Let them decide when to commit.
     </instruction>
+    <grace_exception>
+      <instruction>
+      GRACE workflows have a narrow exception to support long autonomous runs.
+      </instruction>
+      <instruction>
+      Only grace-controller may create commits during GRACE workflows without additional approval.
+      </instruction>
+      <instruction>
+      grace-module-implementer may create an implementation commit only when its execution packet explicitly sets commit_authorized: true.
+      </instruction>
+      <instruction>
+      grace-fixer, reviewers, and parallel GRACE workers never commit. In grace-multiagent-execute, grace-controller serializes all module and shared-artifact commits.
+      </instruction>
+      <instruction>
+      Stage exact files only. Never use git add ., git add -A, or git add --all.
+      </instruction>
+      <instruction>
+      Never push, pull, merge, rebase, checkout, reset, amend, force, --no-verify, or --no-gpg-sign unless the user explicitly requests it.
+      </instruction>
+    </grace_exception>
   </git_operations>
 </system_instruction>
