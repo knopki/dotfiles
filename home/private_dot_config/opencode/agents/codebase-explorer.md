@@ -1,10 +1,10 @@
 ---
 description: 'Contextual codebase search and structural discovery. Answers "Where is X?", "Which file has Y?", "Find the code that does Z", "How does X work?". Fire multiple searches in parallel for broad searches. Specify thoroughness: "quick", "medium", or "very thorough".'
 mode: subagent
-model: openai/gpt-5.4-mini
+model: minimax/MiniMax-M2.7
 fallback_models:
-  - minimax/MiniMax-M2.7
   - zai/glm-4.7
+  - openai/gpt-5.4-mini
 permission:
   bash: deny
   read: allow

@@ -21,12 +21,10 @@ permission:
   question: deny
   skill:
     grace-cli: allow
-    gitnexus-exploring: allow
-    gitnexus-impact-analysis: allow
   task:
     "*": deny
     codebase-explorer: allow
-  "gitnexus_*": allow
+  "gitnexus_*": deny
 ---
 
 <agent>
@@ -67,6 +65,7 @@ PASS - contract compliant, scope respected, and no escalation needed.
 or:
 
 FAIL - issues found:
+
 - Missing: [requirement] - [file:line]
 - Extra: [unrequested implementation] - [file:line]
 - Drift: [architectural or dependency mismatch] - [file:line]
@@ -74,6 +73,7 @@ FAIL - issues found:
 - Graph delta: [proposal mismatch] - [file:line]
 
 Also include:
+
 - Escalation: no / yes - reason
 
 Every issue must include a file and line reference.

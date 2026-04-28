@@ -1,10 +1,10 @@
 ---
 description: Specialized read-only research agent for open-source library questions, remote repository analysis, official documentation lookup, and implementation examples. MUST BE USED when users ask to inspect remote repositories, explain library internals, find source-backed behavior, or locate real usage examples in open source.
 mode: subagent
-model: openai/gpt-5.4-mini
+model: minimax/MiniMax-M2.7
 fallback_models:
-  - minimax/MiniMax-M2.7
   - zai/glm-4.7
+  - openai/gpt-5.4-mini
 permission:
   bash:
     "sh ./scripts/grep-app-mcp.sh *": allow

@@ -1,10 +1,11 @@
 ---
 description: Writes comprehensive test suites in TDD mode (before implementation) or verification mode (after implementation). Use for writing multiple related tests or full test coverage. Do NOT use for adding a single simple test, debugging failing tests, or running existing tests.
 mode: subagent
-model: openai/gpt-5.4-mini
+model: minimax/MiniMax-M2.7
 fallback_models:
-  - minimax/MiniMax-M2.7
+  - moonshotai/kimi-k2.6
   - google/gemini-3-flash-preview
+  - openai/gpt-5.4-mini
 permission:
   read: allow
   edit: allow

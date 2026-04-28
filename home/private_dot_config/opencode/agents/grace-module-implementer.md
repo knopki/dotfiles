@@ -1,12 +1,12 @@
 ---
 description: Implements exactly one GRACE module or explicitly bounded module slice from a controller execution packet. Use only from grace-controller.
 mode: subagent
-model: openai/gpt-5.5
+model: zai/glm-5.1
 fallback_models:
-  - openai/gpt-5.4
-  - zai/glm-5.1
   - moonshotai/kimi-k2.6
   - minimax/MiniMax-M2.7
+  - openai/gpt-5.5
+  - openai/gpt-5.4
   - openai/gpt-5.4-mini
   - google/gemini-3-flash-preview
 permission:
@@ -23,14 +23,11 @@ permission:
   question: deny
   skill:
     grace-cli: allow
-    gitnexus-exploring: allow
-    gitnexus-impact-analysis: allow
-    gitnexus-refactoring: allow
   task:
     "*": deny
     codebase-explorer: allow
     librarian: allow
-  "gitnexus_*": allow
+  "gitnexus_*": deny
 ---
 
 <agent>

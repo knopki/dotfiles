@@ -1,12 +1,11 @@
 ---
 description: Read-only GRACE reviewer for module-local verification strength, evidence quality, traces, logs, and verification-plan alignment. Use only from grace-controller.
 mode: subagent
-model: openai/gpt-5.4-mini
+model: minimax/MiniMax-M2.7
 fallback_models:
-  - openai/gpt-5.5
-  - openai/gpt-5.4
   - zai/glm-5.1
-  - minimax/MiniMax-M2.7
+  - moonshotai/kimi-k2.6
+  - openai/gpt-5.4-mini
 permission:
   read: allow
   edit: deny
@@ -21,13 +20,11 @@ permission:
   question: deny
   skill:
     grace-cli: allow
-    gitnexus-exploring: allow
-    gitnexus-impact-analysis: allow
   task:
     "*": deny
     codebase-explorer: allow
     librarian: allow
-  "gitnexus_*": allow
+  "gitnexus_*": deny
 ---
 
 <agent>
@@ -68,14 +65,16 @@ PASS - module-local verification is acceptable for this gate.
 or:
 
 FAIL - verification gaps:
+
 - Missing scenario: [description] - [file:line]
 - Weak assertion: [description] - [file:line]
 - Weak telemetry: [description] - [file:line]
 - Debuggability gap: [description] - [file:line]
 
 Also include:
+
 - required module-level follow-up tests
 - required wave-level follow-up checks
 - required phase-level follow-up checks
 - required telemetry or trace improvements
-</agent>
+  </agent>

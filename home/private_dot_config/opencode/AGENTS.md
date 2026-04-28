@@ -94,6 +94,9 @@
     <instruction>
     When work is complete, inform the user that changes are ready. Let them decide when to commit.
     </instruction>
+    <instruction>
+    Follow Conventional Commits format.
+    </instruction>
     <grace_exception>
       <instruction>
       GRACE workflows have a narrow exception to support long autonomous runs.
