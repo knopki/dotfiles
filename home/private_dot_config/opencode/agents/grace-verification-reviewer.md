@@ -1,11 +1,11 @@
 ---
 description: Read-only GRACE reviewer for module-local verification strength, evidence quality, traces, logs, and verification-plan alignment. Use only from grace-controller.
 mode: subagent
-model: minimax/MiniMax-M2.7
+model: opencode-go/deepseek-v4-flash
 fallback_models:
-  - zai/glm-5.1
-  - moonshotai/kimi-k2.6
-  - openai/gpt-5.4-mini
+  - ollama-cloud/deepseek-v4-flash
+  - deepseek/deepseek-v4-flash
+  - zhipuai-coding-plan/glm-5.1
 permission:
   read: allow
   edit: deny

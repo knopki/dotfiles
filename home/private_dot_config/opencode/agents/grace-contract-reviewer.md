@@ -1,12 +1,11 @@
 ---
 description: Read-only GRACE scoped gate reviewer for module contract compliance, semantic markup, imports, write scope, and graph delta accuracy. Use only from grace-controller.
 mode: subagent
-model: zai/glm-5.1
+model: zhipuai-coding-plan/glm-5.1
 fallback_models:
-  - openai/gpt-5.5
-  - openai/gpt-5.4
-  - moonshotai/kimi-k2.6
-  - minimax/MiniMax-M2.7
+  - opencode-go/deepseek-v4-pro
+  - ollama-cloud/deepseek-v4-pro
+  - deepseek/deepseek-v4-pro
 permission:
   read: allow
   edit: deny

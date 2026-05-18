@@ -1,15 +1,11 @@
 ---
 description: Pure primary orchestrator that classifies requests and delegates all work to specialized subagents. Use when you want smart routing without direct execution.
 mode: primary
-model: openai/gpt-5.5
+model: zhipuai-coding-plan/glm-5.1
 fallback_models:
-  - openai/gpt-5.4
-  - zai/glm-5.1
-  - moonshotai/kimi-k2.6
-  - minimax/MiniMax-M2.7
-  - openai/gpt-5.4-mini
-  - google/gemini-3-flash-preview
-reasoningEffort: high
+  - opencode-go/deepseek-v4-pro
+  - ollana-cloud/deepseek-v4-pro
+  - deepseek/deepseek-v4-flash
 permission:
   read: allow
   edit: deny
@@ -22,7 +18,11 @@ permission:
   webfetch: deny
   websearch: deny
   question: allow
-  skill: {}
+  skill:
+    openspec-apply-change: allow
+    openspec-archive-change: allow
+    openspec-explore: allow
+    openspec-propose: allow
   task:
     "*": deny
     architect: allow

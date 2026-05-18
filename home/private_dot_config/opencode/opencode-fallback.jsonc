@@ -29,7 +29,7 @@
   // models are never interrupted.
   // Set to 0 to disable timeouts entirely.
   // Default: 30
-  "timeout_seconds": 30,
+  "timeout_seconds": 600,
 
   // Show a toast notification in the UI when the plugin switches models
   // or exhausts the fallback chain.

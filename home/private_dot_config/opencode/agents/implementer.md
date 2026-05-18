@@ -1,14 +1,11 @@
 ---
 description: Makes focused code changes to a single file. Use for parallel edits when changes are repetitive and isolated (e.g., updating imports across 5 files). Do NOT use when changes depend on each other, when editing fewer than 3 files, or for complex logic requiring deep context.
 mode: subagent
-model: openai/gpt-5.5
+model: opencode-go/deepseek-v4-flash
 fallback_models:
-  - openai/gpt-5.4
-  - zai/glm-5.1
-  - moonshotai/kimi-k2.6
-  - minimax/MiniMax-M2.7
-  - openai/gpt-5.4-mini
-  - google/gemini-3-flash-preview
+  - ollama-cloud/deepseek-v4-flash
+  - deepseek/deepseek-v4-flash
+  - zhipuai-coding-plan/glm-5.1
 permission:
   read: allow
   edit: allow
@@ -26,6 +23,10 @@ permission:
     gitnexus-exploring: allow
     gitnexus-impact-analysis: allow
     gitnexus-refactoring: allow
+    openspec-apply-change: allow
+    openspec-archive-change: allow
+    openspec-explore: allow
+    openspec-propose: allow
   task:
     "*": deny
     "codebase-explorer": allow

@@ -1,11 +1,9 @@
 ---
 description: Analyze media files (PDFs, images, diagrams) that require interpretation beyond raw text. Extract specific requested information or produce a focused summary of visual/document content. Use when analyzed/extracted data is needed rather than literal file contents.
 mode: subagent
-model: google/gemini-3-flash-preview
+model: opencode/qwen3.6-plus
 fallback_models:
-  - openrouter/qwen/qwen3.6-plus
-  - openai/gpt-5.5
-  - openai/gpt-5.4
+  - ollama-cloud/gemini-3-flash-preview
 permission:
   bash: deny
   read: allow

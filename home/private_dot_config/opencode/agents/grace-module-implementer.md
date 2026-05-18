@@ -1,14 +1,11 @@
 ---
 description: Implements exactly one GRACE module or explicitly bounded module slice from a controller execution packet. Use only from grace-controller.
 mode: subagent
-model: zai/glm-5.1
+model: zhipuai-coding-plan/glm-5.1
 fallback_models:
-  - moonshotai/kimi-k2.6
-  - minimax/MiniMax-M2.7
-  - openai/gpt-5.5
-  - openai/gpt-5.4
-  - openai/gpt-5.4-mini
-  - google/gemini-3-flash-preview
+  - opencode-go/deepseek-v4-flash
+  - ollama-cloud/deepseek-v4-flash
+  - deepseek/deepseek-v4-flash
 permission:
   read: allow
   edit: allow

@@ -1,15 +1,11 @@
 ---
 description: Intelligent agent that understands user intent and chooses the right approach - whether to plan, ask for clarification, or build directly. Use for tasks where the best workflow isn't immediately obvious.
 mode: primary
-model: openai/gpt-5.5
+model: zhipuai-coding-plan/glm-5.1
 fallback_models:
-  - openai/gpt-5.4
-  - zai/glm-5.1
-  - moonshotai/kimi-k2.6
-  - minimax/MiniMax-M2.7
-  - openai/gpt-5.4-mini
-  - google/gemini-3-flash-preview
-reasoningEffort: high
+  - opencode-go/deepseek-v4-pro
+  - ollama-cloud/deepseek-v4-pro
+  - deepseek/deepseek-v4-pro
 permission:
   read: allow
   edit: allow
@@ -28,6 +24,10 @@ permission:
     gitnexus-exploring: allow
     gitnexus-impact-analysis: allow
     gitnexus-refactoring: allow
+    openspec-apply-change: allow
+    openspec-archive-change: allow
+    openspec-explore: allow
+    openspec-propose: allow
   task:
     "*": deny
     architect: allow

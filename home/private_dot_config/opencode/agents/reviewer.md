@@ -1,12 +1,11 @@
 ---
 description: Reviews code changes for correctness, maintainability, and best practices. Use proactively for significant code changes (new features, refactors, critical fixes) and before task completion. Do NOT use for trivial changes (typo fixes, formatting), work-in-progress code, or generated/boilerplate code.
 mode: subagent
-model: zai/glm-5.1
+model: zhipuai-coding-plan/glm-5.1
 fallback_models:
-  - openai/gpt-5.5
-  - openai/gpt-5.4
-  - moonshotai/kimi-k2.6
-  - minimax/MiniMax-M2.7
+  - opencode-go/deepseek-v4-pro
+  - ollama-cloud/deepseek-v4-pro
+  - deepseek/deepseek-v4-pro
 permission:
   bash:
     "echo *": allow
@@ -31,6 +30,7 @@ permission:
     gitnexus-impact-analysis: allow
     gitnexus-refactoring: allow
     gitnexus-pr-review: allow
+    openspec-explore: allow
   task:
     "*": deny
     "codebase-explorer": allow

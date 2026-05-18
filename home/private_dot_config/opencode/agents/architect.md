@@ -1,11 +1,11 @@
 ---
 description: Expert technical advisor with deep reasoning for architecture decisions, code analysis, and engineering guidance.
 mode: subagent
-model: openrouter/google-3.1-pro-preview
+model: opencode-go/qwen3.6-plus
 fallback_models:
-  - openai/gpt-5.5
-  - openai/gpt-5.4
-  - zai/glm-5.1
+  - opencode-go/deepseek-v4-pro
+  - ollama-cloud/deepseek-v4-pro
+  - deepseek/deepseek-v4-flash
 permission:
   read: allow
   edit: deny
@@ -23,6 +23,8 @@ permission:
     gitnexus-exploring: allow
     gitnexus-impact-analysis: allow
     gitnexus-refactoring: allow
+    openspec-explore: allow
+    openspec-propose: allow
   task:
     "*": deny
     "codebase-explorer": allow

@@ -1,10 +1,10 @@
 ---
 description: 'Contextual codebase search and structural discovery. Answers "Where is X?", "Which file has Y?", "Find the code that does Z", "How does X work?". Fire multiple searches in parallel for broad searches. Specify thoroughness: "quick", "medium", or "very thorough".'
 mode: subagent
-model: minimax/MiniMax-M2.7
+model: opencode-go/deepseek-v4-flash
 fallback_models:
-  - zai/glm-4.7
-  - openai/gpt-5.4-mini
+  - ollama-cloud/deepseek-v4-flash
+  - deepseek/deepseek-v4-flash
 permission:
   bash: deny
   read: allow
@@ -21,6 +21,7 @@ permission:
   skill:
     "gitnexus-exploring": allow
     "gitnexus-impact-analysis": allow
+    openspec-explore: allow
   task: deny
   "gitnexus_*": allow
 ---

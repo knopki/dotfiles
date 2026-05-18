@@ -1,14 +1,11 @@
 ---
 description: Primary controller for GRACE workflows. Use for GRACE projects, $grace-* skills, GRACE artifacts, execution packets, module waves, graph sync, verification planning, and GRACE-governed autonomous execution.
 mode: primary
-model: openai/gpt-5.5
+model: zhipuai-coding-plan/glm-5.1
 fallback_models:
-  - openai/gpt-5.4
-  - zai/glm-5.1
-  - moonshotai/kimi-k2.6
-  - minimax/MiniMax-M2.7
-  - openai/gpt-5.4-mini
-  - google/gemini-3-flash-preview
+  - opencode-go/deepseek-v4-pro
+  - ollama-cloud/deepseek-v4-pro
+  - deepseek/deepseek-v4-pro
 reasoningEffort: high
 permission:
   read: allow

@@ -1,12 +1,11 @@
 ---
 description: Deep error diagnosis and root cause analysis. Use when stuck on complex bugs after 2+ failed attempts, mysterious test failures, or errors requiring systematic investigation. Do NOT use for simple/obvious errors, syntax errors, or as first resort before attempting diagnosis yourself.
 mode: subagent
-model: openai/gpt-5.5
+model: opencode-go/deepseek-v4-pro
 fallback_models:
-  - "openai/gpt-5.4"
-  - "moonshotai/kimi-k2.6"
-  - "zai/glm-5.1"
-  - minimax/MiniMax-M2.7
+  - ollama-cloud/deepseek-v4-pro
+  - deepseek/deepseek-v4-pro
+  - opencode-go/qwen3.6-plus
 permission:
   read: allow
   edit: allow
@@ -24,6 +23,7 @@ permission:
     gitnexus-exploring: allow
     gitnexus-impact-analysis: allow
     gitnexus-refactoring: allow
+    openspec-explore: allow
   task:
     "*": deny
     "codebase-explorer": allow

@@ -1,13 +1,11 @@
 ---
 description: Repairs one GRACE failure packet inside an assigned module/write scope without changing architecture silently. Use only from grace-controller.
 mode: subagent
-model: openai/gpt-5.5
+model: zhipuai-coding-plan/glm-5.1
 fallback_models:
-  - openai/gpt-5.4
-  - zai/glm-5.1
-  - moonshotai/kimi-k2.6
-  - minimax/MiniMax-M2.7
-  - openai/gpt-5.4-mini
+  - opencode-go/deepseek-v4-pro
+  - ollama-code/deepseek-v4-pro
+  - deepseek/deepseek-v4-pro
 permission:
   read: allow
   edit: allow

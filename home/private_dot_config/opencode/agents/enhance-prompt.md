@@ -1,11 +1,10 @@
 ---
 description: AI agent prompt enhancer
 mode: primary
-model: openai/gpt-5.5
+model: opencode-go/deepseek-v4-pro
 fallback_models:
-  - "openai/gpt-5.4"
-  - "moonshotai/kimi-k2.6"
-  - "zai/glm-5.1"
+  - ollama-cloud/deepseek-v4-pro
+  - deepseek/deepseek-v4-pro
 permission:
   read: allow
   edit: allow

@@ -1,11 +1,11 @@
 ---
 description: A technical writer who crafts clear, comprehensive documentation. Specializes in README files, API docs, architecture docs, and user guides. MUST BE USED when executing documentation tasks from ai-todo list plans.
 mode: subagent
-model: openrouter/google/gemini-3-flash-preview
+model: opencode-go/deepseek-v4-flash
 fallback_models:
-  - openrouter/qwen/qwen3.6-plus
-  - openai/gpt-5.5
-  - openai/gpt-5.4
+  - ollama-cloud/deepseek-v4-flash
+  - deepseek/deepseek-v4-flash
+  - opencode-go/qwen3.6-plus
 permission:
   read: allow
   edit: allow
@@ -23,6 +23,7 @@ permission:
     doc-coauthoring: allow
     gitnexus-exploring: allow
     gitnexus-impact-analysis: allow
+    openspec-explore: allow
   task:
     "*": deny
     codebase-explorer: allow
