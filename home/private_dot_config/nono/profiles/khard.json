@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "name": "khard"
+  },
+  "groups": {},
+  "filesystem": {
+    "allow": ["$XDG_DATA_HOME/contacts"],
+    "read": ["$XDG_CONFIG_HOME/khard"],
+    "read_file": []
+  },
+  "environment": {
+    "allow_vars": ["XDG_*"]
+  }
+}

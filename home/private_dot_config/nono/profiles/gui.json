@@ -1,0 +1,55 @@
+{
+  "extends": ["gpu"],
+  "meta": {
+    "name": "gui"
+  },
+  "groups": {},
+  "filesystem": {
+    "allow": [
+      "/dev/dri",
+      "/dev/hugepages",
+      "$XDG_CACHE_HOME/fontconfig",
+      "$XDG_CACHE_HOME/mesa_shared_cache",
+      "$XDG_CACHE_HOME/mesa_shared_cache_db",
+      "$XDG_CACHE_HOME/nv",
+      "$XDG_CACHE_HOME/nvidia",
+      "$XDG_CACHE_HOME/radv_builtin_shareds",
+      "$XDG_CACHE_HOME/radv_builtin_shareds64"
+    ],
+    "allow_file": [
+      "$XDG_RUNTIME_DIR/pipewire-0",
+      "$XDG_CONFIG_HOME/pulse/cookie"
+    ],
+    "read": [
+      "/etc/xdg",
+      "/var/cache/fontconfig",
+      "/run/dbus",
+      "/sys",
+      "$XDG_RUNTIME_DIR/bus",
+      "/tmp/.X11-unix",
+      "/tmp/.ICE-unix"
+    ],
+    "read_file": [
+      "$XDG_RUNTIME_DIR/at-spi/bus_1",
+      "$XDG_RUNTIME_DIR/pulse/native",
+      "$XDG_RUNTIME_DIR/xdg-dbus-proxy"
+    ]
+  },
+  "environment": {
+    "allow_vars": [
+      "WAYLAND_DISPLAY",
+      "WAYLAND_SOCKET",
+      "DISPLAY",
+      "X11_BASE_RULES_XML",
+      "X11_EXTRA_RULES_XML",
+      "XCURSOR_PATH",
+      "DBUS_SESSION_BUS_ADDRESS",
+      "GTK_PATH",
+      "NIXOS_OZONE_WL",
+      "NIX_XDG_DESKTOP_PORTAL",
+      "QT_*",
+      "QTWEBKIT_PLUGIN_PATH",
+      "XDG_*"
+    ]
+  }
+}

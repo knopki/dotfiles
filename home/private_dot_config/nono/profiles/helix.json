@@ -1,0 +1,22 @@
+{
+  "extends": ["default"],
+  "meta": {
+    "name": "helix"
+  },
+  "groups": {
+    "include": ["nix_runtime"]
+  },
+  "filesystem": {
+    "allow": [
+      "$XDG_CACHE_HOME/helix",
+      "$XDG_CONFIG_HOME/helix",
+      "$XDG_STATE_HOME/helix"
+    ]
+  },
+  "workdir": {
+    "access": "readwrite"
+  },
+  "environment": {
+    "allow_vars": ["XDG_*"]
+  }
+}

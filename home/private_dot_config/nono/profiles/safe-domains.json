@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "name": "safe-domains"
+  },
+  "network": {
+    "allow_domain": [
+      "portal.nousresearch.com",
+      "open.bigmodel.ch",
+      "api.z.ai",
+      "opencode.ai",
+      "openrouter.ai",
+      "ollama.com",
+      "api.deepseek.com",
+      "context7.com"
+    ]
+  }
+}

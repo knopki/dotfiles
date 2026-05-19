@@ -1,0 +1,77 @@
+{
+  "extends": [
+    "default",
+    "opencode",
+    "node-dev",
+    "python-dev",
+    "safe-env-vars",
+    "taskwarrior",
+    "timewarrior",
+    "khal",
+    "khard"
+  ],
+  "meta": {
+    "name": "hermes"
+  },
+  "groups": {
+    "include": [
+      "python_runtime",
+      "node_runtime",
+      "rust_runtime",
+      "user_caches_macos",
+      "user_caches_linux",
+      "linux_sysfs_read",
+      "nix_runtime",
+      "git_config",
+      "unlink_protection"
+    ]
+  },
+  "security": {
+    "signal_mode": "isolated",
+    "capability_elevation": false
+  },
+  "filesystem": {
+    "allow": [
+      "$HOME/.hermes",
+      "$HOME/.config/nono/profile-drafts",
+      "$XDG_STATE_HOME/hermes",
+      "$XDG_CACHE_HOME/huggingface",
+      "$XDG_CACHE_HOME/gitnexus",
+      "$XDG_DATA_HOME/rtk",
+      "$HOME/.context7"
+    ],
+    "allow_file": [
+      "$XDG_RUNTIME_DIR/pipewire-0",
+      "$XDG_CONFIG_HOME/pulse/cookie"
+    ],
+    "read": [
+      "$HOME/.local/bin",
+      "$HOME/.local/share/uv",
+      "$HOME/.config/nono/packages",
+      "$HOME/.config/nono/profiles",
+      "$XDG_CONFIG_HOME/git",
+      "$HOME/.agents"
+    ]
+  },
+  "network": {
+    "block": false,
+    "network_profile": null
+  },
+  "workdir": {
+    "access": "readwrite"
+  },
+  "open_urls": {
+    "allow_localhost": true
+  },
+  "allow_launch_services": true,
+  "undo": {
+    "exclude_patterns": [
+      "node_modules",
+      ".next",
+      "__pycache__",
+      "target",
+      ".hermes"
+    ],
+    "exclude_globs": ["*.tmp.[0-9]*.[0-9]*"]
+  }
+}

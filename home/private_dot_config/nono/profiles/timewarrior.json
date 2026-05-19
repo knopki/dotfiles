@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "name": "timewarrior"
+  },
+  "groups": {},
+  "filesystem": {
+    "allow": ["$XDG_DATA_HOME/timewarrior"],
+    "read": ["$XDG_CONFIG_HOME/timewarrior"],
+    "read_file": []
+  },
+  "environment": {
+    "allow_vars": ["XDG_*"]
+  }
+}

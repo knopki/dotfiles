@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "name": "shell"
+  },
+  "groups": {},
+  "filesystem": {
+    "read": ["/etc", "$XDG_CONFIG_HOME/htop", "$XDG_CONFIG_HOME/fish"],
+    "read_file": ["$HOME/.bashrc", "$XDG_CONFIG_HOME/starship.toml"],
+    "bypass_protection": ["$HOME/.bashrc", "$XDG_CONFIG_HOME/fish"]
+  },
+  "environment": {
+    "allow_vars": ["SHELL", "USER", "XDG_*"]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "meta": {
+    "name": "atuin"
+  },
+  "groups": {},
+  "filesystem": {
+    "read": ["$XDG_CONFIG_HOME/atuin"],
+    "read_file": ["$XDG_DATA_HOME/atuin/host_id"]
+  },
+  "environment": {
+    "allow_vars": ["XDG_*"]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "name": "taskwarrior"
+  },
+  "groups": {},
+  "filesystem": {
+    "allow": ["$XDG_CACHE_DIR/nautical", "$XDG_DATA_HOME/task"],
+    "read": ["$XDG_CONFIG_HOME/task"],
+    "read_file": []
+  },
+  "environment": {
+    "allow_vars": ["XDG_*"]
+  }
+}

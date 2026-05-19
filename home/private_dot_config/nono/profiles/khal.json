@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "name": "khal"
+  },
+  "groups": {},
+  "filesystem": {
+    "allow": ["$XDG_DATA_HOME/calendars", "$XDG_DATA_HOME/khal"],
+    "read": ["$XDG_CONFIG_HOME/khal"],
+    "read_file": []
+  },
+  "environment": {
+    "allow_vars": ["XDG_*"]
+  }
+}

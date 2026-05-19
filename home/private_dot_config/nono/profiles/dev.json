@@ -1,0 +1,29 @@
+{
+  "extends": [
+    "default",
+    "atuin",
+    "shell",
+    "helix",
+    "node-dev",
+    "python-dev",
+    "hermes",
+    "oc",
+    "taskwarrior",
+    "timewarrior"
+  ],
+  "meta": {
+    "name": "dev"
+  },
+  "groups": {},
+  "filesystem": {
+    "read": ["$XDG_CONFIG_HOME/git"],
+    "read_file": ["$HOME/.ssh/config"],
+    "bypass_protection": ["$HOME/.ssh/config"]
+  },
+  "workdir": {
+    "access": "readwrite"
+  },
+  "environment": {
+    "allow_vars": ["XDG_*"]
+  }
+}

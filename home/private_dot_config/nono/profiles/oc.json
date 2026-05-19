@@ -1,0 +1,33 @@
+{
+  "extends": ["opencode", "safe-env-vars", "helix", "safe-domains"],
+  "meta": {
+    "name": "oc"
+  },
+  "groups": {
+    "include": []
+  },
+  "security": {},
+  "filesystem": {
+    "allow": [
+      "$HOME/.config/nono/profile-drafts",
+      "$XDG_DATA_HOME/rtk",
+      "$HOME/.context7"
+    ],
+    "read": [
+      "$XDG_CONFIG_HOME/git",
+      "$XDG_CONFIG_HOME/openspec",
+      "$HOME/.config/nono/packages",
+      "$HOME/.config/nono/profiles",
+      "$HOME/.agents"
+    ]
+  },
+  "network": {
+    "block": false
+  },
+  "workdir": {
+    "access": "readwrite"
+  },
+  "undo": {
+    "exclude_patterns": [".venv"]
+  }
+}

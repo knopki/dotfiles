@@ -110,7 +110,10 @@
     "websearch": "deny",
     "question": "deny",
     // whitelist only
-    "skill": "deny",
+    "skill": {
+      "*": "deny",
+      "nono-sandbox": "allow"
+    },
     // no subagents
     "task": "deny"
   },

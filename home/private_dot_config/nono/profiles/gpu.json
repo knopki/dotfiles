@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "name": "gpu"
+  },
+  "groups": {},
+  "filesystem": {
+    "allow": ["/dev/dri", "/dev/hugepages"],
+    "allow_file": [
+      "/dev/nvidia0",
+      "/dev/nvidia1",
+      "/dev/nvidiactl",
+      "/dev/nvidia-modeset",
+      "/dev/nvidia-uvm",
+      "/dev/nvidia-uvm-tools",
+      "$XDG_RUNTIME_DIR/pipewire-0",
+      "$XDG_CONFIG_HOME/pulse/cookie"
+    ],
+    "read": [
+      "/run/opengl-driver",
+      "/run/opengl-driver-32",
+      "/usr/lib",
+      "/usr/lib32",
+      "/sys/dev/char",
+      "/sys/bus/pci",
+      "/sys/devices/pci0000:00"
+    ],
+    "read_file": []
+  },
+  "environment": {
+    "allow_vars": ["__GLX_VENDOR_LIBRARY_NAME", "__NV_PRIME_RENDER_OFFLOAD"]
+  }
+}
