@@ -5,13 +5,17 @@
   "network": {
     "allow_domain": [
       "portal.nousresearch.com",
-      "open.bigmodel.ch",
+      "open.bigmodel.cn",
       "api.z.ai",
       "opencode.ai",
       "openrouter.ai",
       "ollama.com",
       "api.deepseek.com",
-      "context7.com"
+      "context7.com",
+      "agentskills.io",
+      "markdown.new",
+      "grep.app",
+      "fal.ai"
     ]
   }
 }

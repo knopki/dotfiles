@@ -1,5 +1,12 @@
 {
-  "extends": ["opencode", "safe-env-vars", "helix", "safe-domains"],
+  "extends": [
+    "opencode",
+    "safe-env-vars",
+    "helix",
+    "safe-domains",
+    "node-dev",
+    "python-dev"
+  ],
   "meta": {
     "name": "oc"
   },
@@ -16,8 +23,8 @@
     "read": [
       "$XDG_CONFIG_HOME/git",
       "$XDG_CONFIG_HOME/openspec",
-      "$HOME/.config/nono/packages",
-      "$HOME/.config/nono/profiles",
+      "$XDG_CONFIG_HOME/nono/packages",
+      "$XDG_CONFIG_HOME/nono/profiles",
       "$HOME/.agents"
     ]
   },
