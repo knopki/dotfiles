@@ -37,6 +37,8 @@
       "*": "ask",
       "agent-browser *": "allow",
       "cut *": "allow",
+      "curl *": "allow",
+      "rtk curl *": "allow",
       "diff *": "allow",
       "date *": "allow",
       "du *": "allow",
@@ -201,6 +203,7 @@
           "doc-coauthoring": "allow",
           "find-docs": "allow",
           "gitnexus-*": "allow",
+          "grace-lite": "allow",
           "grep-app-cli": "allow",
           "openspec-apply-change": "allow",
           "openspec-archive-change": "allow",
@@ -241,6 +244,7 @@
           "doc-coauthoring": "allow",
           "find-docs": "allow",
           "gitnexus-*": "allow",
+          "grace-lite": "allow",
           "grep-app-cli": "allow",
           "openspec-explore": "allow",
           "openspec-propose": "allow",
@@ -276,6 +280,7 @@
         "skill": {
           "find-docs": "allow",
           "gitnexus-*": "allow",
+          "grace-lite": "allow",
           "grep-app-cli": "allow"
         },
         "task": {
@@ -310,7 +315,8 @@
         "skill": {
           "find-docs": "allow",
           "gitnexus-exploring": "allow",
-          "gitnexus-impact-analysis": "allow"
+          "gitnexus-impact-analysis": "allow",
+          "grace-lite": "allow"
         },
         "task": "deny"
       },

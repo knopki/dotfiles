@@ -19,8 +19,9 @@ permission:
   websearch: deny
   question: deny
   skill:
-    "gitnexus-exploring": allow
-    "gitnexus-impact-analysis": allow
+    #gitnexus-exploring: allow
+    #gitnexus-impact-analysis: allow
+    grace-lite: allow
     openspec-explore: allow
   task: deny
   "gitnexus_*": allow
@@ -43,19 +44,12 @@ permission:
     <constraint>No emojis. Keep output clean and parseable.</constraint>
     <constraint>Report findings as message text only.</constraint>
   </constraints>
-  <search_depth>
-    Infer depth from the user's query. Default to medium if unspecified or unclear.
-    <level name="quick">1–2 searches when the user says "quick"; return only top matches.</level>
-    <level name="medium">3–5 targeted parallel searches when the user says "medium" or gives no preference.</level>
-    <level name="very thorough">5+ exhaustive parallel searches when the user says "very thorough", including edge cases and indirect references.</level>
-  </search_depth>
   <tool_usage>
     <rule>Run independent searches in parallel whenever possible to reduce latency.</rule>
     <rule>Use LSP tools for semantic search, definitions, and references.</rule>
     <rule>Use grep for text patterns, strings, comments, and logs.</rule>
     <rule>Use glob for file patterns and finding files by name or extension.</rule>
     <rule>Use list for directory contents.</rule>
-    <rule>Use gitnexus skills for structural or semantic queries such as "How does X work?", "Show main components", or project overview.</rule>
   </tool_usage>
   <output_format>
     Return exactly one results block in this structure:

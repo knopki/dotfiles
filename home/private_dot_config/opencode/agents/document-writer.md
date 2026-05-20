@@ -21,8 +21,9 @@ permission:
   skill:
     codebase-to-course: allow
     doc-coauthoring: allow
-    gitnexus-exploring: allow
-    gitnexus-impact-analysis: allow
+    #gitnexus-exploring: allow
+    #gitnexus-impact-analysis: allow
+    grace-lite: allow
     openspec-explore: allow
   task:
     "*": deny

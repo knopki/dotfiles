@@ -19,9 +19,10 @@ permission:
   websearch: deny
   question: deny
   skill:
-    gitnexus-exploring: allow
-    gitnexus-impact-analysis: allow
-    gitnexus-refactoring: allow
+    #gitnexus-exploring: allow
+    #gitnexus-impact-analysis: allow
+    #gitnexus-refactoring: allow
+    grace-lite: allow
     openspec-explore: allow
     ui-ux-pro-max: allow
   task:

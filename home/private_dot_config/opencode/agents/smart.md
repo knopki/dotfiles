@@ -20,10 +20,11 @@ permission:
   question: allow
   skill:
     agent-browser: allow
-    gitnexus-debugging: allow
-    gitnexus-exploring: allow
-    gitnexus-impact-analysis: allow
-    gitnexus-refactoring: allow
+    #gitnexus-debugging: allow
+    #gitnexus-exploring: allow
+    #gitnexus-impact-analysis: allow
+    #gitnexus-refactoring: allow
+    grace-lite: allow
     openspec-apply-change: allow
     openspec-archive-change: allow
     openspec-explore: allow
@@ -78,7 +79,7 @@ permission:
 
     <phase name="research">
       <rule>Use research only when additional context is needed for SIMPLE, MODERATE, or COMPLEX tasks.</rule>
-      <rule>For SIMPLE tasks, keep research minimal.</rule>
+      <rule>For SIMPLE tasks, research yourself.</rule>
       <rule>Spawn `@codebase-explorer` for local codebase discovery.</rule>
       <rule>Spawn `@librarian` for external docs, APIs, libraries, and best practices.</rule>
       <rule>Spawn `@multimodal-looker` to analyze media files.</rule>
@@ -150,7 +151,6 @@ permission:
     </delegation_rules>
 
     <spawning_rules>
-      <rule>For fewer than 3 simple files, handle directly unless specialization is needed.</rule>
       <rule>For 3+ files with the same isolated pattern, use parallel `@implementer` agents.</rule>
       <rule>For dependent or complex file changes, use sequential `@implementer` agents.</rule>
       <rule>Never let multiple agents write to the same file.</rule>

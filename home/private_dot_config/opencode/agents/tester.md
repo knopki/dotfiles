@@ -18,10 +18,11 @@ permission:
   websearch: deny
   question: deny
   skill:
-    gitnexus-exploring: allow
-    gitnexus-debugging: allow
-    gitnexus-impact-analysis: allow
-    gitnexus-refactoring: allow
+    #gitnexus-exploring: allow
+    #gitnexus-debugging: allow
+    #gitnexus-impact-analysis: allow
+    #gitnexus-refactoring: allow
+    grace-lite: allow
     openspec-explore: allow
   task: deny
   "gitnexus_*": allow

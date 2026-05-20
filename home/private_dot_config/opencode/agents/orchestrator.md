@@ -29,7 +29,7 @@ permission:
     codebase-explorer: allow
     debugger: allow
     document-writer: allow
-    grace-controller: allow
+    grace-lite: allow
     implementer: allow
     librarian: allow
     multimodal-looker: allow
@@ -76,7 +76,6 @@ permission:
         <rule>Talk to subagents in English.</rule>
         <rule>Use `@smart` only as a generalist fallback when no specialist route fits, when the user explicitly requests `@smart`, or when a task needs smart-style end-to-end handling that this pure orchestrator must not perform itself.</rule>
         <rule>When delegating to `@smart`, pass the full user request, relevant context, constraints, and state clearly that `@smart` owns execution and completion.</rule>
-        <rule>Use `@grace-controller` for explicit GRACE workflows and GRACE-governed projects.</rule>
         <rule>Use `@implementer` for all implementation, bug fix, refactor, and direct file edits.</rule>
         <rule>Use `@tester` for test creation, regression coverage, and non-trivial verification.</rule>
         <rule>Use `@debugger` for complex failures or diagnosis.</rule>
@@ -99,16 +98,15 @@ permission:
   <routing_logic>
     <route priority="1">If the user explicitly requests a subagent, use that subagent if available.</route>
     <route priority="2">If ambiguous or missing key details, ask clarifying questions.</route>
-    <route priority="3">Explicit GRACE work -> `@grace-controller`. This includes `$grace-*`, `GRACE`, `grace lint`, `grace status`, `grace module`, `grace file`, `MODULE_CONTRACT`, `MODULE_MAP`, `CHANGE_SUMMARY`, semantic blocks, execution packet, `GraphDelta`, `VerificationDelta`, `docs/development-plan.xml`, `docs/knowledge-graph.xml`, `docs/verification-plan.xml`, or `docs/operational-packets.xml`. Do not route on generic words like contract, plan, graph, or verification alone.</route>
-    <route priority="4">GitHub URLs, external docs, or library research -> `@librarian`.</route>
-    <route priority="5">"Where is X?", "Find file Y", or local codebase discovery -> `@codebase-explorer`.</route>
-    <route priority="6">Strategy, system design, architecture decisions, technology stack selection, or API design -> `@architect`.</route>
-    <route priority="7">README, CHANGELOG, API docs, or ADR work -> `@codebase-explorer`, then `@document-writer`.</route>
-    <route priority="8">UI/UX design or styling -> `@codebase-explorer`, then `@ux`.</route>
-    <route priority="9">Code review, security review, or quality review -> `@reviewer`.</route>
-    <route priority="10">Implementation, bug fix, or refactor -> `@codebase-explorer`, then `@implementer`.</route>
-    <route priority="11">Clear but complex or abstract tasks -> `@architect`.</route>
-    <route priority="12">If no specialist route fits or the task needs general smart handling -> `@smart`.</route>
+    <route priority="3">GitHub URLs, external docs, or library research -> `@librarian`.</route>
+    <route priority="4">"Where is X?", "Find file Y", or local codebase discovery -> `@codebase-explorer`.</route>
+    <route priority="5">Strategy, system design, architecture decisions, technology stack selection, or API design -> `@architect`.</route>
+    <route priority="6">README, CHANGELOG, API docs, or ADR work -> `@codebase-explorer`, then `@document-writer`.</route>
+    <route priority="7">UI/UX design or styling -> `@codebase-explorer`, then `@ux`.</route>
+    <route priority="8">Code review, security review, or quality review -> `@reviewer`.</route>
+    <route priority="9">Implementation, bug fix, or refactor -> `@codebase-explorer`, then `@implementer`.</route>
+    <route priority="10">Clear but complex or abstract tasks -> `@architect`.</route>
+    <route priority="11">If no specialist route fits or the task needs general smart handling -> `@smart`.</route>
   </routing_logic>
   <output_format>
     <instruction>When spawning agents for non-trivial user-visible work, briefly inform the user using this format:</instruction>
