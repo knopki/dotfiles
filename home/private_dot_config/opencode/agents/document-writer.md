@@ -21,15 +21,13 @@ permission:
   skill:
     codebase-to-course: allow
     doc-coauthoring: allow
-    #gitnexus-exploring: allow
-    #gitnexus-impact-analysis: allow
     grace-lite: allow
     openspec-explore: allow
   task:
     "*": deny
     codebase-explorer: allow
     librarian: allow
-  "gitnexus_*": allow
+  "codegraph_*": allow
 ---
 
 <agent>

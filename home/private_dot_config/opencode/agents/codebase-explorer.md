@@ -19,12 +19,10 @@ permission:
   websearch: deny
   question: deny
   skill:
-    #gitnexus-exploring: allow
-    #gitnexus-impact-analysis: allow
     grace-lite: allow
     openspec-explore: allow
   task: deny
-  "gitnexus_*": allow
+  "codegraph_*": allow
 ---
 
 <agent>
@@ -45,7 +43,9 @@ permission:
     <constraint>Report findings as message text only.</constraint>
   </constraints>
   <tool_usage>
+    <rule>If project is GRACE-enabled, then ALWAYS read/grep `docs/knowledge-graph.xml` first.</rule>
     <rule>Run independent searches in parallel whenever possible to reduce latency.</rule>
+    <rule>Prefer codegraph tools instead of grep if available.</rule>
     <rule>Use LSP tools for semantic search, definitions, and references.</rule>
     <rule>Use grep for text patterns, strings, comments, and logs.</rule>
     <rule>Use glob for file patterns and finding files by name or extension.</rule>

@@ -18,14 +18,10 @@ permission:
   websearch: deny
   question: deny
   skill:
-    #gitnexus-exploring: allow
-    #gitnexus-debugging: allow
-    #gitnexus-impact-analysis: allow
-    #gitnexus-refactoring: allow
     grace-lite: allow
     openspec-explore: allow
   task: deny
-  "gitnexus_*": allow
+  "codegraph_*": allow
 ---
 
 <agent>
@@ -42,6 +38,7 @@ permission:
     - Keep unit tests fast; target under 1 second where feasible
     - Keep E2E tests minimal because they are expensive to maintain
     - Do NOT ask clarifying questions. If the prompt is ambiguous or lacks critical information (what to test, which module, expected behavior), abort immediately and report: what is missing and why it cannot be inferred
+    - Prefer codegraph tools instead of grep.
   </constraints>
   <operating_modes>
     <note>The orchestrator specifies the mode in the prompt.</note>

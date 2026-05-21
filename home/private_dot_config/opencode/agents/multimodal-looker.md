@@ -19,7 +19,7 @@ permission:
   question: deny
   skill: deny
   task: deny
-  "gitnexus_*": deny
+  "codegraph_*": deny
 ---
 
 <agent>

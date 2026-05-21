@@ -20,10 +20,6 @@ permission:
   question: allow
   skill:
     agent-browser: allow
-    #gitnexus-debugging: allow
-    #gitnexus-exploring: allow
-    #gitnexus-impact-analysis: allow
-    #gitnexus-refactoring: allow
     grace-lite: allow
     openspec-apply-change: allow
     openspec-archive-change: allow
@@ -42,7 +38,7 @@ permission:
     reviewer: allow
     tester: allow
     ux: allow
-  "gitnexus_*": allow
+  "codegraph_*": allow
 ---
 
 <agent>

@@ -19,17 +19,13 @@ permission:
   websearch: deny
   question: deny
   skill:
-    #gitnexus-debugging: allow
-    #gitnexus-exploring: allow
-    #gitnexus-impact-analysis: allow
-    #gitnexus-refactoring: allow
     grace-lite: allow
     openspec-explore: allow
   task:
     "*": deny
     "codebase-explorer": allow
     "librarian": allow
-  "gitnexus_*": allow
+  "codegraph_*": allow
 ---
 
 <agent>
@@ -66,6 +62,7 @@ permission:
     - If evidence is incomplete, state the uncertainty explicitly
     - Distinguish confirmed findings from hypotheses
     - Be concise and specific
+    - Prefer codegraph tools instead of grep
   </rules>
   <quick_reference>
     Type errors: check definitions vs runtime values, implicit coercions

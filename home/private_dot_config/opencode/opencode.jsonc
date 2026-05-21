@@ -9,7 +9,7 @@
     // "opencode-pty@0.3.2",
     "@franlol/opencode-md-table-formatter@0.0.6",
     // "opencode-plugin-preload-skills@1.8.0"
-    "opencode-runtime-fallback@0.2.4"
+    "opencode-runtime-fallback@0.2.4",
   ],
 
   "instructions": [
@@ -17,19 +17,20 @@
     "AGENTS.local.md",
     "AGENTS.override.md",
     "CLAUDE.md",
-    "CONTRIBUTING.md"
+    "CONTRIBUTING.md",
   ],
 
   "mcp": {
-    "gitnexus": {
+    "codegraph": {
       "type": "local",
-      "command": ["gitnexus", "mcp"]
-    }
+      "command": ["npx", "@colbymchenry/codegraph", "serve", "--mcp"],
+      "enabled": true,
+    },
     // TODO: Chrome DevTools MCP
   },
 
   "tools": {
-    "gitnexus_*": false
+    "codegraph_*": false,
   },
 
   "permission": {
@@ -38,7 +39,6 @@
       "agent-browser *": "allow",
       "cut *": "allow",
       "curl *": "allow",
-      "rtk curl *": "allow",
       "diff *": "allow",
       "date *": "allow",
       "du *": "allow",
@@ -88,42 +88,32 @@
       "uv run pytest": "allow",
       "uv run pytest *": "allow",
       "uv run ruff *": "allow",
+      "uv run zuban *": "allow",
       "wc *": "allow",
       "which*": "allow",
-      "./scripts/grep-app-mcp call-tool searchGitHu *": "allow"
+      "zuban *": "allow",
+      "./scripts/grep-app-mcp call-tool searchGitHu *": "allow",
     },
     "read": {
       "*": "allow",
       "/dev/stdin": "deny",
       ".env": "deny",
       ".env.*": "deny",
-      ".envrc": "deny"
+      ".envrc": "deny",
     },
-    "edit": "deny",
-    "grep": "allow",
-    "glob": "allow",
-    "list": "allow",
-    // needs OPENCODE_EXPERIMENTAL_LSP_TOOL=true
-    "lsp": "deny",
-    "todowrite": "allow",
-    "todoread": "allow",
-    "webfetch": "deny",
-    // needs OPENCODE_ENABLE_EXA=1
-    "websearch": "deny",
-    "question": "deny",
     // whitelist only
     "skill": {
       "*": "deny",
-      "nono-sandbox": "allow"
+      "nono-sandbox": "allow",
     },
     // no subagents
-    "task": "deny"
+    "task": "deny",
   },
 
   "disabled_providers": ["anthropic", "gemini", "openai-codex"],
   "provider": {
     "deepseek": {
-      "blacklist": ["deepseek-chat", "deepseek-reasoner"]
+      "blacklist": ["deepseek-chat", "deepseek-reasoner"],
     },
     "ollama-cloud": {
       "blacklist": [
@@ -155,24 +145,24 @@
         "qwen3-vl:235b",
         "qwen3-vl:235b-instruct",
         "qwen3.5:397b",
-        "rnj-1:8b"
-      ]
+        "rnj-1:8b",
+      ],
     },
     "opencode-go": {
-      "blacklist": ["glm-5", "kimi-k2.5"]
+      "blacklist": ["glm-5", "kimi-k2.5"],
     },
     "openrouter": {
-      "whitelist": ["openrouter/free"]
+      "whitelist": ["openrouter/free"],
     },
     "zhipuai-coding-plan": {
-      "blacklist": ["glm-4.5-air", "glm-5v-turbo"]
-    }
+      "blacklist": ["glm-4.5-air", "glm-5v-turbo"],
+    },
   },
 
   "compaction": {
     "auto": true,
     "prune": true,
-    "reserved": 10000
+    "reserved": 10000,
   },
 
   // default model if not set by agent
@@ -200,27 +190,27 @@
           "agent-browser": "allow",
           "changelog-automation": "allow",
           "codebase-to-course": "allow",
+          "customize-opencode": "allow",
           "doc-coauthoring": "allow",
           "find-docs": "allow",
-          "gitnexus-*": "allow",
           "grace-lite": "allow",
           "grep-app-cli": "allow",
           "openspec-apply-change": "allow",
           "openspec-archive-change": "allow",
           "openspec-explore": "allow",
           "openspec-propose": "allow",
-          "ui-ux-pro-max": "allow"
+          "ui-ux-pro-max": "allow",
         },
         "task": {
           "*": "deny",
           "general": "allow",
           "explore": "allow",
-          "build": "allow"
-        }
+          "build": "allow",
+        },
       },
       "tools": {
-        "gitnexus_*": true
-      }
+        "codegraph_*": true,
+      },
     },
 
     // primary default planning agent (save as build but with plan message)
@@ -243,22 +233,21 @@
           "codebase-to-course": "allow",
           "doc-coauthoring": "allow",
           "find-docs": "allow",
-          "gitnexus-*": "allow",
           "grace-lite": "allow",
           "grep-app-cli": "allow",
           "openspec-explore": "allow",
           "openspec-propose": "allow",
-          "ui-ux-pro-max": "allow"
+          "ui-ux-pro-max": "allow",
         },
         "task": {
           "*": "deny",
-          "explore": "allow"
-        }
+          "explore": "allow",
+        },
       },
       "tools": {
         "pty_*": false,
-        "gitnexus_*": true
-      }
+        "codegraph_*": true,
+      },
     },
 
     // General-purpose sub-agent and fast for researching complex questions and executing multi-step tasks
@@ -267,7 +256,7 @@
       "fallback_models": [
         "ollama-cloud/deepseek-v4-flash",
         "deepseek/deepseek-v4-flash",
-        "zhipuai-coding-plan/glm-5.1"
+        "zhipuai-coding-plan/glm-5.1",
       ],
       "permission": {
         "edit": "allow",
@@ -279,19 +268,18 @@
         "question": "deny",
         "skill": {
           "find-docs": "allow",
-          "gitnexus-*": "allow",
           "grace-lite": "allow",
-          "grep-app-cli": "allow"
+          "grep-app-cli": "allow",
         },
         "task": {
           "*": "deny",
           "general": "allow",
-          "explore": "allow"
-        }
+          "explore": "allow",
+        },
       },
       "tools": {
-        "gitnexus_*": true
-      }
+        "codegraph_*": true,
+      },
     },
 
     // Fast subagent specialized for exploring codebases
@@ -301,7 +289,7 @@
       "fallback_models": [
         "ollama-cloud/deepseek-v4-flash",
         "deepseek/deepseek-v4-flash",
-        "zhipuai-coding-plan/glm-4.7"
+        "zhipuai-coding-plan/glm-4.7",
       ],
       "permission": {
         "bash": "deny",
@@ -314,17 +302,15 @@
         "question": "deny",
         "skill": {
           "find-docs": "allow",
-          "gitnexus-exploring": "allow",
-          "gitnexus-impact-analysis": "allow",
-          "grace-lite": "allow"
+          "grace-lite": "allow",
         },
-        "task": "deny"
+        "task": "deny",
       },
       "tools": {
         "pty_*": false,
-        "gitnexus_*": true
-      }
-    }
+        "codegraph_*": true,
+      },
+    },
   },
 
   "watcher": {
@@ -333,19 +319,19 @@
       "dist/**",
       ".git/**",
       ".devenv/*",
-      ".direnv/*"
-    ]
+      ".direnv/*",
+    ],
   },
 
   "formatter": {},
 
   "lsp": {
     "pyright": {
-      "disabled": true
+      "disabled": true,
     },
     "zuban": {
       "command": ["uv", "run", "zaban", "server"],
-      "extensions": [".py"]
-    }
-  }
+      "extensions": [".py"],
+    },
+  },
 }

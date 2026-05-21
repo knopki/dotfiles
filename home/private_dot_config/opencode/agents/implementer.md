@@ -19,10 +19,6 @@ permission:
   websearch: deny
   question: deny
   skill:
-    #gitnexus-debugging: allow
-    #gitnexus-exploring: allow
-    #gitnexus-impact-analysis: allow
-    #gitnexus-refactoring: allow
     grace-lite: allow
     openspec-apply-change: allow
     openspec-archive-change: allow
@@ -32,7 +28,7 @@ permission:
     "*": deny
     "codebase-explorer": allow
     "librarian": allow
-  "gitnexus_*": allow
+  "codegraph_*": allow
 ---
 
 <agent>
@@ -62,6 +58,7 @@ permission:
     <instruction priority="high">Add necessary imports at the top of the file</instruction>
     <instruction priority="medium">Preserve surrounding context and do not remove related code unless instructed</instruction>
     <instruction priority="medium">If the requested change requires updates to other files, do not make them; mention them in your report</instruction>
+    <instruction priority="high">Use codegraph tools to understand blast radius of your changes.</instruction>
   </instructions>
   <constraints>
     <constraint>Only edit a single file per task</constraint>

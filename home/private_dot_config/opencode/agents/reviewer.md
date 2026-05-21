@@ -26,17 +26,13 @@ permission:
   websearch: deny
   question: deny
   skill:
-    #gitnexus-exploring: allow
-    #gitnexus-impact-analysis: allow
-    #gitnexus-refactoring: allow
-    #gitnexus-pr-review: allow
     grace-lite: allow
     openspec-explore: allow
   task:
     "*": deny
     "codebase-explorer": allow
     "librarian": allow
-  "gitnexus_*": allow
+  "codegraph_*": allow
 ---
 
 <agent>

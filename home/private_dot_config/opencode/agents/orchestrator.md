@@ -8,7 +8,8 @@ fallback_models:
   - deepseek/deepseek-v4-flash
 permission:
   read: allow
-  edit: deny
+  # NOTE: opencode bug. Edit+deny forced to subagents.
+  # edit: deny
   grep: allow
   glob: allow
   list: allow
@@ -37,7 +38,7 @@ permission:
     smart: allow
     tester: allow
     ux: allow
-  "gitnexus_*": deny
+  "codegraph_*": deny
 ---
 
 <agent>

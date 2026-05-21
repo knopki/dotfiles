@@ -18,9 +18,10 @@ permission:
   webfetch: deny
   websearch: deny
   question: allow
-  skill: deny
+  skill:
+    caveman: allow
   task: deny
-  "gitnexus_*": deny
+  "codegraph_*": deny
 ---
 
 <prompt>

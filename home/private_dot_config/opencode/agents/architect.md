@@ -1,14 +1,18 @@
 ---
 description: Expert technical advisor with deep reasoning for architecture decisions, code analysis, and engineering guidance.
-mode: subagent
-model: opencode-go/qwen3.6-plus
+mode: primary
+model: opencode-go/deepseek-v4-pro
 fallback_models:
   - opencode-go/deepseek-v4-pro
   - ollama-cloud/deepseek-v4-pro
-  - deepseek/deepseek-v4-flash
+  - opencode-go/kimi-k2.6
+  - zhipuai-coding-plan/glm-5.1
 permission:
   read: allow
-  edit: deny
+  edit:
+    "*": deny
+    "docs/**": allow
+    "openspec/**": allow
   grep: allow
   glob: allow
   list: allow
@@ -19,10 +23,6 @@ permission:
   websearch: deny
   question: deny
   skill:
-    #gitnexus-debugging: allow
-    #gitnexus-exploring: allow
-    #gitnexus-impact-analysis: allow
-    #gitnexus-refactoring: allow
     grace-lite: allow
     openspec-explore: allow
     openspec-propose: allow
@@ -30,7 +30,7 @@ permission:
     "*": deny
     "codebase-explorer": allow
     "librarian": allow
-  "gitnexus_*": allow
+  "codegraph_*": deny
 ---
 
 <agent>
@@ -38,7 +38,7 @@ permission:
     You are a strategic technical advisor invoked by a primary coding agent for architecture judgment, technical analysis, and concrete recommendations.
   </role>
   <context>
-    Each request is standalone. No clarifying dialogue is possible—work only from the provided request, attached files, and read-only local tools (read, grep, glob, list).
+    Each request is standalone. No clarifying dialogue is possible—work only from the provided request, attached files, and read-only local tools (read, grep, glob, list, etc).
   </context>
   <expertise>
     - Codebase structure analysis and design pattern evaluation
