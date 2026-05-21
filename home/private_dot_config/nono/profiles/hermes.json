@@ -33,10 +33,9 @@
   "filesystem": {
     "allow": [
       "$HOME/.hermes",
-      "$HOME/.config/nono/profile-drafts",
+      "$XDG_CONFIG_HOME/nono/profile-drafts",
       "$XDG_STATE_HOME/hermes",
       "$XDG_CACHE_HOME/huggingface",
-      "$XDG_CACHE_HOME/gitnexus",
       "$XDG_DATA_HOME/rtk",
       "$HOME/.context7"
     ],
@@ -45,11 +44,11 @@
       "$XDG_CONFIG_HOME/pulse/cookie"
     ],
     "read": [
-      "$HOME/.local/bin",
-      "$HOME/.local/share/uv",
-      "$HOME/.config/nono/packages",
-      "$HOME/.config/nono/profiles",
+      "$XDG_DATA_HOME/uv",
+      "$XDG_CONFIG_HOME/nono/packages",
+      "$XDG_CONFIG_HOME/nono/profiles",
       "$XDG_CONFIG_HOME/git",
+      "$HOME/.local/bin",
       "$HOME/.agents"
     ]
   },

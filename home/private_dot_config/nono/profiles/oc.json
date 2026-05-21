@@ -18,7 +18,8 @@
     "allow": [
       "$HOME/.config/nono/profile-drafts",
       "$XDG_DATA_HOME/rtk",
-      "$HOME/.context7"
+      "$HOME/.context7",
+      "$HOME/.npm"
     ],
     "read": [
       "$XDG_CONFIG_HOME/git",
