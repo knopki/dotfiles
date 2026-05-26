@@ -1,1 +1,3 @@
 tz = "Europe/Moscow"
+reccurence_update_udas = ["reviewed"]
+exit_progress = true

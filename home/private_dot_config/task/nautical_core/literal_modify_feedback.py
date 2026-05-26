@@ -1,8 +1,16 @@
 from __future__ import annotations
 
 
-def _pretty_basis_cp(task: dict, meta: dict, *, parse_cp_duration) -> str:
-    td = parse_cp_duration(task.get("cp") or "")
+def _pretty_basis_cp(task: dict, meta: dict, *, parse_cp_duration, parse_cp_sequence=None) -> str:
+    if callable(parse_cp_sequence):
+        seq = parse_cp_sequence(task.get("cp") or "")
+        step = int(meta.get("cp_sequence_step") or 1)
+        if seq:
+            td = seq[(max(1, step) - 1) % len(seq)]
+        else:
+            td = None
+    else:
+        td = parse_cp_duration(task.get("cp") or "")
     if not td:
         return "end + cp"
     secs = int(td.total_seconds())
@@ -382,7 +390,7 @@ def render_anchor_completion_feedback(
 
     _append_wait_sched_feedback_rows(fb, debug_wait_sched=debug_wait_sched, last_wait_sched_debug=last_wait_sched_debug)
     _append_sanitised_fields_row(fb, feedback.stripped_attrs)
-    if feedback.analytics_advice:
+    if core.SHOW_ANALYTICS and feedback.analytics_advice:
         fb.append(("Analytics", feedback.analytics_advice))
     _append_integrity_warnings_row(fb, feedback.integrity_warnings)
     append_next_wait_sched_rows(
@@ -508,12 +516,23 @@ def render_cp_completion_feedback(
     fb = []
     delta = core.humanize_delta(feedback.now_utc, feedback.child_due, use_months_days=False)
     fb.append(("Period", feedback.new.get("cp")))
+    if feedback.meta.get("cp_sequence_len"):
+        step = int(feedback.meta.get("cp_sequence_step") or 1)
+        cp_tokens = [p.strip() for p in str(feedback.new.get("cp") or "").split(",")]
+        step_token = cp_tokens[step - 1] if 0 <= step - 1 < len(cp_tokens) else ""
+        suffix = f" ({step_token})" if step_token else ""
+        fb.append(("Step", f"{step}/{feedback.meta.get('cp_sequence_len')}{suffix}"))
     fb.append(("Next", f"#{feedback.next_no} → {core.fmt_dt_local(feedback.child_due)}  ({delta})"))
-    basis_text = _pretty_basis_cp(feedback.new, feedback.meta, parse_cp_duration=core.parse_cp_duration)
+    basis_text = _pretty_basis_cp(
+        feedback.new,
+        feedback.meta,
+        parse_cp_duration=core.parse_cp_duration,
+        parse_cp_sequence=getattr(core, "parse_cp_sequence", None),
+    )
     if basis_text != "Preserve wall clock (period is multiple of 24h)":
         fb.append(("Basis", basis_text))
     fb.append(("Root", format_root_and_age(feedback.new, feedback.now_utc)))
-    if feedback.analytics_advice:
+    if core.SHOW_ANALYTICS and feedback.analytics_advice:
         fb.append(("Analytics", feedback.analytics_advice))
     _append_integrity_warnings_row(fb, feedback.integrity_warnings)
     append_next_wait_sched_rows(

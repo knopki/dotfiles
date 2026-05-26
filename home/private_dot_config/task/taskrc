@@ -135,13 +135,13 @@ urgency.user.project.work.tilde.3.coefficient=2.0
 urgency.user.project.work.tilde.4.coefficient=2.0
 
 
+
 #
 #░█▀█░█▀█░█░█░▀█▀░▀█▀░█▀▀░█▀█░█░░
 #░█░█░█▀█░█░█░░█░░░█░░█░░░█▀█░█░░
 #░▀░▀░▀░▀░▀▀▀░░▀░░▀▀▀░▀▀▀░▀░▀░▀▀▀
-
 ## Classic Chain Recurrence
-uda.cp.type=duration
+uda.cp.type=string
 uda.cp.label=Chain Period
 uda.chain.type=string
 uda.chain.label=Chain Status
@@ -151,10 +151,18 @@ uda.chain.default=off
 ## Advanced Anchor Recurrence
 uda.anchor.type=string
 uda.anchor.label=Anchor
+uda.anchor_file.type=string
+uda.anchor_file.label=Anchor File
 uda.anchor_mode.type=string
 uda.anchor_mode.values=flex,all,skip
 uda.anchor_mode.default=skip
 uda.anchor_mode.label=Anchor Mode
+
+## Holiday/Omitted days
+uda.omit.type=string
+uda.omit.label=Omit
+uda.omit_file.type=string
+uda.omit_file.label=Omit File
 
 ## Limits
 uda.chainMax.type=numeric
@@ -163,13 +171,13 @@ uda.chainUntil.type=date
 uda.chainUntil.label=Chain Until
 
 ## Lineage
-uda.prevLink.type=uuid
+uda.prevLink.type=uuid # in Taskwarrior 3.4.2+ you can change this to type=UUID
 uda.prevLink.label=Previous Link
-uda.nextLink.type=uuid
+uda.nextLink.type=uuid # in Taskwarrior 3.4.2+ you can change this to type=UUID
 uda.nextLink.label=Next Link
 uda.link.type=numeric
 uda.link.label=Link Number
 uda.chainID.type=string
 uda.chainID.label=ChainID
-
+#
 ############
