@@ -1,3 +1,7 @@
 {{- if not .isTrustedHost }}
 sync
 {{- end}}
+.nautical-locks
+.nautical-state
+.nautical_diag.jsonl
+nautical_core/__pycache__
