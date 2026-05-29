@@ -34,7 +34,7 @@ permission:
   question: deny
   skill:
     grep-app-cli: allow
-    grace-lite: allow
+    grace-lite-ask: allow
     find-docs: allow
   task: deny
 ---

@@ -19,11 +19,16 @@ permission:
   websearch: deny
   question: deny
   skill:
-    grace-lite: allow
+    grace-lite-ask: allow
+    grace-lite-fix: allow
+    grace-lite-refresh: allow
     openspec-apply-change: allow
     openspec-archive-change: allow
+    openspec-continue-change: allow
     openspec-explore: allow
     openspec-propose: allow
+    openspec-sync-specs: allow
+    openspec-verify-change: allow
   task:
     "*": deny
     "codebase-explorer": allow

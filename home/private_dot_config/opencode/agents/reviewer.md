@@ -26,8 +26,10 @@ permission:
   websearch: deny
   question: deny
   skill:
-    grace-lite: allow
+    grace-lite-ask: allow
+    grace-lite-reviewer: allow
     openspec-explore: allow
+    openspec-verify-change: allow
   task:
     "*": deny
     "codebase-explorer": allow

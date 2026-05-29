@@ -21,7 +21,7 @@ permission:
   skill:
     codebase-to-course: allow
     doc-coauthoring: allow
-    grace-lite: allow
+    grace-lite-ask: allow
     openspec-explore: allow
   task:
     "*": deny

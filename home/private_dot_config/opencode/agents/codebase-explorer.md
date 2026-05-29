@@ -19,7 +19,7 @@ permission:
   websearch: deny
   question: deny
   skill:
-    grace-lite: allow
+    grace-lite-ask: allow
     openspec-explore: allow
   task: deny
   "codegraph_*": allow

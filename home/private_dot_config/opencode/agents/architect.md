@@ -23,13 +23,14 @@ permission:
   websearch: deny
   question: deny
   skill:
-    grace-lite: allow
+    "grace-lite-*": allow
     openspec-explore: allow
     openspec-propose: allow
   task:
     "*": deny
     "codebase-explorer": allow
     "librarian": allow
+    "reviewer": allow
   "codegraph_*": deny
 ---
 

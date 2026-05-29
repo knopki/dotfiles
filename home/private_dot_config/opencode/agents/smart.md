@@ -20,11 +20,8 @@ permission:
   question: allow
   skill:
     agent-browser: allow
-    grace-lite: allow
-    openspec-apply-change: allow
-    openspec-archive-change: allow
-    openspec-explore: allow
-    openspec-propose: allow
+    "grace-lite-*": allow
+    "openspec-*": allow
   task:
     "*": deny
     architect: allow
