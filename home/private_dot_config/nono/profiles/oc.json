@@ -5,7 +5,8 @@
     "helix",
     "safe-domains",
     "node-dev",
-    "python-dev"
+    "python-dev",
+    "podman"
   ],
   "meta": {
     "name": "oc"
@@ -17,6 +18,7 @@
   "filesystem": {
     "allow": [
       "$HOME/.config/nono/profile-drafts",
+      "$XDG_DATA_HOME/npm",
       "$XDG_DATA_HOME/rtk",
       "$HOME/.context7",
       "$HOME/.npm"

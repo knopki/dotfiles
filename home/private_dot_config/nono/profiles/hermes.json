@@ -8,7 +8,9 @@
     "taskwarrior",
     "timewarrior",
     "khal",
-    "khard"
+    "khard",
+    "podman",
+    "gui"
   ],
   "meta": {
     "name": "hermes"
@@ -34,9 +36,12 @@
     "allow": [
       "$HOME/.hermes",
       "$XDG_CONFIG_HOME/nono/profile-drafts",
-      "$XDG_STATE_HOME/hermes",
       "$XDG_CACHE_HOME/huggingface",
+      "$XDG_DATA_HOME/npm",
       "$XDG_DATA_HOME/rtk",
+      "$XDG_RUNTIME_DIR/agent-browser",
+      "$XDG_STATE_HOME/hermes",
+      "$HOME/.agent-browser",
       "$HOME/.context7"
     ],
     "allow_file": [
@@ -50,7 +55,8 @@
       "$XDG_CONFIG_HOME/git",
       "$HOME/.local/bin",
       "$HOME/.agents"
-    ]
+    ],
+    "read_file": []
   },
   "network": {
     "block": false,

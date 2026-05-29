@@ -2,6 +2,7 @@
   "meta": {
     "name": "gpu"
   },
+  "allow_gpu": true,
   "groups": {},
   "filesystem": {
     "allow": ["/dev/dri", "/dev/hugepages"],

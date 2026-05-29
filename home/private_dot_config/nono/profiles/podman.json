@@ -1,0 +1,91 @@
+{
+  "extends": null,
+  "meta": {
+    "name": "podman",
+    "version": "",
+    "description": null,
+    "author": null
+  },
+  "security": {
+    "signal_mode": null,
+    "process_info_mode": null,
+    "ipc_mode": null,
+    "capability_elevation": null,
+    "wsl2_proxy_policy": null
+  },
+  "groups": {
+    "include": [],
+    "exclude": []
+  },
+  "commands": {
+    "allow": [],
+    "deny": []
+  },
+  "filesystem": {
+    "allow": [
+      "$XDG_DATA_HOME/containers",
+      "$XDG_RUNTIME_DIR/libpod",
+      "/dev/shm",
+      "/tmp/podman-run-*"
+    ],
+    "read": [
+      "$XDG_CONFIG_HOME/containers",
+      "/etc/containers",
+      "/usr/share/containers",
+      "/var/log/journal",
+      "/run/wrappers"
+    ],
+    "write": [],
+    "allow_file": [],
+    "read_file": [
+      "/etc/ld-nix.so.preload",
+      "/etc/subgid",
+      "/etc/subuid",
+      "/proc/sys/kernel/random/boot_id"
+    ],
+    "write_file": ["/run/docker.sock", "/run/podman/podman.sock"],
+    "unix_socket": [],
+    "unix_socket_bind": [],
+    "unix_socket_dir": [],
+    "unix_socket_dir_bind": [],
+    "unix_socket_subtree": [],
+    "unix_socket_subtree_bind": [],
+    "deny": [],
+    "bypass_protection": [],
+    "suppress_save_prompt": []
+  },
+  "network": {
+    "block": false,
+    "allow_domain": [],
+    "open_port": [],
+    "listen_port": [],
+    "connect_port": [],
+    "custom_credentials": {},
+    "upstream_proxy": null,
+    "upstream_bypass": []
+  },
+  "linux": {
+    "af_unix_mediation": null
+  },
+  "env_credentials": {},
+  "environment": {
+    "allow_vars": ["CONTAINER_HOST", "DOCKER_HOST"]
+  },
+  "workdir": {
+    "access": "none"
+  },
+  "hooks": {},
+  "rollback": {
+    "exclude_patterns": [],
+    "exclude_globs": []
+  },
+  "open_urls": null,
+  "allow_launch_services": null,
+  "allow_gpu": null,
+  "allow_parent_of_protected": null,
+  "interactive": false,
+  "skipdirs": [],
+  "packs": [],
+  "command_args": [],
+  "unsafe_macos_seatbelt_rules": []
+}

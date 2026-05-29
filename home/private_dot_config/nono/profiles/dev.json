@@ -16,6 +16,7 @@
   },
   "groups": {},
   "filesystem": {
+    "allow": ["$XDG_DATA_HOME/npm"],
     "read": ["$XDG_CONFIG_HOME/git"],
     "read_file": ["$HOME/.ssh/config"],
     "bypass_protection": ["$HOME/.ssh/config"]
