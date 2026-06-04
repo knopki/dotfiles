@@ -1,12 +1,12 @@
 {
   "extends": [
-    "opencode",
+    "always-further/opencode",
     "safe-env-vars",
     "helix",
-    "safe-domains",
     "node-dev",
     "python-dev",
-    "podman"
+    "podman",
+    "git"
   ],
   "meta": {
     "name": "oc"
@@ -14,30 +14,24 @@
   "groups": {
     "include": []
   },
-  "security": {},
   "filesystem": {
     "allow": [
-      "$HOME/.config/nono/profile-drafts",
       "$XDG_DATA_HOME/npm",
       "$XDG_DATA_HOME/rtk",
+      "$XDG_STATE_HOME/opencode",
       "$HOME/.context7",
       "$HOME/.npm"
     ],
-    "read": [
-      "$XDG_CONFIG_HOME/git",
-      "$XDG_CONFIG_HOME/openspec",
-      "$XDG_CONFIG_HOME/nono/packages",
-      "$XDG_CONFIG_HOME/nono/profiles",
-      "$HOME/.agents"
-    ]
+    "read": ["$XDG_CONFIG_HOME/git", "$XDG_CONFIG_HOME/openspec"],
+    "suppress_save_prompt": []
   },
   "network": {
-    "block": false
-  },
-  "workdir": {
-    "access": "readwrite"
+    "block": false,
+    "network_profile": null
   },
   "undo": {
-    "exclude_patterns": [".venv"]
-  }
+    "exclude_patterns": [".venv"],
+    "exclude_globs": ["*.tmp.[0-9]*.[0-9]*"]
+  },
+  "allow_launch_services": true
 }

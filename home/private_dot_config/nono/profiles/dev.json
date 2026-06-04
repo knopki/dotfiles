@@ -9,7 +9,8 @@
     "hermes",
     "oc",
     "taskwarrior",
-    "timewarrior"
+    "timewarrior",
+    "git"
   ],
   "meta": {
     "name": "dev"

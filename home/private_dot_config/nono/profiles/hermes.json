@@ -1,41 +1,27 @@
 {
   "extends": [
     "default",
-    "opencode",
+    "oc",
     "node-dev",
     "python-dev",
+    "always-further/hermes",
     "safe-env-vars",
     "taskwarrior",
     "timewarrior",
     "khal",
     "khard",
     "podman",
-    "gui"
+    "gui",
+    "git"
   ],
   "meta": {
     "name": "hermes"
   },
   "groups": {
-    "include": [
-      "python_runtime",
-      "node_runtime",
-      "rust_runtime",
-      "user_caches_macos",
-      "user_caches_linux",
-      "linux_sysfs_read",
-      "nix_runtime",
-      "git_config",
-      "unlink_protection"
-    ]
-  },
-  "security": {
-    "signal_mode": "isolated",
-    "capability_elevation": false
+    "include": []
   },
   "filesystem": {
     "allow": [
-      "$HOME/.hermes",
-      "$XDG_CONFIG_HOME/nono/profile-drafts",
       "$XDG_CACHE_HOME/huggingface",
       "$XDG_DATA_HOME/npm",
       "$XDG_DATA_HOME/rtk",
@@ -49,11 +35,8 @@
       "$XDG_CONFIG_HOME/pulse/cookie"
     ],
     "read": [
-      "$XDG_DATA_HOME/uv",
-      "$XDG_CONFIG_HOME/nono/packages",
       "$XDG_CONFIG_HOME/nono/profiles",
       "$XDG_CONFIG_HOME/git",
-      "$HOME/.local/bin",
       "$HOME/.agents"
     ],
     "read_file": []
@@ -62,21 +45,10 @@
     "block": false,
     "network_profile": null
   },
-  "workdir": {
-    "access": "readwrite"
-  },
   "open_urls": {
     "allow_localhost": true
   },
-  "allow_launch_services": true,
   "undo": {
-    "exclude_patterns": [
-      "node_modules",
-      ".next",
-      "__pycache__",
-      "target",
-      ".hermes"
-    ],
-    "exclude_globs": ["*.tmp.[0-9]*.[0-9]*"]
+    "exclude_patterns": [".venv"]
   }
 }

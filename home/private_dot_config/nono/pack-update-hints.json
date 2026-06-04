@@ -1,0 +1,14 @@
+{
+  "entries": {
+    "always-further/opencode": {
+      "last_check": "2026-06-04T09:02:51.243149334Z",
+      "installed_at_check": "0.0.5",
+      "latest": "0.0.5"
+    },
+    "always-further/hermes": {
+      "last_check": "2026-06-04T17:19:59.967423674Z",
+      "installed_at_check": "0.0.7",
+      "latest": "0.0.7"
+    }
+  }
+}

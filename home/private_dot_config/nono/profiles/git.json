@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "name": "git"
+  },
+  "groups": {
+    "include": ["nix_runtime"]
+  },
+  "filesystem": {
+    "read": ["$XDG_CONFIG_HOME/git", "$XDG_CONFIG_HOME/gh"],
+    "read_file": ["$HOME/dev/.gitconfig", "$HOME/prj/.gitconfig"]
+  },
+  "environment": {
+    "allow_vars": ["XDG_*"]
+  }
+}

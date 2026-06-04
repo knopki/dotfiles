@@ -18,7 +18,7 @@
     "exclude": []
   },
   "commands": {
-    "allow": [],
+    "allow": ["docker", "podman"],
     "deny": []
   },
   "filesystem": {
@@ -43,26 +43,8 @@
       "/etc/subuid",
       "/proc/sys/kernel/random/boot_id"
     ],
-    "write_file": ["/run/docker.sock", "/run/podman/podman.sock"],
-    "unix_socket": [],
-    "unix_socket_bind": [],
-    "unix_socket_dir": [],
-    "unix_socket_dir_bind": [],
-    "unix_socket_subtree": [],
-    "unix_socket_subtree_bind": [],
-    "deny": [],
-    "bypass_protection": [],
-    "suppress_save_prompt": []
-  },
-  "network": {
-    "block": false,
-    "allow_domain": [],
-    "open_port": [],
-    "listen_port": [],
-    "connect_port": [],
-    "custom_credentials": {},
-    "upstream_proxy": null,
-    "upstream_bypass": []
+    "write_file": [],
+    "unix_socket": ["/run/docker.sock", "/run/podman/podman.sock"]
   },
   "linux": {
     "af_unix_mediation": null
@@ -71,21 +53,5 @@
   "environment": {
     "allow_vars": ["CONTAINER_HOST", "DOCKER_HOST"]
   },
-  "workdir": {
-    "access": "none"
-  },
-  "hooks": {},
-  "rollback": {
-    "exclude_patterns": [],
-    "exclude_globs": []
-  },
-  "open_urls": null,
-  "allow_launch_services": null,
-  "allow_gpu": null,
-  "allow_parent_of_protected": null,
-  "interactive": false,
-  "skipdirs": [],
-  "packs": [],
-  "command_args": [],
-  "unsafe_macos_seatbelt_rules": []
+  "interactive": false
 }

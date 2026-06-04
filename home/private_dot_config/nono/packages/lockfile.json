@@ -1,0 +1,206 @@
+{
+  "lockfile_version": 4,
+  "registry": "https://registry.nono.sh",
+  "packages": {
+    "always-further/hermes": {
+      "version": "0.0.7",
+      "installed_at": "2026-06-04T17:11:54.916020164+00:00",
+      "pinned": false,
+      "provenance": {
+        "signer_identity": "https://github.com/always-further/nono-packs/.github/workflows/publish-hermes.yml@refs/tags/hermes-v0.0.7",
+        "repository": "always-further/nono-packs",
+        "workflow": ".github/workflows/publish-hermes.yml",
+        "ref": "refs/tags/hermes-v0.0.7",
+        "rekor_log_index": 1580015430,
+        "signed_at": "2026-05-20T08:32:53.845485+00:00"
+      },
+      "artifacts": {
+        "README.md": {
+          "sha256": "199bcd867682d4fc0f69acf16f1827ee82c9bdec0d60f682e061b127fc7d7f86",
+          "type": "plugin"
+        },
+        "assets/logo.png": {
+          "sha256": "b5449daa715a32c3af731fd2eec5f8713d9a5364f40602795ef79d52f8592c76",
+          "type": "plugin"
+        },
+        "bin/nono-hermes-status.sh": {
+          "sha256": "29dd3ab3dab1018734242545215ea3f2b4bc0ea615d8eef75c626f6c2c18eca1",
+          "type": "plugin"
+        },
+        "plugin/nono-sandbox/__init__.py": {
+          "sha256": "48dcf56f050a1fa8477c87c1d0475874c9346ed64ddbd8f6073f388442028ea9",
+          "type": "plugin"
+        },
+        "plugin/nono-sandbox/plugin.yaml": {
+          "sha256": "0491881a891102dbdb3f290104bb547189d9ddb846917c721b5eec91deb37390",
+          "type": "plugin"
+        },
+        "plugin/nono-sandbox/skills/nono-sandbox/SKILL.md": {
+          "sha256": "23ddba0ac1cf7478c85cff519ba6f1ca2e63f347726b1f5b68658bf0487110ea",
+          "type": "plugin"
+        },
+        "profiles/hermes.json": {
+          "sha256": "1402bc8f055799f1866f3e27388b5b9733487f609247a1fc866c0fa06e4cd57a",
+          "type": "profile"
+        },
+        "templates/config-hardening.yaml": {
+          "sha256": "84d36702cdf3e8abe0a249e901198b609ec55f9926529d187d61bd578a465116",
+          "type": "plugin"
+        }
+      },
+      "wiring_record": [
+        {
+          "type": "yaml_merge",
+          "file": "/home/sk/.hermes/config.yaml",
+          "leaves": [
+            {
+              "path": [
+                "plugins",
+                "enabled"
+              ],
+              "installed_value": [
+                "nono-sandbox"
+              ],
+              "prior_value": [
+                "disk-cleanup",
+                "image_gen/custom_image_gen",
+                "ru-morph",
+                "nono-sandbox"
+              ]
+            },
+            {
+              "path": [
+                "approvals",
+                "mode"
+              ],
+              "installed_value": "manual",
+              "prior_value": "smart"
+            },
+            {
+              "path": [
+                "approvals",
+                "timeout"
+              ],
+              "installed_value": 60,
+              "prior_value": 120
+            },
+            {
+              "path": [
+                "security",
+                "redact_secrets"
+              ],
+              "installed_value": true,
+              "prior_value": true
+            },
+            {
+              "path": [
+                "security",
+                "tirith_enabled"
+              ],
+              "installed_value": true,
+              "prior_value": true
+            },
+            {
+              "path": [
+                "security",
+                "tirith_fail_open"
+              ],
+              "installed_value": false,
+              "prior_value": true
+            },
+            {
+              "path": [
+                "security",
+                "allow_private_urls"
+              ],
+              "installed_value": false,
+              "prior_value": false
+            },
+            {
+              "path": [
+                "security",
+                "website_blocklist",
+                "enabled"
+              ],
+              "installed_value": true,
+              "prior_value": true
+            },
+            {
+              "path": [
+                "security",
+                "website_blocklist",
+                "domains"
+              ],
+              "installed_value": [
+                "*.internal",
+                "*.local",
+                "metadata.google.internal",
+                "metadata.goog"
+              ],
+              "prior_value": [
+                "*.internal",
+                "*.local",
+                "metadata.google.internal",
+                "metadata.goog"
+              ]
+            },
+            {
+              "path": [
+                "skills",
+                "guard_agent_created"
+              ],
+              "installed_value": true,
+              "prior_value": true
+            }
+          ]
+        }
+      ]
+    },
+    "always-further/opencode": {
+      "version": "0.0.5",
+      "installed_at": "2026-06-01T17:09:18.305674589+00:00",
+      "pinned": false,
+      "provenance": {
+        "signer_identity": "https://github.com/always-further/nono-packs/.github/workflows/publish-opencode.yml@refs/tags/opencode-v0.0.5",
+        "repository": "always-further/nono-packs",
+        "workflow": ".github/workflows/publish-opencode.yml",
+        "ref": "refs/tags/opencode-v0.0.5",
+        "rekor_log_index": 1643446445,
+        "signed_at": "2026-05-27T12:48:22.323224+00:00"
+      },
+      "artifacts": {
+        "README.md": {
+          "sha256": "0686115d208bf52ba43d421965e762a8666b855ddf8c4619b877f23089ca1a6c",
+          "type": "plugin"
+        },
+        "assets/logo.png": {
+          "sha256": "133ebc3baa697b38bfb4e64a2aa463b067cfc40ec9f03ca593a1564080c644f2",
+          "type": "plugin"
+        },
+        "plugin/nono-sandbox.ts": {
+          "sha256": "4240f144dfb00d6aad528eb92d43028c005db9e80daaf7cd71049404c50c4aae",
+          "type": "plugin"
+        },
+        "profiles/opencode.json": {
+          "sha256": "1ebe0eadb06f8f31e3961dca2979ebf7eff8e3a252917b2c86f0854c7d509d83",
+          "type": "profile"
+        },
+        "skills/nono-sandbox/SKILL.md": {
+          "sha256": "60979d64c3bca4aed57276fbdd8965cdc357e48a4ed046491428700c209df22b",
+          "type": "plugin"
+        },
+        "wiring/profile-drafts-dir-marker": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "type": "plugin"
+        }
+      },
+      "wiring_record": [
+        {
+          "type": "write_file",
+          "dest": "/home/sk/.config/nono/profile-drafts/.nono-opencode-pack-marker",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  }
+}
