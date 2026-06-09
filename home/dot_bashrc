@@ -113,15 +113,6 @@ if command -v fzf 2>/dev/null 1>&2; then
 	eval "$(fzf --bash)"
 fi
 
-# Atuin init
-# Install atuin hook if all:
-#  - atuin command is present
-#  - atuin is configured
-if command -v atuin 2>/dev/null 1>&2 &&
-	[[ -f "$XDG_CONFIG_HOME/atuin/config.toml" ]]; then
-	eval "$(atuin init bash --disable-up-arrow --disable-ctrl-r)"
-fi
-
 # Starship init
 # Install starship hook if all:
 #  - terminal is not dumb

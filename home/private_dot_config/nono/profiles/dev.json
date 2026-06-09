@@ -1,7 +1,6 @@
 {
   "extends": [
     "default",
-    "atuin",
     "shell",
     "helix",
     "node-dev",

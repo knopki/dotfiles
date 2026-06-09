@@ -2,7 +2,6 @@
 
 Required software:
   * Mininal:
-    - atuin
     - bash
     - bat
     - chezmoi
