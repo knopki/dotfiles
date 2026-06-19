@@ -1,15 +1,13 @@
 ---
 description: Pure primary orchestrator that classifies requests and delegates all work to specialized subagents. Use when you want smart routing without direct execution.
 mode: primary
-model: opencode-go/deepseek-v4-pro
+model: zhipuai-coding-plan/glm-5.2
 fallback_models:
-  - ollana-cloud/deepseek-v4-pro
-  - deepseek/deepseek-v4-flash
-  - zhipuai-coding-plan/glm-5.1
+  - opencode-go/minimax-m3
+  - ollana-cloud/minimax-m3
 permission:
   read: allow
-  # NOTE: opencode bug. Edit+deny forced to subagents.
-  # edit: deny
+  edit: deny
   grep: allow
   glob: allow
   list: allow

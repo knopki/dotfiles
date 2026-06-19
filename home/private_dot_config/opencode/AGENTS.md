@@ -68,9 +68,6 @@
     </examples>
   </code_documentation>
   <git_operations>
-    <core_principle>
-    NEVER perform write git operations without explicit user instruction.
-    </core_principle>
     <instruction>
     Do NOT auto-stage, commit, or push changes. Only use read-only git commands (status, diff, log, show, branch -l), and only when the user asks or the task clearly requires repository inspection.
     </instruction>

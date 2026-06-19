@@ -1,12 +1,12 @@
 ---
 description: Expert technical advisor with deep reasoning for architecture decisions, code analysis, and engineering guidance.
 mode: primary
-model: opencode-go/deepseek-v4-pro
-fallback_models:
-  - opencode-go/deepseek-v4-pro
-  - ollama-cloud/deepseek-v4-pro
-  - opencode-go/kimi-k2.6
-  - zhipuai-coding-plan/glm-5.1
+model: opencode-go/qwen3.7-plus
+#fallback_models:
+#  - opencode-go/deepseek-v4-pro
+#  - ollama-cloud/deepseek-v4-pro
+#  - opencode-go/kimi-k2.6
+#  - zhipuai-coding-plan/glm-5.2
 permission:
   read: allow
   edit:

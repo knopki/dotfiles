@@ -1,7 +1,7 @@
 ---
 description: Analyze media files (PDFs, images, diagrams) that require interpretation beyond raw text. Extract specific requested information or produce a focused summary of visual/document content. Use when analyzed/extracted data is needed rather than literal file contents.
 mode: subagent
-model: opencode/qwen3.6-plus
+model: opencode-go/mimimax-m3
 fallback_models:
   - ollama-cloud/gemini-3-flash-preview
 permission:

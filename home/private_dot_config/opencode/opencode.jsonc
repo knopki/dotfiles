@@ -1,118 +1,65 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": false,
-
   "plugin": [
-    // "opencode-omniroute-auth@1.1.0",
-    "opencode-handoff@0.5.0",
-    // "@tarquinen/opencode-dcp@3.1.9",
-    // "opencode-pty@0.3.2",
+    "opencode-runtime-fallback@0.2.4",
+    [
+      "opencode-auto-resume@1.0.12",
+      {
+        "chunkTimeoutMs": 45000,
+        "gracePeriodMs": 3000,
+        "maxRetries": 10,
+      },
+    ],
+    "opencode-handoff-plus@1.0.10",
+    "@tarquinen/opencode-dcp@3.1.12",
     "@franlol/opencode-md-table-formatter@0.0.6",
-    // "opencode-plugin-preload-skills@1.8.0"
-    "opencode-runtime-fallback@0.2.4"
   ],
-
   "instructions": [
     "AGENTS.md",
     "AGENTS.local.md",
     "AGENTS.override.md",
     "CLAUDE.md",
-    "CONTRIBUTING.md"
+    "CONTRIBUTING.md",
   ],
-
   "mcp": {
     "codegraph": {
       "type": "local",
       "command": ["codegraph", "serve", "--mcp"],
-      "enabled": true
-    }
-    // TODO: Chrome DevTools MCP
+      "enabled": true,
+    },
   },
-
   "tools": {
-    "codegraph_*": false
+    "codegraph_*": false,
   },
-
   "permission": {
     "bash": {
-      "*": "ask",
-      "agent-browser *": "allow",
-      "cut *": "allow",
-      "curl *": "allow",
-      "diff *": "allow",
-      "date *": "allow",
-      "du *": "allow",
-      "echo *": "allow",
-      "file *": "allow",
-      "find *": "allow",
-      "find * -delete*": "ask",
-      "find * -exec*": "ask",
-      "find * -fls*": "ask",
-      "find * -fprint*": "allow",
-      "find * -fprintf*": "allow",
-      "find * -ok*": "ask",
-      "git *": "ask",
-      "git add *": "allow",
-      "git branch*": "ask",
-      "git commit -m *": "allow",
-      "git diff*": "allow",
-      "git log*": "allow",
-      "git show*": "allow",
-      "git status*": "allow",
-      "git rev-parse*": "allow",
-      "grep *": "allow",
-      "head *": "allow",
-      "less *": "allow",
-      "ls": "allow",
-      "ls *": "allow",
-      "mkdir *": "allow",
-      "more *": "allow",
-      "notify-send *": "allow",
-      "openspec *": "allow",
-      "pwd*": "allow",
-      "pytest *": "allow",
-      "pytest": "allow",
-      "python -m compileall *": "allow",
-      "python -m py_compile *": "allow",
-      "python -m pytest *": "allow",
-      "pyright*": "allow",
-      "rg *": "allow",
-      "ruff *": "allow",
-      "sort *": "allow",
-      "tail *": "allow",
-      "tree *": "allow",
-      "tree -o *": "ask",
-      "uniq *": "allow",
-      "uv run pyright*": "allow",
-      "uv run pytest": "allow",
-      "uv run pytest *": "allow",
-      "uv run ruff *": "allow",
-      "uv run zuban *": "allow",
-      "wc *": "allow",
-      "which*": "allow",
-      "zuban *": "allow",
-      "./scripts/grep-app-mcp call-tool searchGitHu *": "allow"
+      "*": "allow", // use only inside the sandbox!
+      "docker *--privileged*": "deny",
+      "podman *--privileged*": "deny",
+      "pip install*": "deny",
     },
     "read": {
       "*": "allow",
       "/dev/stdin": "deny",
       ".env": "deny",
       ".env.*": "deny",
-      ".envrc": "deny"
+      ".envrc": "deny",
     },
-    // whitelist only
     "skill": {
       "*": "deny",
-      "nono-sandbox": "allow"
+      "nono-sandbox": "allow",
     },
-    // no subagents
-    "task": "deny"
+    "task": "deny",
+    "doom_loop": "deny",
+    "external_directory": "allow", // use only inside the sandbox!
+    "write_handoff_file": "deny",
+    "read_session": "deny",
   },
-
   "disabled_providers": ["anthropic", "gemini", "openai-codex"],
   "provider": {
     "deepseek": {
-      "blacklist": ["deepseek-chat", "deepseek-reasoner"]
+      "blacklist": ["deepseek-chat", "deepseek-reasoner"],
     },
     "ollama-cloud": {
       "blacklist": [
@@ -144,189 +91,60 @@
         "qwen3-vl:235b",
         "qwen3-vl:235b-instruct",
         "qwen3.5:397b",
-        "rnj-1:8b"
-      ]
+        "rnj-1:8b",
+      ],
     },
     "opencode-go": {
-      "blacklist": ["glm-5", "kimi-k2.5"]
+      "blacklist": ["glm-5", "glm-5.1", "kimi-k2.5"],
     },
     "openrouter": {
-      "whitelist": ["openrouter/free"]
+      "whitelist": ["openrouter/free"],
     },
     "zhipuai-coding-plan": {
-      "blacklist": ["glm-4.5-air", "glm-5v-turbo"]
-    }
+      "blacklist": ["glm-4.5-air", "glm-5v-turbo", "glm-5", "glm-5.1"],
+    },
   },
-
   "compaction": {
     "auto": true,
     "prune": true,
-    "reserved": 10000
+    "tail_turns": 4,
+    "preserve_recent_tokens": 25000,
+    "reserved": 30000,
   },
-
-  // default model if not set by agent
-  "model": "zhipuai-coding-plan/glm-5.1",
-  // small and cheap model used for title generation
-  // "small_model": "openrouter/google/gemini-2.5-flash",
-  "small_model": "opencode-go/deepseek-v4-flash",
-
-  "default_agent": "plan",
+  "model": "zhipuai-coding-plan/glm-5.2",
+  "small_model": "deepseek/deepseek-v4-flash",
+  "default_agent": "k-composer",
   "agent": {
-    // primary default build agent
     "build": {
-      "model": "zhipuai-coding-plan/glm-5.1",
-      "fallback_models": ["opencode-go/glm-5.1", "ollama-cloud/glm-5.1"],
-      "permission": {
-        "edit": "allow",
-        "apply_patch": "allow",
-        "lsp": "allow",
-        "todowrite": "allow",
-        "todoread": "allow",
-        "webfetch": "ask",
-        "websearch": "ask",
-        "question": "allow",
-        "skill": {
-          "agent-browser": "allow",
-          "changelog-automation": "allow",
-          "codebase-to-course": "allow",
-          "customize-opencode": "allow",
-          "doc-coauthoring": "allow",
-          "find-docs": "allow",
-          "grace-lite-*": "allow",
-          "grep-app-cli": "allow",
-          "openspec-*": "allow",
-          "ui-ux-pro-max": "allow"
-        },
-        "task": {
-          "*": "deny",
-          "general": "allow",
-          "explore": "allow",
-          "build": "allow"
-        }
-      },
-      "tools": {
-        "codegraph_*": true
-      }
+      "disable": true,
     },
-
-    // primary default planning agent (save as build but with plan message)
     "plan": {
-      "model": "zhipuai-coding-plan/glm-5.1",
-      "fallback_models": ["opencode-go/glm-5.1", "ollama-cloud/glm-5.1"],
-      "permission": {
-        "bash": "ask",
-        "edit": "deny",
-        "apply_patch": "deny",
-        "lsp": "allow",
-        "todowrite": "allow",
-        "todoread": "allow",
-        "webfetch": "ask",
-        "websearch": "allow",
-        "question": "allow",
-        "skill": {
-          "agent-browser": "allow",
-          "changelog-automation": "allow",
-          "codebase-to-course": "allow",
-          "doc-coauthoring": "allow",
-          "find-docs": "allow",
-          "grace-lite-*": "allow",
-          "grep-app-cli": "allow",
-          "openspec-*": "allow",
-          "ui-ux-pro-max": "allow"
-        },
-        "task": {
-          "*": "deny",
-          "explore": "allow"
-        }
-      },
-      "tools": {
-        "pty_*": false,
-        "codegraph_*": true
-      }
+      "disable": true,
     },
-
-    // General-purpose sub-agent and fast for researching complex questions and executing multi-step tasks
     "general": {
-      "model": "opencode-go/deepseek-v4-flash",
-      "fallback_models": [
-        "ollama-cloud/deepseek-v4-flash",
-        "deepseek/deepseek-v4-flash",
-        "zhipuai-coding-plan/glm-5.1"
-      ],
-      "permission": {
-        "edit": "allow",
-        "lsp": "allow",
-        "todowrite": "deny",
-        "todoread": "deny",
-        "webfetch": "deny",
-        "websearch": "allow",
-        "question": "deny",
-        "skill": {
-          "find-docs": "allow",
-          "grace-lite-*": "allow",
-          "grep-app-cli": "allow"
-        },
-        "task": {
-          "*": "deny",
-          "general": "allow",
-          "explore": "allow"
-        }
-      },
-      "tools": {
-        "codegraph_*": true
-      }
+      "disable": true,
     },
-
-    // Fast subagent specialized for exploring codebases
     "explore": {
-      // prefer free/cheap and fast model
-      "model": "opencode-go/deepseek-v4-flash",
-      "fallback_models": [
-        "ollama-cloud/deepseek-v4-flash",
-        "deepseek/deepseek-v4-flash",
-        "zhipuai-coding-plan/glm-4.7"
-      ],
-      "permission": {
-        "bash": "deny",
-        "edit": "deny",
-        "todowrite": "deny",
-        "todoread": "deny",
-        "lsp": "allow",
-        "webfetch": "deny",
-        "websearch": "deny",
-        "question": "deny",
-        "skill": {
-          "find-docs": "allow",
-          "grace-lite-*": "allow"
-        },
-        "task": "deny"
-      },
-      "tools": {
-        "pty_*": false,
-        "codegraph_*": true
-      }
-    }
+      "disable": true,
+    },
   },
-
   "watcher": {
     "ignore": [
       "node_modules/**",
       "dist/**",
       ".git/**",
       ".devenv/*",
-      ".direnv/*"
-    ]
+      ".direnv/*",
+    ],
   },
-
   "formatter": {},
-
   "lsp": {
     "pyright": {
-      "disabled": true
+      "disabled": true,
     },
     "zuban": {
-      "command": ["uv", "run", "zaban", "server"],
-      "extensions": [".py"]
-    }
-  }
+      "command": ["uv", "run", "zuban", "server"],
+      "extensions": [".py"],
+    },
+  },
 }

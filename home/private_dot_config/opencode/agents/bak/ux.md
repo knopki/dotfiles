@@ -1,8 +1,9 @@
 ---
 description: A designer-turned-developer who crafts stunning UI/UX even without design mockups. Code may be a bit messy, but the visual output is always fire.
 mode: subagent
-model: opencode-go/deepseek-v4-pro
+model: opencode-go/qwen3.7-max
 fallback_models:
+  - opencode-go/deepseek-v4-pro
   - ollama-cloud/deepseek-v4-pro
   - deepseek/deepseek-v4-pro
   - ollama-cloud/gemini-3-flash-preview

@@ -10,7 +10,7 @@
   "commands": {
     "enabled": true,
     // Additional tools to protect from pruning via commands (e.g., /dcp sweep)
-    "protectedTools": []
+    "protectedTools": [],
   },
   // Manual mode: disables autonomous context management,
   // tools only run when explicitly triggered via /dcp commands
@@ -18,12 +18,12 @@
     "enabled": true,
     // When true, automatic strategies (deduplication, supersedeWrites, purgeErrors)
     // still run even in manual mode
-    "automaticStrategies": false
+    "automaticStrategies": true,
   },
   // Protect from pruning for <turns> message turns past tool invocation
   "turnProtection": {
     "enabled": true,
-    "turns": 10
+    "turns": 10,
   },
   // Experimental settings
   "experimental": {
@@ -31,12 +31,12 @@
     "allowSubAgents": false,
     // Enable user-editable prompt overrides under dcp-prompts directories
     // When false (default), prompt override files/directories are ignored
-    "customPrompts": false
+    "customPrompts": false,
   },
 
   // Protect file operations from pruning via glob patterns
   // Patterns match tool parameters.filePath (e.g. read/write/edit)
-  "protectedFilePatterns": [".opencode", "openspec"],
+  "protectedFilePatterns": [".opencode", "openspec", "docs"],
 
   // Unified context compression tool and behavior settings
   "compress": {
@@ -62,32 +62,30 @@
     // Accepts: number or "X%".
     // Example:
     "modelMaxLimits": {
-      "minimax/MiniMax-M2.5": 190000,
-      "minimax/MiniMax-M2.7": 190000,
-      "moonshotai/kimi-k2.6": 200000,
-      "openai/gpt-5.4": 200000,
-      "openai/gpt-5.4-mini": 128000,
-      "openai/gpt-5.5": 200000,
-      "openrouter/google/gemini-3-flash-preview": 500000,
-      "openrouter/google/gemini-3.1-pro-preview": 500000,
-      "zai/glm-4.7": 120000,
-      "zai/glm-5-turbo": 120000,
-      "zai/glm-5.1": 120000
+      "deepseek/deepseek-v4-flash": 500000,
+      "deepseek/deepseek-v4-pro": 500000,
+      "ollama-cloud/deepseek-v4-flash": 500000,
+      "ollama-cloud/deepseek-v4-pro": 500000,
+      "ollama-cloud/glm-5.2": 300000,
+      "opencode-go/deepseek-v4-flash": 500000,
+      "opencode-go/deepseek-v4-pro": 500000,
+      "opencode-go/glm-5.2": 300000,
+      "zhipuai-coding-plan/glm-4.7": 150000,
+      "zhipuai-coding-plan/glm-5.2": 300000,
     },
     // Optional per-model override for minContextLimit.
     // If present, this wins over the global minContextLimit.
     "modelMinLimits": {
-      "minimax/MiniMax-M2.5": 100000,
-      "minimax/MiniMax-M2.7": 100000,
-      "moonshotai/kimi-k2.6": 100000,
-      "openai/gpt-5.4": 150000,
-      "openai/gpt-5.4-mini": 64000,
-      "openai/gpt-5.5": 150000,
-      "openrouter/google/gemini-3-flash-preview": 200000,
-      "openrouter/google/gemini-3.1-pro-preview": 200000,
-      "zai/glm-4.7": 100000,
-      "zai/glm-5-turbo": 100000,
-      "zai/glm-5.1": 100000
+      "deepseek/deepseek-v4-flash": 200000,
+      "deepseek/deepseek-v4-pro": 200000,
+      "ollama-cloud/deepseek-v4-flash": 200000,
+      "ollama-cloud/deepseek-v4-pro": 200000,
+      "ollama-cloud/glm-5.2": 200000,
+      "opencode-go/deepseek-v4-flash": 200000,
+      "opencode-go/deepseek-v4-pro": 200000,
+      "opencode-go/glm-5.2": 200000,
+      "zhipuai-coding-plan/glm-4.7": 100000,
+      "zhipuai-coding-plan/glm-5.2": 200000,
     },
     // How often the context-limit nudge fires (1 = every fetch, 5 = every 5th)
     "nudgeFrequency": 5,
@@ -101,7 +99,7 @@
     "protectedTools": [],
     // Preserve your messages during compression.
     // Warning: large copy-pasted prompts will never be compressed away
-    "protectUserMessages": false
+    "protectUserMessages": false,
   },
   // Automatic pruning strategies
   "strategies": {
@@ -109,7 +107,7 @@
     "deduplication": {
       "enabled": true,
       // Additional tools to protect from pruning
-      "protectedTools": []
+      "protectedTools": [],
     },
     // Prune tool inputs for errored tools after X turns
     "purgeErrors": {
@@ -117,7 +115,7 @@
       // Number of turns before errored tool inputs are pruned
       "turns": 10,
       // Additional tools to protect from pruning
-      "protectedTools": []
-    }
-  }
+      "protectedTools": [],
+    },
+  },
 }

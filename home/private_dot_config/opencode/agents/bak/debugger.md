@@ -1,11 +1,10 @@
 ---
 description: Deep error diagnosis and root cause analysis. Use when stuck on complex bugs after 2+ failed attempts, mysterious test failures, or errors requiring systematic investigation. Do NOT use for simple/obvious errors, syntax errors, or as first resort before attempting diagnosis yourself.
 mode: subagent
-model: opencode-go/deepseek-v4-pro
+model: zhipuai-coding-plan/glm-5.2
 fallback_models:
-  - ollama-cloud/deepseek-v4-pro
-  - deepseek/deepseek-v4-pro
-  - opencode-go/qwen3.6-plus
+  - opencode-go/minimax-m3
+  - ollama-cloud/minimax-m3
 permission:
   read: allow
   edit: allow

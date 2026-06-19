@@ -5,7 +5,7 @@ model: opencode-go/deepseek-v4-flash
 fallback_models:
   - ollama-cloud/deepseek-v4-flash
   - deepseek/deepseek-v4-flash
-  - zhipuai-coding-plan/glm-5.1
+  - zhipuai-coding-plan/glm-5.2
 permission:
   read: allow
   edit: allow
