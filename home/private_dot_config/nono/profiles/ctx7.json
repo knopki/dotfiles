@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "name": "ctx7"
+  },
+  "filesystem": {
+    "allow": [
+      "$XDG_DATA_HOME/npm",
+      "$XDG_STATE_HOME/context7",
+      "$HOME/.context7",
+      "$HOME/.npm"
+    ]
+  },
+  "network": {}
+}

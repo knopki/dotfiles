@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "name": "agent-browser"
+  },
+  "groups": {
+    "include": []
+  },
+  "filesystem": {
+    "allow": [
+      "$XDG_CONFIG_HOME/chromium/Crash Reports",
+      "$XDG_RUNTIME_DIR/agent-browser",
+      "$HOME/.agent-browser"
+    ],
+    "allow_file": [
+      "$XDG_RUNTIME_DIR/pipewire-0",
+      "$XDG_CONFIG_HOME/pulse/cookie"
+    ]
+  },
+  "allow_launch_services": true,
+  "environment": {
+    "set_vars": {
+      "AGENT_BROWSER_ARGS": "--no-sandbox,--disable-gpu"
+    }
+  }
+}

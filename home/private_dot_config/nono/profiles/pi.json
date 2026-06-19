@@ -1,0 +1,64 @@
+{
+  "extends": [
+    "always-further/pi",
+    "safe-env-vars",
+    "helix",
+    "node-dev",
+    "python-dev",
+    "podman",
+    "git"
+  ],
+  "meta": {
+    "name": "pi"
+  },
+  "groups": {
+    "include": [],
+    "exclude": []
+  },
+  "commands": {
+    "allow": [],
+    "deny": []
+  },
+  "workdir": {
+    "access": "readwrite"
+  },
+  "filesystem": {
+    "allow": [
+      "$XDG_DATA_HOME/npm",
+      "$XDG_DATA_HOME/rtk",
+      "$XDG_STATE_HOME/opencode",
+      "$HOME/.context7",
+      "$HOME/.npm",
+      "$HOME/.pi-lens",
+      "/tmp"
+    ],
+    "read": [
+      "$XDG_CONFIG_HOME/git",
+      "$XDG_CONFIG_HOME/openspec",
+      "$XDG_CONFIG_HOME/rpiv-web-tools"
+    ],
+    "write": [],
+    "allow_file": [],
+    "read_file": [],
+    "write_file": [],
+    "deny": [],
+    "bypass_protection": [],
+    "suppress_save_prompt": []
+  },
+  "network": {
+    "block": false,
+    "network_profile": null,
+    "allow_domain": [],
+    "credentials": [],
+    "open_port": [],
+    "listen_port": [],
+    "custom_credentials": {}
+  },
+  "allow_launch_services": true,
+  "env_credentials": {},
+  "hooks": {},
+  "rollback": {
+    "exclude_patterns": [".venv"],
+    "exclude_globs": ["*.tmp.[0-9]*.[0-9]*"]
+  }
+}

@@ -16,9 +16,9 @@
       "markdown.new",
       "grep.app",
       "fal.ai",
-      "wttr.in",
-      "ru.wttr.in",
-      "github.com"
+      "*.wttr.in",
+      "github.com",
+      "api.ctx7.dev"
     ]
   }
 }

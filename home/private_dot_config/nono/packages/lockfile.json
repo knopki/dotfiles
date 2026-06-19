@@ -158,7 +158,7 @@
     },
     "always-further/opencode": {
       "version": "0.0.5",
-      "installed_at": "2026-06-01T17:09:18.305674589+00:00",
+      "installed_at": "2026-06-10T00:40:35.919478647+00:00",
       "pinned": false,
       "provenance": {
         "signer_identity": "https://github.com/always-further/nono-packs/.github/workflows/publish-opencode.yml@refs/tags/opencode-v0.0.5",
@@ -199,6 +199,78 @@
           "type": "write_file",
           "dest": "/home/sk/.config/nono/profile-drafts/.nono-opencode-pack-marker",
           "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "type": "symlink",
+          "link": "/home/sk/.config/opencode/plugins/nono-sandbox.ts"
+        },
+        {
+          "type": "symlink",
+          "link": "/home/sk/.config/opencode/skills/nono-sandbox"
+        }
+      ]
+    },
+    "always-further/pi": {
+      "version": "0.0.4",
+      "installed_at": "2026-06-08T22:42:10.472265357+00:00",
+      "pinned": false,
+      "provenance": {
+        "signer_identity": "https://github.com/always-further/nono-packs/.github/workflows/publish-pi.yml@refs/tags/pi-v0.0.4",
+        "repository": "always-further/nono-packs",
+        "workflow": ".github/workflows/publish-pi.yml",
+        "ref": "refs/tags/pi-v0.0.4",
+        "rekor_log_index": 1580623820,
+        "signed_at": "2026-05-20T09:28:01.783898+00:00"
+      },
+      "artifacts": {
+        "README.md": {
+          "sha256": "920dfc150690290d1a725bcf8a110b660b963cd9eddf1c102bb2ff729e7237c7",
+          "type": "plugin"
+        },
+        "assets/logo.png": {
+          "sha256": "8690b6249ce8f8004b09c6eff64ca3e097ac856280d898c83bd7c1f7a665412f",
+          "type": "plugin"
+        },
+        "extensions/nono-sandbox.ts": {
+          "sha256": "3902bdae252a6624ab05389d6e6b564b8a5ecf5abb238f142c87e6d369c5e295",
+          "type": "plugin"
+        },
+        "profiles/pi.json": {
+          "sha256": "79ffed29e092a8d6a2d715d3771012740b321aeca23239caa10644f420b2eca5",
+          "type": "profile"
+        },
+        "skills/nono-sandbox/SKILL.md": {
+          "sha256": "84c189898cab0e3f3ebb93e24b3c6d2ad04173532334e1b79e970502b8a6b043",
+          "type": "plugin"
+        },
+        "wiring/packages-entry.json": {
+          "sha256": "4828fd03bb9c4c94b66e4914b024ad9ef86399462a1d2550804a5c632ef328b2",
+          "type": "plugin"
+        },
+        "wiring/profile-drafts-dir-marker": {
+          "sha256": "7142650704ca05aef940b54a689e694938dabaec678e190335a98acc7a55337f",
+          "type": "plugin"
+        }
+      },
+      "wiring_record": [
+        {
+          "type": "write_file",
+          "dest": "/home/sk/.config/nono/profile-drafts/.nono-pi-pack-marker",
+          "sha256": "7142650704ca05aef940b54a689e694938dabaec678e190335a98acc7a55337f"
+        },
+        {
+          "type": "json_array_append",
+          "file": "/home/sk/.pi/agent/settings.json",
+          "path": "packages",
+          "key_field": "source",
+          "entries": [
+            {
+              "key": "/home/sk/.config/nono/packages/always-further/pi",
+              "installed": {
+                "source": "/home/sk/.config/nono/packages/always-further/pi"
+              }
+            }
+          ]
         }
       ]
     }

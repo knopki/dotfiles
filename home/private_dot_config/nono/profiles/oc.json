@@ -6,30 +6,49 @@
     "node-dev",
     "python-dev",
     "podman",
-    "git"
+    "git",
+    "agent-browser",
+    "ctx7"
   ],
   "meta": {
     "name": "oc"
-  },
-  "groups": {
-    "include": []
   },
   "filesystem": {
     "allow": [
       "$XDG_DATA_HOME/npm",
       "$XDG_DATA_HOME/rtk",
       "$XDG_STATE_HOME/opencode",
-      "$HOME/.context7",
       "$HOME/.npm"
     ],
     "read": ["$XDG_CONFIG_HOME/git", "$XDG_CONFIG_HOME/openspec"],
-    "suppress_save_prompt": []
+    "bypass_protection": ["~/.config/chromium/Crash Reports"]
   },
   "network": {
     "block": false,
     "network_profile": null
   },
-  "undo": {
+  "env_credentials": {},
+  "environment": {
+    "set_vars": {
+      "OPENCODE_CONFIG_CONTENT": "{}",
+      "OPENCODE_ENABLE_EXA": "1",
+      "OPENCODE_EXPERIMENTAL_NATIVE_LLM": "1",
+      "OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS": "1",
+      "OPENCODE_PERMISSION": "{}",
+      "OPENCODE_DISABLE_AUTOUPDATE": "1",
+      "OPENCODE_EXPERIMENTAL_EVENT_SYSTEM": "1",
+      "OPENCODE_EXPERIMENTAL_WORKSPACES": "1",
+      "OPENCODE_EXPERIMENTAL_EXA": "1",
+      "OPENCODE_EXPERIMENTAL_LSP_TOOL": "1",
+      "OPENCODE_EXPERIMENTAL_PARALLEL": "0"
+    }
+  },
+  "workdir": {
+    "access": "none"
+  },
+  "hooks": {},
+  "session_hooks": {},
+  "rollback": {
     "exclude_patterns": [".venv"],
     "exclude_globs": ["*.tmp.[0-9]*.[0-9]*"]
   },
