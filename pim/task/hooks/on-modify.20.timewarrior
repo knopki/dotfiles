@@ -11,7 +11,7 @@ from typing import Any
 #   Description
 #   UDAs
 
-IGNORED_TAGS = ["next", "wip", "respond", "review", "later", "problem", "today"]
+IGNORED_TAGS = ["next", "wip", "respond", "review", "later", "problem", "today", "@puter", "@home", "@outdoor"]
 
 
 try:

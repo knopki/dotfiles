@@ -80,9 +80,22 @@
 
 
 #
+# Taskwarrior
+#
+"~/.config/task" = { source = "pim/task", mode = "copy" }
+
+
+#
 # Terraform
 #
 "~/.terraformrc" = { source = "terraform/terraformrc", mode = "copy" }
+
+
+#
+# Timewarrior
+#
+"~/.config/timewarrior" = { source = "pim/timewarrior", mode = "copy" }
+
 
 #
 # uv

@@ -1,4 +1,4 @@
-news.version=3.4.2
+news.version=3.5.0
 
 data.location=~/.local/share/task
 hooks.location=~/.config/task/hooks
@@ -22,7 +22,7 @@ include ./sync
 #include dark-yellow-green.theme
 #include dark-gray-256.theme
 #include dark-gray-blue-256.theme
-#include solarized-dark-256.theme
+include solarized-dark-256.theme
 #include solarized-light-256.theme
 #include no-color.theme
 
@@ -79,10 +79,12 @@ report._reviewed.filter=( reviewed.none: or reviewed.before:now-6days ) and ( +P
 # Contexts
 #
 
-context.work=project:work or project:amperka or project:tilde
-context.family=project:family
-context.personal=project:personal
-context.home=+@home
+context.family.read=project:family
+context.personal.read=project:personal
+context.work.read=project:work
+context.home.read=+@home
+context.outdoor.read=+@outdoor
+context.puter.read=+@puter
 
 
 #
@@ -114,11 +116,14 @@ urgency.blocked.coefficient=                -5.0 # blocked by other tasks
 
 urgency.user.tag.respond.coefficient=       10.0
 urgency.user.tag.review.coefficient=        -5.0
-urgency.user.tag.wip.coefficient=     2.5
+urgency.user.tag.wip.coefficient=            2.5
 urgency.user.tag.today.coefficient=          2.0
 urgency.user.tag.yesterday.coefficient=      3.0
 urgency.user.tag.later.coefficient=         -6.0
 urgency.user.tag.problem.coefficient=        4.5
+urgency.user.tag.@home.coefficient=          0.0
+urgency.user.tag.@outdoor.coefficient=       0.0
+urgency.user.tag.@puter.coefficient=         0.0
 
 # per project coefficients
 urgency.user.project.personal.coefficient=0.0
