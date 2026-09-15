@@ -1,0 +1,11 @@
+# Machine-local profile values and secrets must not enter the public repo.
+mise.local.toml
+mise.*.local.toml
+.miserc.toml
+.env
+.env.*
+*.age.key
+
+# Local integration-test artifacts.
+.dotfiles-test-*/
+__pycache__/

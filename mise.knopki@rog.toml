@@ -1,0 +1,106 @@
+[dotfiles]
+#
+# bash
+#
+"~/.bash_profile" = { source = "bash/bash_profile", mode = "copy" }
+"~/.bashrc" = { source = "bash/bashrc", mode = "copy" }
+
+
+#
+# curl
+#
+"~/.curlrc" = { source = "curl/curlrc", mode = "copy" }
+
+
+#
+# fish
+#
+"~/.config/fish" = { source = "fish", mode = "copy", exclude = ["fish_variables"] }
+
+
+#
+# Helix
+#
+"~/.config/helix/config.toml" = { source = "helix/config.toml", mode = "copy" }
+
+
+#
+# htop
+#
+"~/.config/htop/htoprc" = { source = "htop/htoprc", mode = "copy" }
+
+
+#
+# khal
+#
+"~/.config/khal/config" = { source = "pim/khal/config", mode = "copy" }
+
+
+#
+# khard
+#
+"~/.config/khard/khard.conf" = { source = "pim/khard/khard.conf", mode = "copy" }
+
+
+#
+# Lazygit
+#
+"~/.config/lazygit/config.yml" = { source = "lazygit/config.yml", mode = "copy" }
+
+
+#
+# MPV
+#
+"~/.config/mpv" = { source = "mpv", mode = "copy" }
+
+
+#
+# npm
+#
+"~/.npmrc" = { source = "npm/npmrc", mode = "copy" }
+
+
+#
+# Restic
+#
+"~/.resticignore" = { source = "restic/resticignore", mode = "copy" }
+
+
+#
+# Starship
+#
+"~/.config/starship.toml/schema" = { line = "\"$schema\" = 'https://starship.rs/config-schema.json'", position = "prepend" }
+"~/.config/starship.toml/settings" = { source = "starship/settings.toml", template = "tera" }
+
+
+#
+# Terraform
+#
+"~/.terraformrc" = { source = "terraform/terraformrc", mode = "copy" }
+
+#
+# uv
+#
+"~/.config/uv/uv.toml" = { source = "uv/uv.toml", mode = "copy" }
+
+
+#
+# vdirsyncer
+#
+"~/.config/vdirsyncer/config" = { source = "pim/vdirsyncer/config", mode = "copy" }
+
+
+#
+# wget
+#
+"~/.wgetrc" = { source = "wget/wgetrc", mode = "copy" }
+
+
+#
+# XDG
+#
+"~/.config/environment.d/00-xdg.conf" = { source = "xdg/environment.d/00-xdg.conf", mode = "copy" }
+"~/.config/user-dirs.conf" = { source = "xdg/user-dirs.conf", mode = "copy" }
+"~/.config/user-dirs.locale" = { source = "xdg/user-dirs.locale", mode = "copy" }
+"~/.config/user-dirs.dirs" = { source = "xdg/user-dirs.dirs", mode = "copy" }
+"~/.config/mimeapps.list" = { source = "xdg/mimeapps.list", mode = "copy" }

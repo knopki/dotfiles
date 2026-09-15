@@ -1,0 +1,10 @@
+/home/*/.android
+/home/*/.local/share/containers
+/home/*/.local/share/docker
+/home/*/.local/share/flatpak
+/home/*/.local/share/mise
+/home/*/.local/share/Trash
+/home/*/.var
+/home/*/.tor project
+/home/*/prj/**/node_modules
+/home/*/prj/**infra/.terraform

@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+
+git:
+  parseEmoji: true
+update:
+  method: never
+customCommands:
+  - key: "<c-v>"
+    context: "global"
+    description: "Create a new conventional commit"
+    prompts:
+      - type: "menu"
+        key: "Type"
+        title: "Type of change"
+        options:
+          - description: "Changes that affect the build system or external dependencies"
+            value: "build"
+          - description: "A new feature"
+            value: "feat"
+          - description: "A bug fix"
+            value: "fix"
+          - description: "Other changes that don't modify src or test files"
+            value: "chore"
+          - description: "Changes to CI configuration files and scripts"
+            value: "ci"
+          - description: "Documentation only changes"
+            value: "docs"
+          - description: "A code change that improves performance"
+            value: "perf"
+          - description: "A code change that neither foxes a bug nor adds a feature"
+            value: "refactor"
+          - description: "Reverts a previous commit"
+            value: "revert"
+          - description: "Changes that do not affect the meaning of the code"
+            value: "style"
+          - description: "Adding missing tests or correcting existing tests"
+            value: "test"
+      - type: "input"
+        title: "Scope - Add (<scope>)"
+        key: "Scope"
+        initialValue: ""
+      - type: "menu"
+        title: "Breaking change - Add '!'"
+        key: "Breaking"
+        options:
+          - name: "no"
+            description: "This is just a normal commit"
+            value: " "
+          - name: "yes"
+            description: "This is a breaking change"
+            value: "!"
+      - type: "input"
+        title: "message"
+        key: "Message"
+        initialValue: ""
+      - type: "confirm"
+        key: "Confirm"
+        title: "Commit"
+        body: "Are you sure you want to commit?"
+    command: "git commit --message '{{.Form.Type}}{{if .Form.Scope}}({{.Form.Scope}}){{end}}{{if eq .Form.Breaking \"!\"}}!{{end}}: {{.Form.Message}}'"
+    loadingText: "Creating a conventional commit..."
+gui:
+  language: en
+  sidePanelWidth: 0.3333
+  expandFocusedSidePanel: true
+  nerdFontsVersion: "3"
+  # timeFormat: DateOnly
+  timeFormat: "%Y-%m-%d %H:%M:%S"
+  shortTimeFormat: 03:04
+os:
+  edit: "helix -- {{filename}}"
+  editAtLine: "helix -- {{filename}}:{{line}}"
+  editAtLineAndWait: "helix -- {{filename}}:{{line}}"
+  openDirInEditor: "helix -- {{dir}}"
