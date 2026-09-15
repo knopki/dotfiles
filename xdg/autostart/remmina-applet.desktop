@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Мини-Remmina
+Comment=Подключение к удалённым рабочим столам через меню мини-программы
+Icon=org.remmina.Remmina
+Exec=remmina -i
+Terminal=false
+Type=Application
+Hidden=false

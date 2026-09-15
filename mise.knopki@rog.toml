@@ -28,6 +28,7 @@
 # Helix
 #
 "~/.config/helix/config.toml" = { source = "helix/config.toml", mode = "copy" }
+"~/.config/helix/languages.toml" = { source = "helix/languages.toml", mode = "copy" }
 
 
 #
@@ -98,6 +99,12 @@
 
 
 #
+# tmpfiles
+#
+"~/.config/user-tmpfiles.d" = { source = "tmpfiles", mode = "copy" }
+
+
+#
 # uv
 #
 "~/.config/uv/uv.toml" = { source = "uv/uv.toml", mode = "copy" }
@@ -118,8 +125,23 @@
 #
 # XDG
 #
+"~/.config/autostart/Nextcloud.desktop" = { source = "xdg/autostart/Nextcloud.desktop", mode = "copy" }
+"~/.config/autostart/org.keepassxc.KeePassXC.desktop" = { source = "xdg/autostart/org.keepassxc.KeePassXC.desktop", mode = "copy" }
+"~/.config/autostart/org.opengamingcollective.rog-control-center.desktop" = { source = "xdg/autostart/org.opengamingcollective.rog-control-center.desktop", mode = "copy" }
+"~/.config/autostart/org.telegram.desktop.desktop" = { source = "xdg/autostart/org.telegram.desktop.desktop", mode = "copy" }
+"~/.config/autostart/remmina-applet.desktop" = { source = "xdg/autostart/remmina-applet.desktop", mode = "copy" }
+"~/.config/autostart/startup-sound.desktop" = { source = "xdg/autostart/startup-sound.desktop", mode = "copy" }
 "~/.config/environment.d/00-xdg.conf" = { source = "xdg/environment.d/00-xdg.conf", mode = "copy" }
 "~/.config/user-dirs.conf" = { source = "xdg/user-dirs.conf", mode = "copy" }
 "~/.config/user-dirs.locale" = { source = "xdg/user-dirs.locale", mode = "copy" }
 "~/.config/user-dirs.dirs" = { source = "xdg/user-dirs.dirs", mode = "copy" }
 "~/.config/mimeapps.list" = { source = "xdg/mimeapps.list", mode = "copy" }
+"~/.local/share/desktop-login.wav" = { source = "xdg/autostart/desktop-login.wav", mode = "copy" }
+
+
+#
+# Zed
+#
+"~/.config/zed/debug.json" = { source = "zed/debug.json", mode = "copy" }
+"~/.config/zed/keymap.json" = { source = "zed/keymap.json", mode = "copy" }
+"~/.config/zed/tasks.json" = { source = "zed/tasks.json", mode = "copy" }

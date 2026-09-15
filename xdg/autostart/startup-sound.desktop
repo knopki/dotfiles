@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Chicago95 startup sound
+Exec=mpv --config=no ~/.local/share/desktop-login.wav
+NoDisplay=true
+Terminal=false
+Categories=
+GenericName=startup sound
