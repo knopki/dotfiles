@@ -1,5 +1,11 @@
 [dotfiles]
 #
+# Agent skills
+#
+"~/.agents/skills" = { source = "agents/skills", mode = "copy" }
+
+
+#
 # bash
 #
 "~/.bash_profile" = { source = "bash/bash_profile", mode = "copy" }

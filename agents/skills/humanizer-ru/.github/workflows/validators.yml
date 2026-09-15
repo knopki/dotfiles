@@ -1,0 +1,210 @@
+name: Валидаторы спецификации и реестра
+
+# Закрывает пробел v3.3.0: check_spec.py и check_fixture_sources.py
+# запускались только вручную. Теперь оба валидатора — в CI.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'SKILL.md'
+      - 'README.md'
+      - 'README.en.md'
+      - 'CHANGELOG.md'
+      - 'scripts/**'
+      - 'references/**'
+      - 'research/fixtures/**'
+      - 'research/validation/**'
+      - 'research/raw/**'
+      - 'CITATION.cff'
+      - 'tests/fixtures/**'
+      - 'eval/**'
+      - '.github/workflows/validators.yml'
+  pull_request:
+    paths:
+      - 'SKILL.md'
+      - 'README.md'
+      - 'README.en.md'
+      - 'CHANGELOG.md'
+      - 'scripts/**'
+      - 'references/**'
+      - 'research/fixtures/**'
+      - 'research/validation/**'
+      - 'research/raw/**'
+      - 'CITATION.cff'
+      - 'tests/fixtures/**'
+      - 'eval/**'
+      - '.github/workflows/validators.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validators-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  spec:
+    name: SKILL.md соответствует спецификации Agent Skills
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Самопроверка валидатора
+        run: python3 scripts/check_spec.py --selftest
+      - name: Строгая проверка SKILL.md
+        run: python3 scripts/check_spec.py SKILL.md --strict --expect-dir humanizer-ru
+
+  fixture-sources:
+    name: Реестр источников маркеров
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Самопроверка валидатора
+        run: python3 scripts/check_fixture_sources.py --selftest
+      - name: Гейт доказательств для зарегистрированных маркеров
+        run: python3 scripts/check_fixture_sources.py research/fixtures/marker-sources.json
+
+  parity:
+    name: md↔py паритет regex
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Каждое выражение CASES задокументировано в chatbot-artifacts.md
+        run: python3 scripts/check_markers.py --parity
+
+  style-selftest:
+    name: Самопроверка стилевых маркеров
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: count_style_markers --selftest
+        run: python3 scripts/count_style_markers.py --selftest
+
+  soft-signals:
+    name: Самопроверка сканера мягких признаков
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: scan_soft_signals --selftest (умеет падать)
+        run: python3 scripts/scan_soft_signals.py --selftest
+
+  gate-runner:
+    name: Самопроверка раннера всех гейтов
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: check_all --selftest (раннер умеет падать)
+        run: python3 scripts/check_all.py --selftest
+
+  corpus:
+    name: Регрессия корпусов валидации
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Human 0, raw только BOM, boundary совпал
+        run: python3 scripts/check_corpus.py
+
+  examples:
+    name: Честность примеров До/После
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Самопроверка валидатора
+        run: python3 scripts/check_examples.py --selftest
+      - name: Правка не дописывает факты за автора
+        run: python3 scripts/check_examples.py
+
+  readme-parity:
+    name: Паритет русской и английской витрины
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Самопроверка валидатора
+        run: python3 scripts/check_readme_parity.py --selftest
+      - name: Числа, разделы и оформление критичности совпадают
+        run: python3 scripts/check_readme_parity.py
+
+  budget:
+    name: Бюджет контекста по спецификации
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Самопроверка валидатора
+        run: python3 scripts/check_budget.py --selftest
+      - name: Лимиты name / description / compatibility и размер SKILL.md
+        run: python3 scripts/check_budget.py SKILL.md --expect-dir humanizer-ru
+
+  eval-harness:
+    name: Нейтральный eval-корпус
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Самопроверка гарнесса (умеет падать)
+        run: python3 eval/run_eval.py --selftest
+      - name: Прогон manifest.v1.json
+        run: python3 eval/run_eval.py
+
+  blind-eval:
+    name: Гарнесс слепой оценки
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Самопроверка метрик и обезличивания
+        run: python3 eval/blind_eval.py --selftest
+      - name: Отчёт без данных не выпускается
+        run: |
+          set +e
+          python3 eval/blind_eval.py
+          code=$?
+          set -e
+          if [ "$code" -ne 2 ]; then
+            echo "Ожидался контролируемый отказ 2, получен код $code" >&2
+            exit 1
+          fi
+          echo "Контролируемый отказ без данных подтверждён"
+
+  release-preflight:
+    name: Самопроверка сборки архива
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: check_release.py --selftest
+        run: python3 scripts/check_release.py --selftest
+      - name: Сборка + верификация архива (allowlist, без research/tests/.github)
+        run: |
+          python3 scripts/check_release.py --root . --build dist/humanizer-ru.zip
+          python3 scripts/check_release.py --verify dist/humanizer-ru.zip
+
+  compile:
+    name: Все входы компилируются
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: python -m compileall
+        run: python3 -m compileall -q scripts eval
+
+  perf:
+    name: Перф-гейт выражений
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Самопроверка перф-гейта (умеет падать)
+        run: python3 scripts/check_perf.py --selftest
+      - name: Ни одно выражение не дольше 0.5 с на 30 000 символов
+        run: python3 scripts/check_perf.py
