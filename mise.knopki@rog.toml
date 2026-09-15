@@ -25,6 +25,14 @@
 
 
 #
+# gnupg
+#
+"~/.gnupg/gpg.conf" = { source = "gnupg/gpg.conf", mode = "copy" }
+"~/.gnupg/gpg-agent.conf" = { source = "gnupg/gpg-agent.conf", mode = "copy" }
+"~/.pam-gnupg" = { source = "gnupg/pam-gnupg", mode = "copy" }
+
+
+#
 # Helix
 #
 "~/.config/helix/config.toml" = { source = "helix/config.toml", mode = "copy" }
@@ -71,6 +79,12 @@
 # Restic
 #
 "~/.resticignore" = { source = "restic/resticignore", mode = "copy" }
+
+
+#
+# ssh
+#
+"~/.ssh/config" = { source = "ssh/config", mode = "copy" }
 
 
 #
@@ -145,3 +159,12 @@
 "~/.config/zed/debug.json" = { source = "zed/debug.json", mode = "copy" }
 "~/.config/zed/keymap.json" = { source = "zed/keymap.json", mode = "copy" }
 "~/.config/zed/tasks.json" = { source = "zed/tasks.json", mode = "copy" }
+
+
+#
+# Hooks
+#
+# ssh/config uses ControlPath and Include from these directories; dotfiles
+# cannot create empty directories, so the hook makes them on every apply.
+[bootstrap.hooks.post-dotfiles]
+run = "mkdir -p ~/.ssh/connections ~/.ssh/conf.d"
