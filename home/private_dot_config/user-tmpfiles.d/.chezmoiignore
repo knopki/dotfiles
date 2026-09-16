@@ -1,3 +1,0 @@
-{{- if not .isDesktopUser }}
-remote-sk-nc.conf
-{{- end }}
