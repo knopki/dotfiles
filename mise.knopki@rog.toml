@@ -165,7 +165,8 @@ ZED_SSH_CONNECTIONS = { age = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBEamYzM
 # vdirsyncer
 #
 "~/.config/vdirsyncer/config" = { source = "pim/vdirsyncer/config", mode = "copy" }
-
+"~/.config/systemd/user/vdirsyncer.service" = { source = "pim/vdirsyncer/vdirsyncer.service", mode = "copy" }
+"~/.config/systemd/user/vdirsyncer.timer" = { source = "pim/vdirsyncer/vdirsyncer.timer", mode = "copy" }
 
 #
 # wget
@@ -202,12 +203,10 @@ ZED_SSH_CONNECTIONS = { age = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBEamYzM
 #
 # Hooks
 #
-# ssh/config uses ControlPath and Include from these directories; dotfiles
-# cannot create empty directories, so the hook makes them on every apply.
-# The avatar icon is a HOME-internal symlink to the copied ~/.face, which mise
-# dotfiles cannot express; recreate it after the copy.
 [bootstrap.hooks.post-dotfiles]
 run = """
 mkdir -p ~/.ssh/connections ~/.ssh/conf.d
 ln -sf .face ~/.face.icon
+systemctl --user daemon-reload
+systemctl --user enable --now vdirsyncer.timer
 """
