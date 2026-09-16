@@ -1,0 +1,12 @@
+[user]
+    name = "{{ vars.USER_PUBLIC_NAME }}"
+    email = "{{ vars.USER_AMP_EMAIL }}"
+{%- if vars.GPG_SIGN_KEY is defined %}
+    signingKey = "{{ vars.GPG_SIGN_KEY }}"
+
+[commit]
+    gpgSign = true
+
+[tag]
+    gpgSign = true
+{% endif %}
