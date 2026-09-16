@@ -1,0 +1,5 @@
+[providers]
+keychain = { type = "keychain", service = "knopki-dotfiles" }
+
+[secrets]
+MISE_AGE_KEY = { provider = "keychain", value = "MISE_AGE_KEY" }

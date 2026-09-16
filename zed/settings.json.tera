@@ -1,0 +1,267 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "cli_default_open_behavior": "existing_window",
+  "project_panel": {
+    "dock": "right",
+  },
+  "outline_panel": {
+    "dock": "right",
+  },
+  "git_panel": {
+    "dock": "right",
+  },
+  "ui_font_family": ".ZedSans",
+  "buffer_font_family": ".ZedMono",
+  "icon_theme": {
+    "mode": "light",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)",
+  },
+  "theme": {
+    "mode": "light",
+    "light": "Noctalia Light Transparent",
+    "dark": "Noctalia Dark Transparent",
+  },
+  "buffer_font_size": 16,
+  "helix_mode": true,
+  "confirm_quit": true,
+  "restore_on_startup": "last_session",
+  // "show_completions_on_input": true,
+  "auto_signature_help": true,
+  "auto_indent_on_paste": false,
+  "show_edit_predictions": true,
+  "edit_predictions_disabled_in": [],
+  "use_smartcase_search": true,
+  "collaboration_panel": {
+    "dock": "right",
+    "button": false,
+  },
+  "agent": {
+    "tool_permissions": {
+      "default": "allow",
+    },
+    "dock": "left",
+    "play_sound_when_agent_done": "always",
+    "profiles": {
+      "write": {
+        "name": "Write",
+        "tools": {
+          "search_web": true,
+          "copy_path": true,
+          "create_directory": true,
+          "delete_path": true,
+          "diagnostics": true,
+          "edit_file": true,
+          "fetch": true,
+          "list_directory": true,
+          "move_path": true,
+          "now": true,
+          "find_path": true,
+          "read_file": true,
+          "grep": true,
+          "terminal": true,
+          "thinking": true,
+        },
+        "enable_all_context_servers": true,
+        "context_servers": {
+          "mcp-server-sequential-thinking": {
+            "tools": {
+              "sequentialthinking": true,
+            },
+          },
+        },
+      },
+      "minimal": {
+        "name": "Minimal",
+        "tools": {},
+        "enable_all_context_servers": false,
+        "context_servers": {
+          "postgres-context-server": {
+            "tools": {
+              "query": true,
+              "pg-schema": true,
+            },
+          },
+          "mcp-server-sequential-thinking": {
+            "tools": {
+              "sequentialthinking": true,
+            },
+          },
+        },
+      },
+      "ask": {
+        "name": "Ask",
+        "tools": {
+          "search_web": true,
+          "contents": true,
+          "diagnostics": true,
+          "fetch": true,
+          "list_directory": true,
+          "now": true,
+          "find_path": true,
+          "read_file": true,
+          "open": true,
+          "grep": true,
+          "thinking": true,
+        },
+        "enable_all_context_servers": false,
+        "context_servers": {
+          "postgres-context-server": {
+            "tools": {
+              "query": true,
+              "pg-schema": true,
+            },
+          },
+          "mcp-server-sequential-thinking": {
+            "tools": {
+              "sequentialthinking": true,
+            },
+          },
+        },
+      },
+    },
+    "default_profile": "write",
+    "default_model": {
+      "provider": "cliproxyapi",
+      "model": "glm-5.2",
+    },
+  },
+  // "autosave": "off",
+  "format_on_save": "on",
+  "soft_wrap": "bounded",
+  "preferred_line_length": 80,
+  "auto_update": false,
+  "git": {
+    "inline_blame": {
+      "delay_ms": 10000,
+    },
+    "worktree_directory": "../",
+  },
+  "load_direnv": "direct",
+  "edit_predictions": {
+    "provider": "zed",
+    "mode": "subtle",
+  },
+  "journal": {
+    "path": "~/docs",
+    "hour_format": "hour24",
+  },
+  "terminal": {
+    "shell": {
+      "program": "fish",
+    },
+    "detect_venv": {
+      "on": {
+        "directories": [".venv", "venv"],
+      },
+    },
+    "env": {
+      "EDITOR": "zeditor --wait",
+    },
+  },
+  "tasks": {
+    "variables": {},
+  },
+  "file_types": {},
+  "node": {},
+  "auto_install_extensions": {
+    "biome": true,
+    "csv": true,
+    "docker-compose": true,
+    "dockerfile": true,
+    "elisp": true,
+    "env": true,
+    "html": true,
+    "ini": true,
+    "lua": true,
+    "make": true,
+    "nix": true,
+    "php": true,
+    "pylsp": false,
+    "ruff": true,
+    "sql": true,
+    "svelte": true,
+    "terraform": true,
+    "toml": true,
+    "xml": true,
+  },
+  "languages": {
+    "Markdown": {
+      "remove_trailing_whitespace_on_save": true,
+      "formatter": "language_server",
+    },
+    "Nix": {
+      "language_servers": ["nixd", "!nil"],
+    },
+    "Python": {
+      "enable_language_server": true,
+
+      "language_servers": [
+        "zuban",
+        "ruff",
+        "!ty",
+        "!basedpyright",
+        "!pyright",
+        "!pylsp",
+      ],
+      "preferred_line_length": 88,
+      "formatter": [
+        {
+          "language_server": {
+            "name": "ruff",
+          },
+        },
+      ],
+    },
+    "Shell Script": {
+      "tab_size": 2,
+      "formatter": {
+        "external": {
+          "command": "shfmt",
+          "arguments": ["--filename", "{buffer_path}", "--indent", "2", "-s"],
+        },
+      },
+    },
+    "YAML": {
+      "formatter": "language_server",
+    },
+  },
+  "language_models": {
+    "openai_compatible": {},
+  },
+  "prettier": {},
+  "lsp": {
+    "pyright": {
+      "settings": {
+        "python.analysis": {
+          "diagnosticMode": "workspace",
+          "typeCheckingMode": "strict",
+        },
+        "python": {
+          // "pythonPath": ".venv/bin/python"
+        },
+      },
+    },
+    "ruff": {},
+    "zuban": {
+      "binary": {
+        "path": "uv",
+        "arguments": ["run", "zuban", "server"],
+      },
+    },
+  },
+  "vim": {},
+  "debugger": {
+    "dock": "right",
+  },
+  "ssh_connections": {{ vars.ZED_SSH_CONNECTIONS }},
+  "context_servers": {},
+  "use_podman": true,
+}

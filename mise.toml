@@ -1,16 +1,20 @@
 # First supported/tested mise release for this migration pilot.
 min_version = "2026.9.7"
 
-[settings.history]
-enabled = false
+[settings]
+experimental = true
+history.enabled = false
+age.strict = false
 
+[tools]
+age = "1.3.2"
+fnox = "1.35.1"
 
 # Dotfiles are opt-in: select terminal and/or helix with -E.
 # Keep machine provisioning and secret handling out of this pilot.
 [tasks.test-dotfiles]
 description = "Test dotfiles in temporary homes without loading host mise configuration"
 run = "python3 tests/test_dotfiles.py"
-
 
 [tasks."knopki@rog"]
 run = "mise -E knopki@rog bootstrap dotfiles"

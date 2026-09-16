@@ -1,3 +1,6 @@
+[vars]
+ZED_SSH_CONNECTIONS = { age = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBEamYzMXR3dFoxT1M1VVFwek5WZWxOZTdyTWNVcnRSQmZIZTJQdnRsQ1R3ClBhVEI4OS9GQ2p0WjR5Nk9nR0NreUZHaDVIU0ZSbGxMUG1YYzBmRllwNVkKLT4gRC1ncmVhc2UgZyxEaSYKa3cKLS0tIGVHREx6eGg1YUZRZVpjTWNpT1pjeHc0emJxeFE4S2tTVlVDdmdMckJBcjgKq1R9g+a6nmpW6EOhKvSgCv5pCZzlOTMmqtRCvDKJlxegxWZzTiUULVhv0toEIH3w0kkOgpxD8+Y/s7ys6NmnC3oi4SGivX7aPs2cX++dcNWJieYhavZgXknEOl/dfqWsmg" }
+
 [dotfiles]
 #
 # Agent skills
@@ -162,6 +165,7 @@
 #
 # Zed
 #
+"~/.config/zed/settings.json" = { source = "zed/settings.json.tera", mode = "template" }
 "~/.config/zed/debug.json" = { source = "zed/debug.json", mode = "copy" }
 "~/.config/zed/keymap.json" = { source = "zed/keymap.json", mode = "copy" }
 "~/.config/zed/tasks.json" = { source = "zed/tasks.json", mode = "copy" }
